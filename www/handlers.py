@@ -245,8 +245,8 @@ async def api_get_book_list(*, id):
 
     if book_list:
         for item in book_list:
-            item['audio_url'] = f"/static/books/{book['id']}.{book['name'].replace('|','')}/audio/{item['name']}.mp3"
-            item['cover_url'] = f"/static/books/{book['id']}.{book['name'].replace('|','')}/img/{item['name']}.webp"
+            item['audio_url'] = f"/books/{book['id']}.{book['name'].replace('|','')}/audio/{item['name']}.mp3"
+            item['cover_url'] = f"/books/{book['id']}.{book['name'].replace('|','')}/img/{item['name']}.webp"
             text_json_name = f"{BOOK_BASE_PATH}/{book['id']}.{book['name'].replace('|','')}/json/{item['id']}.{item['name']}.json"
             if os.path.exists(text_json_name):
                 with open(text_json_name, 'r', encoding='utf-8') as f:

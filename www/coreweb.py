@@ -10,6 +10,7 @@ from urllib import parse
 from aiohttp import web
 from apis import APIError
 from logger import logger
+from config import configs
 
 
 def get(path):
@@ -171,6 +172,7 @@ def add_static(app):
     path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
     app.router.add_static('/static/', path)
     app.router.add_static('/cover/', os.path.join(os.path.dirname(os.path.abspath(__file__)), 'cover'))
+    app.router.add_static('/books/', configs.books.base_path)
     logger.info('add static {} = {}'.format('/static/', path))
 
 

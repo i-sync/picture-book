@@ -21,6 +21,6 @@
     "port":25
   },
   "books": {
-    "base_path": "c:/source/python/picture-book/www/static/books"
+    "base_path": "/media/Study/yaya-huiben"
   }
 }
