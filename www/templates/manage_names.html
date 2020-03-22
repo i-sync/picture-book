@@ -1,0 +1,41 @@
+{% extends '__manage_base__.html' %}
+
+{% block title %}名称{% endblock %}
+
+{% block beforehead %}
+
+<script>
+    function initVM(data) {
+        $('#vm').show();
+        var vm = new Vue({
+            delimiters: ['${', '}'],
+            el: '#vm',
+            data: {
+                names: data.names
+            }
+        });
+    }
+
+    $(function(){
+        getJSON('/api/names', function(err, results){
+            $("#vm").removeClass('loading');
+            if(err){
+                return error(err);
+            }
+            //$('#loading').hide();
+            initVM(results);
+        });
+    });
+</script>
+
+{% endblock %}
+
+{% block content %}
+
+    <div id="error" class="ui error hidden message"></div>
+    <div id="vm" class="ui container loading">
+
+        <textarea v-model="names" readonly="readonly" rows="40" style="width:100%"></textarea>
+    </div>
+
+{% endblock %}

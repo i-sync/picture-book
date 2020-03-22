@@ -1,0 +1,90 @@
+{% extends '__manage_base__.html' %}
+
+{% block title %}日志{% endblock %}
+
+{% block beforehead %}
+
+<script>
+    Vue.use(VueFullscreen.default);
+    function initVM(data) {
+        $('#vm').show();
+        var vm = new Vue({
+            delimiters: ['${', '}'],
+            el: '#vm',
+            data: {
+                result: data.logs,
+                fullscreen: false
+            },
+            methods:{
+                read_logs :function(){
+                    getJSON('/api/logs', function(err,r ){
+                        if(err){
+                            return alert(err.message || err.error || err);
+                        }
+                        else{
+                            vm.$data.result = r.logs
+                        }
+                    });
+                },
+                toggle() {
+                  this.$refs['fullscreen'].toggle()
+                }
+            },
+            mounted() {
+                this.timer = setInterval(this.read_logs, 3000);
+            },
+            beforeDestroy() {
+                clearInterval(this.timer);
+            }
+        });
+    }
+
+    $(function(){
+        getJSON('/api/logs', function(err, results){
+            $("#vm").removeClass('loading');
+            if(err){
+                return error(err);
+            }
+            //$('#loading').hide();
+            initVM(results);
+        });
+    });
+</script>
+<style>
+    div.fullscreen-wrapper {
+        position: relative;
+        height:550px;
+    }
+    div.fullscreen-wrapper a.tx-icon {
+        position: absolute;
+        right: 12px;
+        top: 5px;
+        width: 18px;
+        height: 16px;
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAQCAYAAAAbBi9cAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABV0RVh0Q3JlYXRpb24gVGltZQA4LzE2LzEzspl6ugAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAAB7SURBVDiN7ZOxCsAgDESvxXyhi5P/Fif/0i6NGJH2KIUufVOUJB45s6lqw0DOGQylFHfeqSqCYEGMESJCF6aUAAC1Vt9IRPolixtDG1DVxjLnhtVL8yAvlZy8Nuy/0T1L19g1cY3Mavupd9bPWL5T9ERJV2SBrcfn238A3whjoYEPESwAAAAASUVORK5CYII=');
+        cursor: pointer;
+        z-index: 3;
+    }
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+    <!--div class="ui secondary pointing menu">
+        <a class="item" href="/manage/comments">评论</a>
+        <a class="item" href="/manage/blogs">日志</a>
+        <a class="item active">用户</a>
+        <a class="item" href="/manage/categories">类别</a>
+    </div-->
+
+    <div id="error" class="ui error hidden message"></div>
+    <div id="vm" class="ui container loading">
+
+        <fullscreen ref="fullscreen" class="fullscreen-wrapper">
+            <a @click="toggle" href="#" class="tx-icon"></a>
+            <textarea v-model="result" readonly="readonly" style="width:100%;height:100%;"></textarea>
+        </fullscreen>
+    </div>
+
+{% endblock %}

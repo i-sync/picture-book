@@ -1,0 +1,16 @@
+{% extends '__base__.html' %}
+
+{% block title %} this is test page {% endblock %}
+
+
+{% block content %}
+
+{% for blog in blogs %}
+
+    <div class="ui segment">
+        <p>{{blog.name}}</p>
+        <p>{{blog.summary}}</p>
+    </div>
+{% endfor %}
+
+{% endblock %}

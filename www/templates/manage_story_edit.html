@@ -1,0 +1,110 @@
+{% extends '__manage_base__.html' %}
+
+{% block title %}编辑故事{% endblock %}
+
+{% block beforehead %}
+
+<script>
+    var ID = '{{ id }}';
+    var album_id = '{{album_id}}';
+    var action = '{{ action }}';
+    function initVM(story){
+        var vm = new Vue({
+            el: '#vm',
+            data: story,
+            methods: {
+                submit: function (event){
+                    event.preventDefault();
+                    var $form = $('#vm');
+                    this.$data.album_id = album_id;
+                    $form.postJSON(action, this.$data, function(err, r){
+                        if(err){
+                            $form.showFormError(err);
+                        }
+                        else {
+                            return location.assign('/manage/stories/' + album_id);
+                        }
+                    });
+                }
+            }
+        });
+        $('#vm').show();
+    }
+
+    $(function(){
+        if(ID){
+            $('#vm').addClass('loading');
+            getJSON('/api/story/' + ID, function(err, category){
+                $('#vm').removeClass('loading');
+                if(err){
+                    return error(err);
+                }
+                //$('#loading').hide();
+                initVM(category);
+            });
+        }
+        else {
+            $('#loading').hide();
+            initVM({
+                order_in_album: 0,
+                story_name: '',
+                play_url: '',
+                backup_url: '',
+                audio_type: 'MP3',
+                enable: true
+            });
+        }
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+
+    <!--div class="ui secondary pointing menu">
+        <a class="item" href="/manage/comments">评论</a>
+        <a class="item" href="/manage/blogs">日志</a>
+        <a class="item" href="/manage/users">用户</a>
+        <a class="item active">类别</a>
+    </div-->
+
+    <div id="error" class="ui error hidden message"></div>
+
+    <div class="ui segment">
+        <h1>{{album_name}}</h1>
+        <form id="vm" v-on:submit="submit" class="ui form">
+            <div class="field">
+                <label>序号:</label>
+                <input v-model="order_in_album" type="text" name="order_in_album" placeholder="序号">
+            </div>
+            <div class="field">
+                <label>名称:</label>
+                <input v-model="story_name" type="text" name="story_name" placeholder="标题">
+            </div>
+            <div class="field">
+                <label>播放地址:</label>
+                <input v-model="play_url" type="text" name="play_url" placeholder="播放地址">
+            </div>
+            <div class="field">
+                <label>备用地址:</label>
+                <input v-model="backup_url" type="text" name="backup_url" placeholder="备用地址">
+            </div>
+            <div class="field">
+                <label>音频类型:</label>
+                <select v-model="audio_type" name="audio_type">
+                    <option value="MP3">MP3</option>
+                    <option value="M4A">M4A</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>启用:</label>
+                <input v-model="enable" type="checkbox" name="enable" >
+            </div>
+            <div class="field">
+                <button class="ui primary button" type="submit"><i class="checkmark icon"></i>保存</button>
+                <a href="/manage/stories/{{album_id}}" class="ui button"><i class="remove icon"></i>取消</a>
+            </div>
+            <div class="ui error message"><ul class="list"><li>Special Field must have a value</li></ul></div>
+        </form>
+    </div>
+
+{% endblock %}

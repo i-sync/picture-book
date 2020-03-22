@@ -1,0 +1,64 @@
+{% extends '__base__.html' %}
+
+{% block title %} Picture Book {% endblock %}
+
+{% block beforehead %}
+
+{% endblock %}
+
+{% block content %}
+
+    <h2 class="ui dividing header"><a href="/">Picture Book</a></h2>
+
+    <div>
+        {% for age in ages %}
+            {% if current_age == age %}
+                <a onclick="filter_age('{{age}}')" href="#" class="ui green label"> {{age}}</a>
+            {% else %}
+                <a onclick="filter_age('{{age}}')" href="#" class="ui label"> {{age}}</a>
+            {% endif %}
+        {% endfor %}
+        {% if current_age %}
+            <a onclick="filter_age('')" href="#" class="ui olive label"> 重置 </a>
+        {% else %}
+            <a onclick="filter_age('')" href="#" class="ui label"> 重置 </a>
+        {% endif %}
+    </div>
+    <div class="ui divider"></div>
+    <div>
+        {% for label in labels %}
+            {% if current_label == label.id|string %}
+                <a onclick="filter_label('{{label.id}}')" href="#" class="ui green label"> {{label.name}}</a>
+            {% else %}
+                <a onclick="filter_label('{{label.id}}')" href="#" class="ui label"> {{label.name}}</a>
+            {% endif %}
+        {% endfor %}
+        {% if current_label %}
+            <a onclick="filter_label('')" href="#" class="ui olive label"> 重置 </a>
+        {% else %}
+            <a onclick="filter_label('')" href="#" class="ui label"> 重置 </a>
+        {% endif %}
+    </div>
+    <br />
+    <div class="ui four stackable cards">
+        {% for book in books %}
+        <div class="card">
+            <a class="image" href="/book?id={{book.id}}">
+                <img src="{{book.cover|format('600x600')}}">
+            </a>
+            <div class="content">
+                <a href="/book?id={{book.id}}" class="header">{{book.id}}.{{book.name}}</a>
+                <div class="meta">
+                    {{book.ageDesc}}
+                </div>
+                <div class="description">
+                    章节数: {{book.totalChapter}}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <br />
+    {{ pagination('?page=', page) }}
+
+{% endblock %}

@@ -1,0 +1,126 @@
+{% extends '__manage_base__.html' %}
+
+{% block title %} 故事 {% endblock %}
+
+{% block beforehead %}
+
+<script>
+    var album_id = '{{ album_id }}';
+    function initVM(data) {
+        var vm = new Vue({
+            delimiters:['${', '}'],
+            el: '#vm',
+            data: {
+                stories: data.stories,
+                page: data.page
+            },
+            methods: {
+                onChange: function (event, id) {
+                    console.log(event.target.checked, id)
+                    postJSON('/api/story/' + id + '/enable', {'status': event.target.checked},  function(err,r ){
+                        if(err){
+                            return alert(err.message || err.error || err);
+                        }
+                    });
+                },
+                edit_story: function (story) {
+                    location.assign('/manage/story/edit?id=' + story.id + '&album_id=' + album_id);
+                },
+                delete_story: function (story) {
+                    if( confirm('确定要删除"' + story.story_name + '"? 删除后不可恢复!')){
+                        postJSON('/api/story/' + story.id + '/delete', function (err, r) {
+                            if(err){
+                                return alert(err.message || err.error || err);
+                            }
+                            refresh();
+                        })
+                    }
+                }
+            }
+        });
+        $('#vm').show()
+    }
+
+    $(function () {
+        getJSON('/api/stories', {
+            album_id: '{{album_id}}',
+            page: {{ page_index }}
+        }, function (err, result) {
+            $("#vm").removeClass('loading');
+            if(err){
+                return error(err);
+            }
+            //$("#loading").hide();
+            initVM(result)
+        });
+    });
+
+</script>
+
+{% endblock %}
+
+{% block content %}
+
+    <!--div class="ui secondary pointing menu">
+        <a class="item" href="/manage/comments">评论</a>
+        <a class="item" href="/manage/blogs">日志</a>
+        <a class="item" href="/manage/users">用户</a>
+        <a class="item active">类别</a>
+    </div-->
+    <div id="error" class="ui error hidden message"></div>
+    <div id="vm" class="ui segment loading">
+        <h1>{{album_name}}</h1>
+        <a href="/manage/story/create?album_id={{album_id}}" class="ui primary button"><i class="plus icon"></i> 新故事 </a>
+        <a href="/manage/albums" class="ui button"><i class="arrow left icon"></i>返回</a>
+        <table class="ui celled table">
+            <thead>
+                <tr>
+                    <th class="one wide">序号</th>
+                    <th class="two wide">名称</th>
+                    <th class="two wide">Token</th>
+                    <th class="three wide">播放地址</th>
+                    <th class="three wide">备用地址</th>
+                    <th class="one wide">类型</th>
+                    <th class="one wide">是否可用</th>
+                    <th class="one wide">更新时间</th>
+                    <th class="one wide">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for = "story in stories">
+                    <td>
+                        <span>${story.order_in_album}</span>
+                    </td>
+                    <td>
+                        <a v-bind:href="'/manage/story/edit?id=' + story.id + '&album_id={{album_id}}'">${story.story_name}</a>
+                    </td>
+                    <td>
+                        <span>${story.token}</span>
+                    </td>
+                    <td>
+                        <span>${story.play_url}</span>
+                    </td>
+                    <td>
+                        <span>${story.backup_url}</span>
+                    </td>
+                    <td>
+                        <span>${story.audio_type}</span>
+                    </td>
+                    <td>
+                        <input v-model="story.enable" v-on:click="onChange($event, story.id)"  type="checkbox" readonly="readonly">
+                    </td>
+                    <td>
+                        <span>${story.updated_at.toDateTime()}</span>
+                    </td>
+                    <td>
+                        <a href="#0" v-on:click="edit_story(story)"><i class="edit icon"></i> </a>
+                        <a href="#0" v-on:click="delete_story(story)"><i class="remove icon"></i> </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+        <div is="vc-pagination" v-bind:p="page"></div>
+    </div>
+{% endblock %}

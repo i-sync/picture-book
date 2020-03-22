@@ -1,0 +1,147 @@
+{% extends '__manage_base__.html' %}
+
+{% block title %}故事专辑{% endblock %}
+
+{% block beforehead %}
+
+<script>
+    var ID = '{{ id }}';
+    var action = '{{ action }}';
+    function initVM(album){
+        var vm = new Vue({
+            el: '#vm',
+            data: album,
+            methods: {
+                onChange: function (event) {
+                    this.image_cover = event.target.files[0]; // get input file object
+                    const preview = document.querySelector('#cover_preview');
+                    const reader = new FileReader();
+
+                    reader.addEventListener("load", function () {
+                        // convert image file to base64 string
+                        preview.src = reader.result;
+                    }, false);
+
+                    if (this.image_cover) {
+                        reader.readAsDataURL(this.image_cover);
+                    }
+                },
+                submit: function (event){
+                    event.preventDefault();
+                    /*var $form = $('#vm');
+                    $form.postJSON(action, this.$data, function(err, r){
+                        if(err){
+                            $form.showFormError(err);
+                        }
+                        else {
+                            return location.assign('/manage/albums');
+                        }
+                    });*/
+
+                    console.log(this.$data)
+                    var formData = new FormData();
+                    for(const [k,v] of Object.entries(this.$data)){
+                        if(k == "cover")
+                        {
+                            formData.append(k, this.image_cover);
+                            continue;
+                        }
+                        formData.append(k,v);
+                    }
+
+                    this.$http.post(action, formData, {
+                        headers: { 'Content-Type': 'multipart/form-data' }
+                    }).then(function (res) {
+                        res.json().then(function (result) {
+                            console.log(result);
+                            return location.assign('/manage/albums');
+                        });
+                        }, function (err) {
+                            $('#vm').showFormError(err)
+                    });
+                },
+                captureTab: captureTab
+            }
+        });
+        $('#vm').show();
+    }
+
+    $(function(){
+        if(ID){
+            $('#vm').addClass('loading');
+            getJSON('/api/album/' + ID, function(err, album){
+                $('#vm').removeClass('loading');
+                if(err){
+                    return error(err);
+                }
+                $('#loading').hide();
+                initVM(album);
+            });
+        }
+        else {
+            $('#loading').hide();
+            initVM({
+                album_name: '',
+                origin_name: '',
+                name_keys: '',
+                story_count: 0,
+                cover: '',
+                description:'',
+                is_publish: 1
+            });
+        }
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+    <!--div class="ui secondary pointing menu">
+        <a class="item" href="/manage/comments">评论</a>
+        <a class="item active" >故事专辑</a>
+        <a class="item" href="/manage/users">用户</a>
+        <a class="item" href="/manage/categories">类别</a>
+    </div-->
+
+
+    <div id="error" class="ui error hidden message"></div>
+
+    <div class="ui segment">
+        <form id="vm" v-on:submit="submit" class="ui form">
+            <div class="field">
+                <label>故事专辑:</label>
+                <input v-model="album_name" type="text" name="album_name" placeholder="故事专辑">
+            </div>
+            <div class="field">
+                <label>原始名称:</label>
+                <input v-model="origin_name" type="text" name="origin_name" placeholder="原始名称">
+            </div>
+            <div class="field">
+                <label>名称关键字:</label>
+                <textarea v-model="name_keys" type="text" rows="3" name="name_keys" placeholder="名称关键字"></textarea>
+            </div>
+            <div class="field">
+                <label>故事数量:</label>
+                <input v-model="story_count" type="text" name="story_count" placeholder="故事数量">
+            </div>
+            <div class="field">
+                <label>专辑图片:</label>
+                <img v-bind:src="cover" id="cover_preview"/>
+                <input type="file" accept="image/*" v-on:change="onChange($event)" name="cover">
+            </div>
+            <div class="field">
+                <label>描述:</label>
+                <textarea v-model="description" v-on:keydown="captureTab" rows="10" name="description" placeholder="描述"></textarea>
+            </div>
+            <div class="field">
+                <label>发布:</label>
+                <input v-model="is_publish" type="checkbox" name="is_publish" >
+            </div>
+            <div class="field">
+                <button class="ui primary button" type="submit"><i class="checkmark icon"></i>保存</button>
+                <a href="/manage/albums" class="ui button"><i class="remove icon"></i>取消</a>
+            </div>
+            <div class="ui error message"><ul class="list"><li>Special Field must have a value</li></ul></div>
+        </form>
+    </div>
+
+{% endblock %}

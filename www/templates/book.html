@@ -1,0 +1,475 @@
+{% extends '__base__.html' %}
+
+{% block title %} 绘本 - {{book.name}}  {% endblock %}
+
+{% block beforehead %}
+
+    <style>
+        #div-book {
+            height: 100%;
+            background-image:url('/static/res/book_background.png'); */
+            background-position-y: center;
+            background-position-x: center;
+            background-size: cover;
+        }
+        img.navbar{
+            width: 60px;
+            height: 60px;
+            margin-top: 20px;
+        }
+        img.navbar.left{
+            margin-left: 20px;
+        }
+
+        img.navbar.right{
+            margin-right: 20px;
+            cursor: pointer;
+        }
+
+        div.navbar-left.row{
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        div.navbar-right.row{
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        div.cover{
+            position: relative;
+        }
+        img.cover{
+            width: 60%;
+            border: 8px solid #fff;
+            position: relative;
+        }
+
+        img.play-icon{
+            width: 100px;
+            position: absolute;
+            left: 42%;
+            top: 39%;
+            cursor: pointer;
+        }
+
+        div.cover-desc{
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        img.avatar{
+            width: 40px;
+            margin-right: 5px;
+        }
+
+        div.content{
+            margin-left: 40px;
+            margin-right: 40px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .content span{
+            margin-left: 15px;
+            margin-top: 10px;
+        }
+        .content h1{
+            color: #76C6DF;
+            margin-top: 30px;
+            margin-bottom: 25px;
+        }
+        div.labels{
+            margin: 20px;
+        }
+        div.labels a.label{
+            margin-right: 5px;
+            margin-left: 5px;
+        }
+
+        div.content .description{
+            text-align: left;
+            line-height: 30px;
+            letter-spacing: 3px;
+            font-size: 20px
+        }
+    </style>
+
+
+    <style>
+        #vm{
+            position: relative;
+        }
+        #div-book{
+            position: relative;
+        }
+        .layer{
+            top: 0px;
+            margin: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            position: absolute;
+        }
+        .layer .thumbnail img{
+            width: 150px;
+            border: 1px solid #666;
+            cursor: pointer;
+        }
+
+        .layer .thumbnail img.active{
+            padding: 5px;
+            background:
+            linear-gradient(to right, orange 4px, transparent 4px) 0 0,
+            linear-gradient(to right, orange 4px, transparent 4px) 0 100%,
+            linear-gradient(to left, orange 4px, transparent 4px) 100% 0,
+            linear-gradient(to left, orange 4px, transparent 4px) 100% 100%,
+            linear-gradient(to bottom, orange 4px, transparent 4px) 0 0,
+            linear-gradient(to bottom, orange 4px, transparent 4px) 100% 0,
+            linear-gradient(to top, orange 4px, transparent 4px) 0 100%,
+            linear-gradient(to top, orange 4px, transparent 4px) 100% 100%;
+
+            background-repeat: no-repeat;
+            background-size: 20px 20px;
+
+            cursor: default;
+        }
+        .layer .thumbnail div{
+            width: 100%;
+            text-align: center;
+        }
+        .layer img.close{
+            width: 60px;
+            /*margin-top: 20px;
+            margin-right: 20px;*/
+        }
+        .layer div.chapter-header{
+            padding-top: 0px;
+            width: 100%;
+            font-size: 30px;
+            text-align: center;
+        }
+        .layer div.chapter{
+            overflow-y: auto;
+            margin: 0px;
+            width: 100%;
+            height: 80%;
+            display: inline-block;
+            text-align: left;
+        }
+    </style>
+
+    <style>
+        #player{
+            top: 0px;
+            margin: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 500;
+            position: absolute;
+            background: #fff;
+            background-size: cover;
+        }
+        #player div.first{
+            height: 80%;
+        }
+        #player div.second{
+            height: 20%;
+        }
+
+        #player div.second .thirteen{
+            font-size: 25px;
+            line-height: 1.2;
+        }
+    </style>
+
+    <style>
+        div.fullscreen-wrapper {
+            position: relative;
+            height: 100%;
+        }
+        div.fullscreen-wrapper a.tx-icon {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            width: 18px;
+            height: 16px;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAQCAYAAAAbBi9cAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABV0RVh0Q3JlYXRpb24gVGltZQA4LzE2LzEzspl6ugAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAAB7SURBVDiN7ZOxCsAgDESvxXyhi5P/Fif/0i6NGJH2KIUufVOUJB45s6lqw0DOGQylFHfeqSqCYEGMESJCF6aUAAC1Vt9IRPolixtDG1DVxjLnhtVL8yAvlZy8Nuy/0T1L19g1cY3Mavupd9bPWL5T9ERJV2SBrcfn238A3whjoYEPESwAAAAASUVORK5CYII=');
+            cursor: pointer;
+            z-index: 2000;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+<div id="vm">
+
+    <fullscreen ref="fullscreen" class="fullscreen-wrapper"><a @click="toggle" href="#" class="tx-icon"></a>
+    <div class="ui equal width center aligned padded grid" id="div-book">
+        <div class="eight wide column">
+            <div class="navbar-left row" style="text-align: left">
+                <a href="#" onclick="javascript:window.history.back();">
+                    <img class="navbar left" src="/static/res/button_back_nevbar.png">
+                </a>
+            </div>
+            <div class="row">
+                <div class="cover">
+                    <img class="cover" src="{{book.cover|format('600x600')}}">
+                    <img class="play-icon" @click="handleShowPlayer" src="/static/res/button_play_picture_book.png">
+                </div>
+                <div class="ui five column grid cover-desc" style="margin: 5px 0 0 0; ">
+                    <div class="one column"></div>
+                    <div class="one column" style="border-right: 1px solid;">
+                        <div>{{book.ageDesc}}</div>
+                        <div>适合年龄</div>
+                    </div>
+                    <div class="one column" style="border-right: 1px solid;">
+                        <div>{{book.estimatedChapter}}</div>
+                        <div>已录集数</div>
+                    </div><div class="one column">
+                        <div>{{book.totalChapter}}</div>
+                        <div>总集数</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="eight wide column">
+            <div class="navbar-right row" style="text-align: right">
+                <img class="navbar right" @click="handleShowLayer" src="/static/res/button_more_nevbar.png">
+            </div>
+            <div class="content">
+                <div class="row" style="text-align: left; display: flex;">
+                    <img class="avatar" src="/static/res/img_anchor_avatar.png">
+                    <span>
+                        {{book.announcer}}
+                    </span>
+                    <span>
+                        演播
+                    </span>
+                </div>
+                <div class="row">
+                    <h1>{{book.name}}</h1>
+                </div>
+                <div class="row labels">
+                    {% for label in book.labelList %}
+                        <a href="#" class="ui label"> {{label.name}}</a>
+                    {% endfor %}
+                </div>
+                <div class="row description">
+                    {{ book.desc | safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div v-if="showLayer" class="ui sixteen grid layer" style="margin: 0px;">
+        <div class="eight wide column" style="opacity: 0.5; background: #666;">
+        </div>
+        <div class="eight wide column" style="background: #fff;">
+            <div class="chapter-header ui sixteen column grid ">
+                <div class="thirteen wide column" style="padding-top: 30px;">目录</div>
+                <div class="three wide column">
+                    <img class="close" src="/static/res/button_close_popup.png" @click="handleCloseLayer" />
+                </div>
+            </div>
+            <div class="chapter ui stackable four column grid">
+                <div class="column thumbnail" v-for="(item, i) in items.book_list"  v-bind:key="item.id">
+
+                    <img v-bind:src="item.cover" v-bind:class="[index==i? 'active': '']" @click="handleUpdateIndex(i)"/>
+                    <div>-- ${item.section} --</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <player v-if="showPlayer" @close="handleClosePlayer" @show="handleShowLayer" @play="handlePlayAudio" v-bind:item="chapter" v-bind:playing="playing"></player>
+
+    </fullscreen>
+</div>
+
+
+<script>
+
+    $(function(){
+        Vue.use(VueFullscreen.default);
+        var player = {
+            delimiters: ['$[', ']'],
+            props:{
+                item: {
+                    type: Object,
+                    default: function(){
+                        return {name: '第1集_咪子的家', cover_url: ''}
+                    }
+                },
+                playing: Boolean
+            },
+            data: function(){
+                return {
+
+                }
+            },
+            template: `
+             <div  class="ui sixteen grid" id="player" v-bind:style="'margin: 0px; background-image: url(' + item.cover_url + ');'">
+                <div class="first row">
+                    <div class="two wide column">
+                        <img class="navbar left" @click="closePlayer" src="/static/res/button_back_nevbar.png">
+                    </div>
+                    <div class="twelve wide column">
+                        <!--img v-bind:src="item.cover_url" /-->
+                    </div>
+                    <div class="two wide column" style="text-align: center;">
+                        <img class="navbar right" @click="showLayer" src="/static/res/button_more_nevbar.png" style="margin-right: 0px;"/>
+                    </div>
+                </div>
+                <div class="second row">
+                    <div class="two wide column">
+                        <img v-if="playing"  @click="playAudio" ref="play_button" src="/static/res/button_stop_picture_book.png">
+                        <img v-else  @click="playAudio" ref="play_button" src="/static/res/button_play_picture_book.png">
+                    </div>
+                    <div class="thirteen wide column">
+                        $[item.content]
+                    </div>
+                    <div class="one wide column">
+                    </div>
+                </div>
+            </div>
+            `,
+            methods:{
+                closePlayer: function(){
+                    this.$emit('close');
+                },
+
+                showLayer: function(){
+                    this.$emit('show');
+                },
+
+                playAudio: function(){
+                    this.$emit('play');
+                    this.$refs.play_button.src= this.playing? '/static/res/button_play_picture_book.png': '/static/res/button_stop_picture_book.png';
+                }
+            }
+        };
+        var vm = new Vue({
+            delimiters: ['${', '}'],
+            el: '#vm',
+            data: {
+                fullscreen: false,
+                showLayer: false,
+                showPlayer: false,
+                items: {book_list:[]},
+                index: 0,
+                chapter: {},
+                playing: false,
+                pausing: false,
+                audio: new Audio()
+            },
+            components: {
+                player: player
+            },
+            created: function(){
+                _this = this;
+                _this.audio.addEventListener("ended", function(){
+                     _this.audio.currentTime = 0;
+                     if(++_this.index < _this.items.book_list.length){
+                        _this.chapter = _this.items.book_list[_this.index];
+                        _this.audio.src = _this.chapter.audio_url;
+                        _this.audio.play();
+                     }
+                     else if(_this.index == _this.items.book_list.length){
+                        _this.audio.src = '/static/audio/huiben_read_finish_voice.mp3';
+                        _this.audio.play();
+                        _this.handleClosePlayer();
+
+                        //exit fullscreen
+                        if(_this.fullscreen){
+                            _this.$refs['fullscreen'].exit();
+                        }
+                     }
+                });
+            },
+            methods: {
+
+                toggle() {
+                  this.$refs['fullscreen'].toggle()
+                },
+                loadBookList: function(autoplay){
+                    if (this.items.book_list.length == 0) {
+                        _this = this;
+                        getJSON('/api/book/{{book.id}}', function (err, result) {
+                            $("#vm").removeClass('loading');
+                            if(err){
+                                return error(err);
+                            }
+                            _this.items = result;
+                            _this.chapter = _this.items.book_list[0];
+                            if(autoplay){
+                                _this.handlePlayAudio();
+                            }
+                        });
+                    }
+                },
+
+                handleCloseLayer: function(){
+                    this.showLayer = false;
+                },
+                handleShowLayer: function(){
+                    this.showLayer = true;
+                    this.loadBookList();
+                },
+
+                handleClosePlayer: function(){
+                    this.showPlayer = false;
+                },
+                handleShowPlayer: function(){
+                    this.showPlayer = true;
+                    this.loadBookList(true);
+
+                    //enter full screen
+                    if(!this.fullscreen){
+                        this.$refs['fullscreen'].enter();
+                    }
+                },
+
+                handlePlayAudio: function(){
+                    if(this.playing){
+                        this.audioPause();
+                    }
+                    else if(this.pausing){
+                        this.audioPlay();
+                    }
+                    else{
+                        this.audio.src = this.chapter.audio_url;
+                        this.audioPlay();
+                    }
+                },
+
+                handleUpdateIndex: function(i){
+                    //stop audio
+                    if(this.playing){
+                        this.audio.pause();
+                        this.playing = false;
+                    }
+
+                    this.index = i;
+                    this.chapter = this.items.book_list[i];
+                    this.handlePlayAudio();
+                },
+
+                audioPlay: function(){
+                    this.playing = true;
+                    this.pausing = false;
+                    this.audio.play();
+                },
+
+                audioPause: function(){
+                    this.playing = false;
+                    this.pausing = true;
+                    this.audio.pause();
+                }
+            }
+        });
+    })
+</script>
+
+{% endblock %}

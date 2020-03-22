@@ -1,0 +1,27 @@
+{
+  "database":{
+    "host":"127.0.0.1",
+    "port": 3306,
+    "user": "root",
+    "password": "123",
+    "database": "story_db",
+    "autocommit": "True"
+  },
+  "cookie": {
+    "name": "picture-book",
+    "secret": "picture-book-u33oxrl1e6",
+    "max_age": 3600,
+    "max_age_long": 2592000
+  },
+  "page_size": 100,
+  "page_show": 10,
+  "email": {
+    "server": "127.0.0.1",
+    "username": "username",
+    "password": "password",
+    "port":25
+  },
+  "books": {
+    "base_path": "/c/tmp/picture-book"
+  }
+}

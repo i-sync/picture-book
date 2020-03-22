@@ -1,0 +1,26 @@
+{
+  "database":{
+    "host":"localhost",
+    "port": 3306,
+    "user": "root",
+    "password": "123",
+    "database": "story_db",
+    "autocommit": "True"
+  },
+  "cookie": {
+    "name": "picture-book",
+    "secret": "picture-book-u33oxrl1e6",
+    "max_age": 86400
+  },
+  "page_size": 12,
+  "page_show": 10,
+  "email": {
+    "server": "127.0.0.1",
+    "username": "username",
+    "password": "password",
+    "port":25
+  },
+  "books": {
+    "base_path": "c:/source/python/picture-book/www/static/books"
+  }
+}

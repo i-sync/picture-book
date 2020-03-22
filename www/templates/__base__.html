@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+
+{% macro pagination(url, page) %}
+    <div class="ui pagination menu">
+        {% if page.has_prev %}
+            <a class="item" onclick="gotoPage({{page.page_index - 1}})" href="#"><i class="angle double left icon"></i></a>
+        {% else %}
+            <a class="disabled item"><i class="angle double left icon"></i></a>
+        {% endif %}
+
+
+        {% if page.page_index == 1 %}
+            <a class="disabled item">1</a>
+        {% else %}
+            <a class="item" onclick="gotoPage(1)" href="#">1</a>
+        {% endif %}
+
+        {% if page.page_list %}
+            {% if page.page_list[0] > 2 %}
+                <a class="disabled item">...</a>
+            {% endif %}
+
+            {% for pl in page.page_list %}
+                {% if pl == page.page_index %}
+                    <a class="disabled item">{{ page.page_index }}</a>
+                {% else %}
+                    <a class="item" onclick="gotoPage({{pl}})" href="#">{{ pl }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if page.page_list[-1] < (page.page_count-1) %}                
+                <a class="disabled item">...</a>
+            {% endif %}
+        {% endif %}
+
+        {% if page.page_count > 1 %}
+            {% if page.page_index == page.page_count %}
+                    <a class="disabled item">{{ page.page_index }}</a>
+            {% else %}
+                <a class="item" onclick="gotoPage({{page.page_count}})" href="#">{{ page.page_count }}</a>
+            {% endif %}
+        {% endif %}
+
+        {% if page.has_next %}
+            <a class="item" onclick="gotoPage({{page.page_index + 1}})" href="#"><i class="angle double right icon"></i></a>
+        {% else %}
+            <a class="disabled item"><i class="angle double right icon"></i></a>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block meta %}{% endblock %}
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <title>{% block title %} ? {% endblock %} - Awesome Picture Book</title>
+    <link rel="icon" type="image/png" href="/static/img/xpath.png">
+    <link rel="stylesheet" type="text/css" href="/static/css/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/awesome.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/atom-one-light.css">
+
+    <script src="/static/js/jquery-3.2.1.min.js"></script>
+    <script src="/static/js/semantic.min.js"></script>
+    <script src="/static/js/sha256.js"></script>
+    <script src="/static/js/vue.js"></script>
+    <script src="/static/js/awesome.js"></script>
+    <script src="/static/js/vue-fullscreen.js"></script>
+
+    <style>
+
+        .main.container {
+            padding-top: 2em;
+            padding-bottom: 5em;
+
+            min-height: 100%;
+
+            /* Equal to height of footer */
+            /* But also accounting for potential margin-bottom of last child */
+            margin-bottom: -261px;
+        }
+
+        .ui.footer.segment, .push {
+            height: 261px;
+            padding: 5em 0em;
+        }
+    </style>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <!--
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-132212442-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-132212442-1');
+    </script>
+    -->
+    {% block beforehead %} {% endblock %}
+</head>
+<body>
+    <div id="sidebar-menu" class="ui sidebar inverted vertical menu">
+        <a href="/" class="item"> Picture Book </a>
+        <a href="/about" class="item">关于</a>
+        {% if __user__ %}
+            <a class="item" href="#">{{ __user__.username }}</a>
+            {% if __user__.admin %}
+                <a href="#" class="item">管理</a>
+            {% endif %}
+            <a href="/signout" class="item">登出</a>
+        {% endif %}
+    </div>
+    <div class="pusher">
+        <div id="main-menu" class="ui inverted stackable massive menu">
+            <div class="ui container">
+                <a href="/" class="item"> Picture Book </a>
+                <a href="/about" class="item">关于</a>
+
+                <div class="right menu">
+                    {% if __user__ %}
+                        <a class="item" href="#">{{ __user__.username }}</a>
+                        {% if __user__.admin %}
+                            <a href="#" class="item">管理</a>
+                        {% endif %}
+                        <a href="/signout" class="item">登出</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div id="sidebar-button" class="ui inverted icon menu">
+            <a class="item">
+                <i class="sidebar large icon"></i>
+            </a>
+        </div>
+
+        <div class="ui main container">
+            <div class="sixteen wide column">
+                {% block content %} {% endblock %}
+            </div>
+            <div class="push"></div>
+        </div>
+
+        <div class="ui inverted vertical footer segment">
+            <div class="ui center aligned container">
+                <div class="ui container">
+                    <p>
+                        <a target="_blank" href="https://weibo.com/synchronise"><i class="large weibo icon"></i></a>
+                        <a target="_blank" href="https://github.com/i-sync"><i class="large github icon"></i></a>
+                        <a target="_blank" href="https://plus.google.com/+sync"><i class="large google plus icon"></i></a>
+                        <a target="_blank" href="https://twitter.com/asynchronize"><i class="large twitter icon"></i></a>
+                    </p>
+                    <p>Powered by <a href="#">Awesome Picture Book</a>. Copyright &copy; <script>document.write(new Date().getFullYear())</script>. </p>
+                    <p><a href="https://www.xpath.org" target="_blank">www.xpath.org</a>. All rights reserved. </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    {% block endofbody %} {% endblock %}
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html class="uk-height-1-1" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>登录 - Awesome Picture Book</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/semantic.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/awesome.css">
+
+    <script src="/static/js/jquery-3.2.1.js"></script>
+    <script src="/static/js/semantic.js"></script>
+    <script src="/static/js/sha256.js"></script>
+    <script src="/static/js/vue.js"></script>
+    <script src="/static/js/awesome.js"></script>
+
+    <style>
+    body {
+      background-color: #DADADA;
+    }
+    body > .grid {
+      height: 100%;
+    }
+    .column {
+      max-width: 450px;
+    }
+    </style>
+
+    <script>
+
+        function validation_email(email) {
+            var re = /^[a-z0-9\.\-\_]+\@[a-z0-9\-\_]+(\.[a-z0-9\-\_]+){1,4}$/;
+            return re.test(email.toLowerCase());
+        }
+        function validation_username(username) {
+            var re = /^[\u4e00-\u9fa5]{2,4}$/;
+            return re.test(username);
+        }
+
+        $(function () {
+            var vm_auth = new Vue({
+                el: '#vm',
+                data: {
+                    username: '',
+                    remember:''
+                },
+                methods: {
+                    submit: function (event) {
+                        event.preventDefault();
+                        var $form = $('#vm');
+                        var username = this.username.trim();
+                        if(!validation_username(username))
+                        {
+                            return $form.showFormError({message:'请输入正确的姓名', data:'username'});
+                        }
+                        var data = {
+                            username: sha256(username).toString(),
+                            remember: this.remember
+                        };
+                        $form.postJSON('/api/authenticate', data, function (err, result) {
+                            if(!err){
+                                location.assign('/');
+                            }
+                        })
+                    }
+                }
+            });
+        });
+
+    </script>
+</head>
+
+<body>
+    <div class="ui middle aligned center aligned grid">
+        <div class="column">
+            <h2 class="ui teal image header">
+                <img src="/static/img/logo.png" class="image">
+                <div class="content">
+                    <a href="/">Awesome Picture Book</a>
+                </div>
+            </h2>
+
+            <form id="vm" v-on:submit="submit" class="ui large form">
+                <div class="ui segment">
+                    <div class="field">
+                        <label>请输入您的姓名</label>
+                        <input v-model="username" name="username" type="text" placeholder="姓名" maxlength="50">
+
+                    </div>
+                    <div class="inline field">
+                        <button type="submit" class="ui large teal submit button">登录</button>
+                        <div class="ui toggle checkbox right">
+                            <input v-model="remember" type="checkbox" name="remember">
+                            <label>记住我</label>
+                        </div>
+                    </div>
+
+                    <div class="ui error message"><ul class="list"><li>Special Field must have a value</li></ul></div>
+                </div>
+            </form>
+
+            <!--div class="ui message">
+                "New to us?" <a href="/register">Sign Up</a>
+            </div-->
+        </div>
+    </div>
+
+</body>
+
+</html>
