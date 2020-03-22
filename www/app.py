@@ -12,7 +12,6 @@ import os
 from datetime import datetime
 from aiohttp import web
 from jinja2 import Environment, FileSystemLoader
-import orm
 from coreweb import add_routes, add_static
 from handlers import cookie2user, COOKIE_NAME
 from config import configs

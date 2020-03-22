@@ -1,5 +1,4 @@
 aiohttp
-aiomysql
 asyncio
 Jinja2
 markdown2
