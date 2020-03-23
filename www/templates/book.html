@@ -85,6 +85,8 @@
         div.labels a.label{
             margin-right: 5px;
             margin-left: 5px;
+            margin-top: 2px;
+            margin-bottom: 2px;
         }
 
         div.content .description{
@@ -112,13 +114,13 @@
             position: absolute;
         }
         .layer .thumbnail img{
-            width: 150px;
             border: 1px solid #666;
             cursor: pointer;
         }
 
         .layer .thumbnail img.active{
-            padding: 5px;
+            border: none;
+            padding: 3px;
             background:
             linear-gradient(to right, orange 4px, transparent 4px) 0 0,
             linear-gradient(to right, orange 4px, transparent 4px) 0 100%,
@@ -135,6 +137,8 @@
             cursor: default;
         }
         .layer .thumbnail div{
+
+            font-size: xx-large;
             width: 100%;
             text-align: center;
         }
@@ -171,15 +175,25 @@
             background-size: cover;
         }
         #player div.first{
-            height: 80%;
+            height: 75%;
         }
         #player div.second{
-            height: 20%;
+            height: 25%;
         }
 
-        #player div.second .thirteen{
+        #player div.second .desc{
             font-size: 25px;
             line-height: 1.2;
+            font-weight: bold;
+            text-shadow:
+                -1px -1px 0 #fff,
+                 0   -1px 0 #fff,
+                 1px -1px 0 #fff,
+                 1px  0   0 #fff,
+                 1px  1px 0 #fff,
+                 0    1px 0 #fff,
+                -1px  1px 0 #fff,
+                -1px  0   0 #fff;
         }
     </style>
 
@@ -272,7 +286,7 @@
                     <img class="close" src="/static/res/button_close_popup.png" @click="handleCloseLayer" />
                 </div>
             </div>
-            <div class="chapter ui stackable four column grid">
+            <div class="chapter ui stackable three column grid">
                 <div class="column thumbnail" v-for="(item, i) in items.book_list"  v-bind:key="item.id">
 
                     <img v-bind:src="item.cover" v-bind:class="[index==i? 'active': '']" @click="handleUpdateIndex(i)"/>
@@ -310,7 +324,7 @@
                 }
             },
             template: `
-             <div  class="ui sixteen grid" id="player" v-bind:style="'margin: 0px; background-image: url(' + item.cover_url + ');'">
+             <div  class="ui sixteen grid" id="player" v-bind:style="computedStyle(item.cover_url)">
                 <div class="first row">
                     <div class="two wide column">
                         <img class="navbar left" @click="closePlayer" src="/static/res/button_back_nevbar.png">
@@ -327,10 +341,8 @@
                         <img v-if="playing"  @click="playAudio" ref="play_button" src="/static/res/button_stop_picture_book.png">
                         <img v-else  @click="playAudio" ref="play_button" src="/static/res/button_play_picture_book.png">
                     </div>
-                    <div class="thirteen wide column">
+                    <div class="fourteen wide column desc">
                         $[item.content]
-                    </div>
-                    <div class="one wide column">
                     </div>
                 </div>
             </div>
@@ -347,6 +359,13 @@
                 playAudio: function(){
                     this.$emit('play');
                     this.$refs.play_button.src= this.playing? '/static/res/button_play_picture_book.png': '/static/res/button_stop_picture_book.png';
+                },
+
+                computedStyle: function(cover){
+                    if($.isEmptyObject(cover)){
+                        return "";
+                    }
+                    return "margin: 0px; background-image: url(\"" + cover + "\");";
                 }
             }
         };
