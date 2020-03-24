@@ -181,6 +181,48 @@
             height: 25%;
         }
 
+        #player .book-cover{
+            width: 100%;
+            height: 0;
+            padding-bottom: 100%;
+            border: 0.5px solid #666;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+            text-align: center;
+            background-size: contain;
+
+            -webkit-animation-name: rotate;
+            -webkit-animation-duration:8s;
+            -webkit-animation-iteration-count:infinite;
+            -webkit-animation-timing-function:linear;
+            -moz-animation-name: rotate;
+            -moz-animation-duration:8s;
+            -moz-animation-iteration-count:infinite;
+            -moz-animation-timing-function:linear;
+        }
+        @-webkit-keyframes rotate {
+            from {-webkit-transform:rotate(0deg);}
+            to {  -webkit-transform:rotate(360deg);}
+        }
+
+        @-moz-keyframes rotate {
+            from {-moz-transform:rotate(0deg);}
+            to {  -moz-transform:rotate(360deg);}
+        }
+
+        #player .book-cover.paused{
+            animation-play-state:paused;
+        }
+        #player .book-cover.running{
+            animation-play-state:running;
+        }
+
+        #player .book-cover img{
+            width: 50%;
+            margin-top: 25%
+        }
+
         #player div.second .desc{
             font-size: 25px;
             line-height: 1.2;
@@ -228,7 +270,7 @@
             </div>
             <div class="row">
                 <div class="cover">
-                    <img class="cover" src="{{book.cover|format('600x600')}}">
+                    <img class="cover" ref="cover" src="{{book.cover|format('600x600')}}">
                     <img class="play-icon" @click="handleShowPlayer" src="/static/res/button_play_picture_book.png" tabindex="12">
                 </div>
                 <div class="ui five column grid cover-desc" style="margin: 5px 0 0 0; ">
@@ -298,7 +340,7 @@
     </div>
 
 
-    <player v-if="showPlayer" @close="handleClosePlayer" @show="handleShowLayer" @play="handlePlayAudio" v-bind:item="chapter" v-bind:playing="playing"></player>
+    <player v-if="showPlayer" @close="handleClosePlayer" @show="handleShowLayer" @play="handlePlayAudio" v-bind:item="chapter" v-bind:playing="playing" v-bind:cover="cover"></player>
 
     </fullscreen>
 </div>
@@ -307,6 +349,7 @@
 <script>
 
     $(function(){
+        book_cover = '{{book.cover|format('300x300')}}';
         Vue.use(VueFullscreen.default);
         var player = {
             delimiters: ['$[', ']'],
@@ -317,7 +360,8 @@
                         return {name: '第1集_咪子的家', cover_url: ''}
                     }
                 },
-                playing: Boolean
+                playing: Boolean,
+                cover: String
             },
             data: function(){
                 return {
@@ -339,8 +383,10 @@
                 </div>
                 <div class="second row">
                     <div class="two wide column">
-                        <img v-if="playing"  @click="playAudio" ref="play_button" tabindex="102" src="/static/res/button_stop_picture_book.png">
-                        <img v-else  @click="playAudio" ref="play_button" tabindex="102" src="/static/res/button_play_picture_book.png">
+                        <div class="book-cover" v-bind:style="'background-image:url('+cover+');'" v-bind:class="[playing? 'running':'paused']">
+                            <img v-if="playing"  @click="playAudio" ref="play_button" tabindex="102" src="/static/res/icon_pause_picture_book.png">
+                            <img v-else  @click="playAudio" ref="play_button" tabindex="102" src="/static/res/icon_play_picture_book.png">
+                        </div>
                     </div>
                     <div class="fourteen wide column desc">
                         $[item.content]
@@ -375,6 +421,7 @@
             el: '#vm',
             data: {
                 fullscreen: false,
+                cover: book_cover,
                 showLayer: false,
                 showPlayer: false,
                 items: {book_list:[]},
@@ -494,6 +541,7 @@
                 }
             }
         });
+
     })
 </script>
 
