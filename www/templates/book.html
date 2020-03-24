@@ -46,10 +46,10 @@
         }
 
         img.play-icon{
-            width: 100px;
+            width: 20%;
             position: absolute;
             left: 42%;
-            top: 39%;
+            top: 37%;
             cursor: pointer;
         }
 
@@ -192,6 +192,8 @@
             text-align: center;
             background-size: contain;
 
+            position: relative;
+
             -webkit-animation-name: rotate;
             -webkit-animation-duration:8s;
             -webkit-animation-iteration-count:infinite;
@@ -218,9 +220,23 @@
             animation-play-state:running;
         }
 
-        #player .book-cover img{
-            width: 50%;
-            margin-top: 25%
+        #player .book-cover-icon{
+            width: 100%;
+            height: 0;
+            padding-bottom: 100%;
+            text-align: center;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        #player .book-cover-icon img{
+            width: 40%;
+            margin-top: 23%
         }
 
         #player div.second .desc{
@@ -322,7 +338,7 @@
     <div v-if="showLayer" class="ui sixteen grid layer" style="margin: 0px;">
         <div class="eight wide column" style="opacity: 0.5; background: #666;">
         </div>
-        <div class="eight wide column" style="background: #fff;">
+        <div class="eight wide column" style="background: #fff; padding: 0px;">
             <div class="chapter-header ui sixteen column grid ">
                 <div class="thirteen wide column" style="padding-top: 30px;">目录</div>
                 <div class="three wide column">
@@ -384,6 +400,9 @@
                 <div class="second row">
                     <div class="two wide column">
                         <div class="book-cover" v-bind:style="'background-image:url('+cover+');'" v-bind:class="[playing? 'running':'paused']">
+
+                        </div>
+                        <div class="book-cover-icon">
                             <img v-if="playing"  @click="playAudio" ref="play_button" tabindex="102" src="/static/res/icon_pause_picture_book.png">
                             <img v-else  @click="playAudio" ref="play_button" tabindex="102" src="/static/res/icon_play_picture_book.png">
                         </div>
