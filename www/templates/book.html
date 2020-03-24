@@ -120,7 +120,7 @@
 
         .layer .thumbnail img.active{
             border: none;
-            padding: 3px;
+            padding: 5px;
             background:
             linear-gradient(to right, orange 4px, transparent 4px) 0 0,
             linear-gradient(to right, orange 4px, transparent 4px) 0 100%,
@@ -137,8 +137,8 @@
             cursor: default;
         }
         .layer .thumbnail div{
-
-            font-size: xx-large;
+            color: Orange;
+            font-size: x-large;
             width: 100%;
             text-align: center;
         }
@@ -217,18 +217,19 @@
 {% block content %}
 <div id="vm">
 
-    <fullscreen ref="fullscreen" class="fullscreen-wrapper"><a @click="toggle" href="#" class="tx-icon"></a>
+    <fullscreen ref="fullscreen" class="fullscreen-wrapper">
+        <a @click="toggle" href="#" class="tx-icon" tabindex="5"></a>
     <div class="ui equal width center aligned padded grid" id="div-book">
         <div class="eight wide column">
             <div class="navbar-left row" style="text-align: left">
-                <a href="#" onclick="javascript:window.history.back();">
+                <a href="#" onclick="javascript:window.history.back();" tabindex="10">
                     <img class="navbar left" src="/static/res/button_back_nevbar.png">
                 </a>
             </div>
             <div class="row">
                 <div class="cover">
                     <img class="cover" src="{{book.cover|format('600x600')}}">
-                    <img class="play-icon" @click="handleShowPlayer" src="/static/res/button_play_picture_book.png">
+                    <img class="play-icon" @click="handleShowPlayer" src="/static/res/button_play_picture_book.png" tabindex="12">
                 </div>
                 <div class="ui five column grid cover-desc" style="margin: 5px 0 0 0; ">
                     <div class="one column"></div>
@@ -248,7 +249,7 @@
         </div>
         <div class="eight wide column">
             <div class="navbar-right row" style="text-align: right">
-                <img class="navbar right" @click="handleShowLayer" src="/static/res/button_more_nevbar.png">
+                <img class="navbar right" @click="handleShowLayer" src="/static/res/button_more_nevbar.png" tabindex="11">
             </div>
             <div class="content">
                 <div class="row" style="text-align: left; display: flex;">
@@ -283,13 +284,13 @@
             <div class="chapter-header ui sixteen column grid ">
                 <div class="thirteen wide column" style="padding-top: 30px;">目录</div>
                 <div class="three wide column">
-                    <img class="close" src="/static/res/button_close_popup.png" @click="handleCloseLayer" />
+                    <img class="close" src="/static/res/button_close_popup.png" @click="handleCloseLayer" tabindex="30"/>
                 </div>
             </div>
             <div class="chapter ui stackable three column grid">
                 <div class="column thumbnail" v-for="(item, i) in items.book_list"  v-bind:key="item.id">
 
-                    <img v-bind:src="item.cover" v-bind:class="[index==i? 'active': '']" @click="handleUpdateIndex(i)"/>
+                    <img v-bind:src="item.cover" v-bind:class="[index==i? 'active': '']" @click="handleUpdateIndex(i)" v-bind:tabindex="i+30"/>
                     <div>-- ${item.section} --</div>
                 </div>
             </div>
@@ -327,19 +328,19 @@
              <div  class="ui sixteen grid" id="player" v-bind:style="computedStyle(item.cover_url)">
                 <div class="first row">
                     <div class="two wide column">
-                        <img class="navbar left" @click="closePlayer" src="/static/res/button_back_nevbar.png">
+                        <img class="navbar left" @click="closePlayer" src="/static/res/button_back_nevbar.png" tabindex="100">
                     </div>
                     <div class="twelve wide column">
                         <!--img v-bind:src="item.cover_url" /-->
                     </div>
                     <div class="two wide column" style="text-align: center;">
-                        <img class="navbar right" @click="showLayer" src="/static/res/button_more_nevbar.png" style="margin-right: 0px;"/>
+                        <img class="navbar right" @click="showLayer" src="/static/res/button_more_nevbar.png" style="margin-right: 0px;" tabindex="101"/>
                     </div>
                 </div>
                 <div class="second row">
                     <div class="two wide column">
-                        <img v-if="playing"  @click="playAudio" ref="play_button" src="/static/res/button_stop_picture_book.png">
-                        <img v-else  @click="playAudio" ref="play_button" src="/static/res/button_play_picture_book.png">
+                        <img v-if="playing"  @click="playAudio" ref="play_button" tabindex="102" src="/static/res/button_stop_picture_book.png">
+                        <img v-else  @click="playAudio" ref="play_button" tabindex="102" src="/static/res/button_play_picture_book.png">
                     </div>
                     <div class="fourteen wide column desc">
                         $[item.content]
@@ -468,6 +469,11 @@
                     if(this.playing){
                         this.audio.pause();
                         this.playing = false;
+                    }
+
+                    //show player
+                    if(!this.showPlayer){
+                        this.showPlayer = true;
                     }
 
                     this.index = i;

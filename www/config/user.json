@@ -12,7 +12,7 @@
     "secret": "picture-book-u33oxrl1e6",
     "max_age": 86400
   },
-  "page_size": 12,
+  "page_size": 40,
   "page_show": 10,
   "email": {
     "server": "127.0.0.1",

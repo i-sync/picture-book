@@ -8,14 +8,14 @@
 
 {% block content %}
 
-    <h2 class="ui dividing header"><a href="/">Picture Book</a></h2>
+    <h2 class="ui dividing header" tabindex="0"><a href="/">Picture Book</a></h2>
 
     <div>
         {% for age in ages %}
             {% if current_age == age %}
-                <a onclick="filter_age('{{age}}')" href="#" class="ui green label"> {{age}}</a>
+                <a onclick="filter_age('{{age}}')" href="#" class="ui green label" tabindex="{{loop.index + 10}}"> {{age}}</a>
             {% else %}
-                <a onclick="filter_age('{{age}}')" href="#" class="ui label"> {{age}}</a>
+                <a onclick="filter_age('{{age}}')" href="#" class="ui label" tabindex="{{loop.index + 10}}"> {{age}}</a>
             {% endif %}
         {% endfor %}
         {% if current_age %}
@@ -28,9 +28,9 @@
     <div>
         {% for label in labels %}
             {% if current_label == label.id|string %}
-                <a onclick="filter_label('{{label.id}}')" href="#" class="ui green label"> {{label.name}}</a>
+                <a onclick="filter_label('{{label.id}}')" href="#" class="ui green label" tabindex="{{loop.index + 50}}"> {{label.name}}</a>
             {% else %}
-                <a onclick="filter_label('{{label.id}}')" href="#" class="ui label"> {{label.name}}</a>
+                <a onclick="filter_label('{{label.id}}')" href="#" class="ui label" tabindex="{{loop.index + 50}}"> {{label.name}}</a>
             {% endif %}
         {% endfor %}
         {% if current_label %}
@@ -42,7 +42,7 @@
     <br />
     <div class="ui four stackable cards">
         {% for book in books %}
-        <div class="card">
+        <div class="card" tabindex="{{loop.index + 100}}">
             <a class="image" href="/book?id={{book.id}}">
                 <img src="{{book.cover|format('600x600')}}">
             </a>

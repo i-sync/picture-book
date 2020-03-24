@@ -6,7 +6,7 @@ import re
 import json
 
 ROOT_PATH = '/media/Study/yaya-huiben'
-INDEX_PATH = '/root/books_index.json'
+INDEX_PATH = '/root/picture-book/www/data/books.json'
 
 
 def gen_index_data():
