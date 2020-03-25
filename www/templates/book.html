@@ -50,6 +50,12 @@
             position: relative;
         }
 
+        img.free {
+            position: absolute;
+            top: 5%;
+            left: 17%;
+            width: 25%;
+        }
         img.play-icon{
             width: 20%;
             position: absolute;
@@ -307,6 +313,7 @@
             <div class="row">
                 <div class="cover">
                     <img class="cover" ref="cover" src="{{book.cover|format('600x600')}}">
+                    <img v-if="priceType" class="free" src="/static/res/label_recommend.png">
                     <img class="play-icon" @click="handleShowPlayer" src="/static/res/button_play_picture_book.png" tabindex="12">
                 </div>
                 <div class="ui five column grid cover-desc" style="margin: 5px 0 0 0; ">
@@ -383,6 +390,7 @@
 <script>
 
     $(function(){
+        price_type = {{book.priceType}}
         book_cover = '{{book.cover|format('300x300')}}';
         Vue.use(VueFullscreen.default);
         var player = {
@@ -458,6 +466,7 @@
             el: '#vm',
             data: {
                 cover: book_cover,
+                priceType: price_type > 0,
                 showLayer: false,
                 showPlayer: false,
                 items: {book_list:[]},

@@ -192,6 +192,7 @@ def book(*, id=None):
         res_data['estimatedChapter'] = book_data['resource']['estimatedChapter']
         res_data['totalChapter'] = book_data['resource']['totalChapter']
         res_data['labelList'] = book_data['resource']['labelList']
+        res_data['priceType'] = book_data['resource']['priceType']
 
 
     return {
