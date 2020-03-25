@@ -188,6 +188,8 @@
             z-index: 500;
             position: absolute;
             background: #fff;
+            background-position-y: center;
+            background-position-x: center;
             background-size: cover;
         }
         #player div.first{
@@ -356,7 +358,7 @@
     <div v-if="showLayer" class="ui sixteen grid layer" style="margin: 0px;">
         <div class="eight wide column" style="opacity: 0.5; background: #666;">
         </div>
-        <div class="eight wide column" style="background: #fff; padding: 0px; height:100%;">
+        <div class="eight wide column" style="background: #fff; padding: 0px; height:100%; overflow: hidden;">
             <div class="chapter-header ">
                 <p>目录</p>
                 <img class="close" src="/static/res/button_close_popup.png" @click="handleCloseLayer" tabindex="30"/>
@@ -455,7 +457,6 @@
             delimiters: ['${', '}'],
             el: '#vm',
             data: {
-                fullscreen: false,
                 cover: book_cover,
                 showLayer: false,
                 showPlayer: false,
@@ -481,12 +482,19 @@
                      else if(_this.index == _this.items.book_list.length){
                         _this.audio.src = '/static/audio/huiben_read_finish_voice.mp3';
                         _this.audio.play();
+                     }
+                     else {
+                        _this.playing = false;
                         _this.handleClosePlayer();
-
+                        _this.handleCloseLayer();
                         //exit fullscreen
-                        if(_this.fullscreen){
+                        if(_this.$refs['fullscreen'].getState()){
                             _this.$refs['fullscreen'].exit();
                         }
+
+                        //restore index = 0
+                        _this.index = 0;
+                        _this.chapter = _this.items.book_list[_this.index];
                      }
                 });
             },
@@ -528,7 +536,7 @@
                     this.loadBookList(true);
 
                     //enter full screen
-                    if(!this.fullscreen){
+                    if(!this.$refs['fullscreen'].getState()){
                         this.$refs['fullscreen'].enter();
                     }
                 },
