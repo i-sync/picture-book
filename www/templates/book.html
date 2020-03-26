@@ -564,6 +564,9 @@
                 },
 
                 handleUpdateIndex: function(i){
+                    //pausing set false
+                    this.pausing = false;
+
                     //stop audio
                     if(this.playing){
                         this.audio.pause();
