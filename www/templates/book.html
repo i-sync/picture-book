@@ -20,20 +20,21 @@
         img.navbar{
             width: 60px;
             height: 60px;
-            margin-top: 20px;
+            /*margin-top: 20px;*/
         }
         img.navbar.left{
-            margin-left: 20px;
+            /*margin-left: 20px;*/
+            cursor: pointer;
         }
 
         img.navbar.right{
-            margin-right: 20px;
+            /*margin-right: 20px;*/
             cursor: pointer;
         }
 
         div.navbar-left.row{
             text-align: left;
-            margin-bottom: 20px;
+            /*margin-bottom: 20px;*/
         }
 
         div.navbar-right.row{
@@ -173,6 +174,7 @@
             position: absolute;
             top: 20px;
             right: 20px;
+            cursor: pointer;
         }
         .layer div.chapter{
             overflow-y: auto;
@@ -187,6 +189,7 @@
 
     <style>
         #player{
+            overflow-y: hidden;
             top: 0px;
             margin: 0px;
             width: 100%;
@@ -203,6 +206,15 @@
         }
         #player div.second{
             height: 25%;
+            padding-bottom: 0px;
+            /*padding-top: 3%;*/
+        }
+
+        #player .book-cover-container{
+            width: 12%;
+            position: absolute;
+            left: 10px;
+            top: -15px;
         }
 
         #player .book-cover{
@@ -219,11 +231,11 @@
             position: relative;
 
             -webkit-animation-name: rotate;
-            -webkit-animation-duration:8s;
+            -webkit-animation-duration:30s;
             -webkit-animation-iteration-count:infinite;
             -webkit-animation-timing-function:linear;
             -moz-animation-name: rotate;
-            -moz-animation-duration:8s;
+            -moz-animation-duration:30s;
             -moz-animation-iteration-count:infinite;
             -moz-animation-timing-function:linear;
         }
@@ -245,39 +257,47 @@
         }
 
         #player .book-cover-icon{
-            width: calc(100% - 2rem);
+            cursor: pointer;
+            width: 100%;
             height: 0;
-            padding-bottom: calc(100% - 2rem);
+            padding-bottom: 100%;
             text-align: center;
             -webkit-border-radius: 50%;
             -moz-border-radius: 50%;
             border-radius: 50%;
-
             position: absolute;
             top: 0;
-            left: 1rem;
         }
 
         #player .book-cover-icon img{
             width: 50%;
-            margin-top: 25%
+            margin-top: 25%;
         }
 
         #player div.second .desc{
+            padding-top: 5px;
+            padding-left: 15%;
+            background-color: #fff;
+            width: 100%;
             height: 100%;
             overflow-y: auto;
             font-size: 25px;
             line-height: 1.2;
             font-weight: bold;
-            text-shadow:
-                -1px -1px 0 #fff,
-                 0   -1px 0 #fff,
-                 1px -1px 0 #fff,
-                 1px  0   0 #fff,
-                 1px  1px 0 #fff,
-                 0    1px 0 #fff,
-                -1px  1px 0 #fff,
-                -1px  0   0 #fff;
+        }
+
+        #player img.img-text-icon{
+            width: 40%;
+            position: absolute;
+            top: 0px;
+            right: -20%;
+            cursor: pointer;
+        }
+        #player div.second .desc.showing{
+
+        }
+        #player div.second .desc.hidden{
+            display: none;
         }
     </style>
 
@@ -288,11 +308,12 @@
         }
         div.fullscreen-wrapper a.tx-icon {
             position: absolute;
-            right: 5px;
-            top: 5px;
-            width: 18px;
-            height: 16px;
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAQCAYAAAAbBi9cAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABV0RVh0Q3JlYXRpb24gVGltZQA4LzE2LzEzspl6ugAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAAB7SURBVDiN7ZOxCsAgDESvxXyhi5P/Fif/0i6NGJH2KIUufVOUJB45s6lqw0DOGQylFHfeqSqCYEGMESJCF6aUAAC1Vt9IRPolixtDG1DVxjLnhtVL8yAvlZy8Nuy/0T1L19g1cY3Mavupd9bPWL5T9ERJV2SBrcfn238A3whjoYEPESwAAAAASUVORK5CYII=');
+            right: 3px;
+            top: 3px;
+            width: 20px;
+            height: 20px;
+            background-image: url('/static/res/fit-to-width-30.png');
+            background-size: cover;
             cursor: pointer;
             z-index: 2000;
         }
@@ -407,7 +428,7 @@
             },
             data: function(){
                 return {
-
+                    textShowing: true
                 }
             },
             template: `
@@ -419,21 +440,22 @@
                     <div class="twelve wide column">
                         <!--img v-bind:src="item.cover_url" /-->
                     </div>
-                    <div class="two wide column" style="text-align: center;">
+                    <div class="two wide column" style="text-align: right;">
                         <img class="navbar right" @click="showLayer" src="/static/res/button_more_nevbar.png" style="margin-right: 0px;" tabindex="101"/>
                     </div>
                 </div>
                 <div class="second row">
-                    <div class="two wide column">
+                    <div class="book-cover-container">
                         <div class="book-cover" v-bind:style="'background-image:url('+cover+');'" v-bind:class="[playing? 'running':'paused']">
 
                         </div>
-                        <div class="book-cover-icon">
-                            <img v-if="playing"  @click="playAudio" ref="play_button" tabindex="102" src="/static/res/icon_pause_picture_book.png">
-                            <img v-else  @click="playAudio" ref="play_button" tabindex="102" src="/static/res/icon_play_picture_book.png">
+                        <div class="book-cover-icon" @click="playAudio">
+                            <img v-if="playing" ref="play_button" tabindex="102" src="/static/res/icon_pause_picture_book.png">
+                            <img v-else ref="play_button" tabindex="102" src="/static/res/icon_play_picture_book.png">
                         </div>
+                        <img class="img-text-icon" @click="toggleText" src="/static/res/btn_text_picture_book.png">
                     </div>
-                    <div class="fourteen wide column desc">
+                    <div class="desc" v-bind:class="[textShowing? 'showing': 'hidden']">
                         $[item.content]
                     </div>
                 </div>
@@ -451,6 +473,10 @@
                 playAudio: function(){
                     this.$emit('play');
                     this.$refs.play_button.src= this.playing? '/static/res/button_play_picture_book.png': '/static/res/button_stop_picture_book.png';
+                },
+
+                toggleText: function(){
+                    this.textShowing = !this.textShowing;
                 },
 
                 computedStyle: function(cover){
