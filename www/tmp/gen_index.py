@@ -25,7 +25,7 @@ def gen_index_data():
                     jd = json.load(f)['data']['resource']
                 ds = {}
                 ds['ageDesc'] = jd['ageDesc']
-                ds['cover'] = jd['cover'].replace('.png', '_%s.png')
+                ds['cover'] = jd['cover'].replace('http://', '//').replace('.png', '_%s.png')
                 ds['id'] = jd['id']
                 ds['name'] = jd['name']
                 ds['labelList'] = [la['id'] for la in jd['labelList']]
