@@ -246,6 +246,7 @@ async def api_get_book_list(*, id):
 
     if book_list:
         for item in book_list:
+            item['cover'] = item['cover'].replace('http://', '//')
             item['audio_url'] = f"/books/{book['id']}.{book['name'].replace('|','')}/audio/{item['name']}.mp3"
             item['cover_url'] = f"/books/{book['id']}.{book['name'].replace('|','')}/img/{item['name']}.webp"
             text_json_name = f"{BOOK_BASE_PATH}/{book['id']}.{book['name'].replace('|','')}/json/{item['id']}.{item['name']}.json"
