@@ -21,6 +21,6 @@
     "port":25
   },
   "books": {
-    "base_path": "/media/Study/yaya-huiben"
+    "base_path": "/mnt/sda1/yaya-huiben"
   }
 }
