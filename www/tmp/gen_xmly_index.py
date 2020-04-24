@@ -5,13 +5,13 @@ import os
 import re
 import json
 
-#ROOT_PATH = '/mnt/sda1/xmly-huiben'
-#INDEX_PATH = '/var/picture-book/www/data/xmly-books.json'
-#ALBUM_PATH = '/var/picture-book/www/data/xmly-albums.json'
+ROOT_PATH = '/mnt/sda1/xmly-huiben'
+INDEX_PATH = '/var/picture-book/www/data/xmly-books.json'
+ALBUM_PATH = '/var/picture-book/www/data/xmly-albums.json'
 
-ROOT_PATH = 'c:/source/python/picture-book/www/data/xmly-json'
-INDEX_PATH = 'c:/source/python/picture-book/www/data/xmly-books.json'
-ALBUM_PATH = 'c:/source/python/picture-book/www/data/xmly-albums.json'
+#ROOT_PATH = 'c:/source/python/picture-book/www/data/xmly-json'
+#INDEX_PATH = 'c:/source/python/picture-book/www/data/xmly-books.json'
+#ALBUM_PATH = 'c:/source/python/picture-book/www/data/xmly-albums.json'
 
 def gen_index_data():
     # check file path
