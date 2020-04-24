@@ -8,7 +8,11 @@
 
 {% block content %}
 
-    <h2 class="ui dividing header" tabindex="0"><a href="/">Picture Book</a></h2>
+    <h2 class="ui header" tabindex="0">
+        <a href="/">芽芽绘本</a> &nbsp;&nbsp;
+        <a href="/xmly">喜马拉雅绘本</a>
+    </h2>
+    <div class="ui divider"></div>
 
     <div>
         {% for age in ages %}
@@ -43,11 +47,11 @@
     <div class="ui four stackable cards">
         {% for book in books %}
         <div class="card" tabindex="{{loop.index + 100}}">
-            <a class="image" href="/book?id={{book.id}}">
+            <a class="image" href="/yaya-book?id={{book.id}}">
                 <img src="{{book.cover|format('600x600')}}">
             </a>
             <div class="content">
-                <a href="/book?id={{book.id}}" class="header">{{book.id}}.{{book.name}}</a>
+                <a href="/yaya-book?id={{book.id}}" class="header">{{book.id}}.{{book.name}}</a>
                 <div class="meta">
                     {{book.ageDesc}}
                 </div>

@@ -6,7 +6,7 @@ import re
 import json
 
 ROOT_PATH = '/mnt/sda1/yaya-huiben'
-INDEX_PATH = '/var/picture-book/www/data/books.json'
+INDEX_PATH = '/var/picture-book/www/data/yaya-books.json'
 
 
 def gen_index_data():

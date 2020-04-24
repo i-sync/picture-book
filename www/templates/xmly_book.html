@@ -1,6 +1,6 @@
 {% extends '__base__.html' %}
 
-{% block title %} 绘本 - {{book.name}}  {% endblock %}
+{% block title %} 绘本 - {{book.recordTitle}}  {% endblock %}
 
 {% block beforehead %}
 
@@ -79,8 +79,9 @@
         div.content{
             margin-left: 40px;
             margin-right: 40px;
-            font-size: 16px;
-            font-weight: bold;
+        }
+        div.content img:first-of-type{
+            display: none;
         }
         .content span{
             margin-left: 15px;
@@ -199,7 +200,10 @@
             background: #fff;
             background-position-y: center;
             background-position-x: center;
-            background-size: cover;
+            background-size: contain;
+            background-repeat-x: no-repeat;
+            background-repeat-y: no-repeat;
+
         }
         #player div.first{
             height: 75%;
@@ -333,21 +337,21 @@
             </div>
             <div class="row">
                 <div class="cover">
-                    <img class="cover" ref="cover" src="{{book.cover|format('600x600')}}">
+                    <img class="cover" ref="cover" src="{{book.coverPath}}">
                     <img v-if="priceType" class="free" src="/static/res/label_recommend.png">
                     <img class="play-icon" @click="handleShowPlayer" src="/static/res/button_play_picture_book.png" tabindex="12">
                 </div>
                 <div class="ui five column grid cover-desc" style="margin: 5px 0 0 0; ">
                     <div class="one column"></div>
                     <div class="one column" style="border-right: 1px solid;">
-                        <div>{{book.ageDesc}}</div>
+                        <div>未知</div>
                         <div>适合年龄</div>
                     </div>
                     <div class="one column" style="border-right: 1px solid;">
-                        <div>{{book.estimatedChapter}}</div>
+                        <div>{{book.count}}</div>
                         <div>已录集数</div>
                     </div><div class="one column">
-                        <div>{{book.totalChapter}}</div>
+                        <div>{{book.count}}</div>
                         <div>总集数</div>
                     </div>
                 </div>
@@ -358,27 +362,26 @@
                 <img class="navbar right" @click="handleShowLayer" src="/static/res/button_more_nevbar.png" tabindex="11">
             </div>
             <div class="content">
+            {{ album.richIntro | safe }}
+            </div>
+            <!--div class="content">
                 <div class="row" style="text-align: left; display: flex;">
                     <img class="avatar" src="/static/res/img_anchor_avatar.png">
                     <span>
-                        {{book.announcer}}
+                        未知
                     </span>
                     <span>
                         演播
                     </span>
                 </div>
                 <div class="row">
-                    <h1>{{book.name}}</h1>
-                </div>
-                <div class="row labels">
-                    {% for label in book.labelList %}
-                        <a href="#" class="ui label"> {{label.name}}</a>
-                    {% endfor %}
+                    <h1>{{album.title}}</h1>
+                    <h3>{{book.recordTitle}}</h3>
                 </div>
                 <div class="row description">
-                    {{ book.desc | safe }}
+
                 </div>
-            </div>
+            </div-->
         </div>
     </div>
 
@@ -392,10 +395,10 @@
                 <img class="close" src="/static/res/button_close_popup.png" @click="handleCloseLayer" tabindex="30"/>
             </div>
             <div class="chapter ui stackable three column grid">
-                <div class="column thumbnail" v-for="(item, i) in items.book_list"  v-bind:key="item.id" style="padding-bottom:0px;">
+                <div class="column thumbnail" v-for="(item, i) in items"  v-bind:key="item.index" style="padding-bottom:0px;">
 
-                    <img v-bind:src="item.cover" v-bind:class="[index==i? 'active': '']" @click="handleUpdateIndex(i)" v-bind:tabindex="i+30"/>
-                    <div>-- ${item.section} --</div>
+                    <img v-bind:src="item.cover_url" v-bind:class="[index==i? 'active': '']" @click="handleUpdateIndex(i)" v-bind:tabindex="i+30"/>
+                    <div>-- ${parseInt(item.index) + 1 } --</div>
                 </div>
             </div>
         </div>
@@ -411,8 +414,8 @@
 <script>
 
     $(function(){
-        price_type = {{book.priceType}}
-        book_cover = '{{book.cover|format('300x300')}}';
+        book_audio = '{{book.audio}}';
+        book_cover = '{{book.coverPath}}';
         Vue.use(VueFullscreen.default);
         var player = {
             delimiters: ['$[', ']'],
@@ -492,15 +495,15 @@
             el: '#vm',
             data: {
                 cover: book_cover,
-                priceType: price_type > 0,
+                priceType: 1,
                 showLayer: false,
                 showPlayer: false,
-                items: {book_list:[]},
+                items: [],
                 index: 0,
                 chapter: {},
                 playing: false,
                 pausing: false,
-                audio: new Audio()
+                audio: new Audio(book_audio)
             },
             components: {
                 player: player
@@ -509,12 +512,7 @@
                 _this = this;
                 _this.audio.addEventListener("ended", function(){
                      _this.audio.currentTime = 0;
-                     if(++_this.index < _this.items.book_list.length){
-                        _this.chapter = _this.items.book_list[_this.index];
-                        _this.audio.src = _this.chapter.audio_url;
-                        _this.audio.play();
-                     }
-                     else if(_this.index == _this.items.book_list.length){
+                     if(++_this.index == _this.items.length){
                         _this.audio.src = '/static/audio/huiben_read_finish_voice.mp3';
                         _this.audio.play();
                      }
@@ -529,25 +527,40 @@
 
                         //restore index = 0
                         _this.index = 0;
-                        _this.chapter = _this.items.book_list[_this.index];
+                        _this.audio.src = book_audio;
+                        _this.chapter = _this.items[_this.index];
                      }
+                });
+
+                _this.audio.addEventListener('timeupdate', (event) => {
+                    if(_this.audio.src.endsWith('/static/audio/huiben_read_finish_voice.mp3')){
+                        return;
+                    }
+                    var cur = _this.audio.currentTime * 1000;
+                    for(var i = 0; i<_this.items.length; i++){
+                        var item = _this.items[i];
+                        if(item.displayTime.begin <= cur && cur <= item.displayTime.end && _this.index != i){
+                            _this.index = i;
+                            _this.chapter = _this.items[i];
+                            break;
+                        }
+                    }
                 });
             },
             methods: {
-
                 toggle() {
                   this.$refs['fullscreen'].toggle()
                 },
-                loadBookList: function(autoplay){
-                    if (this.items.book_list.length == 0) {
+                loadBookDetail: function(autoplay){
+                    if (this.items.length == 0) {
                         _this = this;
-                        getJSON('/api/book/{{book.id}}', function (err, result) {
+                        getJSON('/api/xmly-book/{{book.recordId}}', function (err, result) {
                             $("#vm").removeClass('loading');
                             if(err){
                                 return error(err);
                             }
-                            _this.items = result;
-                            _this.chapter = _this.items.book_list[0];
+                            _this.items = result.book_screen;
+                            _this.chapter = _this.items[0];
                             if(autoplay){
                                 _this.handlePlayAudio();
                             }
@@ -560,7 +573,7 @@
                 },
                 handleShowLayer: function(){
                     this.showLayer = true;
-                    this.loadBookList();
+                    this.loadBookDetail();
                 },
 
                 handleClosePlayer: function(){
@@ -568,7 +581,7 @@
                 },
                 handleShowPlayer: function(){
                     this.showPlayer = true;
-                    this.loadBookList(true);
+                    this.loadBookDetail(true);
 
                     //enter full screen
                     if(!this.$refs['fullscreen'].getState()){
@@ -584,7 +597,6 @@
                         this.audioPlay();
                     }
                     else{
-                        this.audio.src = this.chapter.audio_url;
                         this.audioPlay();
                     }
                 },
@@ -605,7 +617,8 @@
                     }
 
                     this.index = i;
-                    this.chapter = this.items.book_list[i];
+                    this.chapter = this.items[i];
+                    this.audio.currentTime = this.chapter.displayTime.begin / 1000;
                     this.handlePlayAudio();
                 },
 

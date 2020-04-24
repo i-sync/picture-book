@@ -48,28 +48,56 @@ def merge(defaults, override):
 
 
 class DataObject:
-    books = None
+    yaya_books = None
+    xmly_books = None
+    xmly_albums = None
     labels = None
     ages = ['0-2岁', '2-4岁', '4-6岁', '6-8岁', '>=8岁']
 
     @classmethod
-    def get_books(cls, id=None, age=None, labelid=None):
-        if cls.books:
+    def get_yaya_books(cls, id=None, age=None, labelid=None):
+        if cls.yaya_books:
             if id:
-                return [book for book in cls.books if int(id) == book['id']]
+                return [book for book in cls.yaya_books if int(id) == book['id']]
             if labelid and age:
-                return [book for book in cls.books if int(labelid) in book['labelList'] and age == book['ageDesc']]
+                return [book for book in cls.yaya_books if int(labelid) in book['labelList'] and age == book['ageDesc']]
             elif labelid:
-                return [book for book in cls.books if int(labelid) in book['labelList']]
+                return [book for book in cls.yaya_books if int(labelid) in book['labelList']]
             elif age:
-                return [book for book in cls.books if age == book['ageDesc']]
+                return [book for book in cls.yaya_books if age == book['ageDesc']]
             else:
-                return cls.books
-        json_file = f'{os.path.dirname(os.path.abspath(__file__))}/data/books.json'
+                return cls.yaya_books
+        json_file = f'{os.path.dirname(os.path.abspath(__file__))}/data/yaya-books.json'
         with open(json_file, 'r', encoding='utf-8') as f:
-            cls.books = json.load(f)
+            cls.yaya_books = json.load(f)
 
-        return cls.books
+        return cls.yaya_books
+
+    @classmethod
+    def get_xmly_books(cls, id=None):
+        if cls.xmly_books:
+            if id:
+                return [book for book in cls.xmly_books if int(id) == book['recordId']]
+            else:
+                return cls.xmly_books
+        json_file = f'{os.path.dirname(os.path.abspath(__file__))}/data/xmly-books.json'
+        with open(json_file, 'r', encoding='utf-8') as f:
+            cls.xmly_books = json.load(f)
+
+        return cls.xmly_books
+
+    @classmethod
+    def get_xmly_albums(cls, id=None):
+        if cls.xmly_albums:
+            if id:
+                return [album for album in cls.xmly_albums if int(id) == album['albumId']]
+            else:
+                return cls.xmly_albums
+        json_file = f'{os.path.dirname(os.path.abspath(__file__))}/data/xmly-albums.json'
+        with open(json_file, 'r', encoding='utf-8') as f:
+            cls.xmly_albums = json.load(f)
+
+        return cls.xmly_albums
 
     @classmethod
     def get_labels(cls):

@@ -1,0 +1,629 @@
+{% extends '__base__.html' %}
+
+{% block title %} 绘本 - {{book.name}}  {% endblock %}
+
+{% block beforehead %}
+
+    <style>
+        #div-book {
+            height: 100%;
+            background-image:url('/static/res/book_background.png'); */
+            background-position-y: center;
+            background-position-x: center;
+            background-size: cover;
+        }
+
+        #div-book > div.column {
+            height: 100%;
+        }
+
+        img.navbar{
+            width: 60px;
+            height: 60px;
+            /*margin-top: 20px;*/
+        }
+        img.navbar.left{
+            /*margin-left: 20px;*/
+            cursor: pointer;
+        }
+
+        img.navbar.right{
+            /*margin-right: 20px;*/
+            cursor: pointer;
+        }
+
+        div.navbar-left.row{
+            text-align: left;
+            /*margin-bottom: 20px;*/
+        }
+
+        div.navbar-right.row{
+            text-align: right;
+            /*margin-bottom: 20px;*/
+        }
+
+        div.cover{
+            position: relative;
+        }
+        img.cover{
+            width: 60%;
+            border: 8px solid #fff;
+            position: relative;
+        }
+
+        img.free {
+            position: absolute;
+            top: 5%;
+            left: 17%;
+            width: 25%;
+        }
+        img.play-icon{
+            width: 20%;
+            position: absolute;
+            left: 42%;
+            top: 37%;
+            cursor: pointer;
+        }
+
+        div.cover-desc{
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        img.avatar{
+            width: 40px;
+            margin-right: 5px;
+        }
+
+        div.content{
+            margin-left: 40px;
+            margin-right: 40px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .content span{
+            margin-left: 15px;
+            margin-top: 10px;
+        }
+        .content h1{
+            color: #76C6DF;
+            margin-top: 30px;
+            margin-bottom: 25px;
+        }
+        div.labels{
+            margin: 20px;
+            overflow-x: auto;
+        }
+        div.labels a.label{
+            margin-right: 5px;
+            margin-left: 5px;
+            margin-top: 2px;
+            margin-bottom: 2px;
+        }
+
+        div.content .description{
+            overflow-y: auto
+            text-align: left;
+            line-height: 30px;
+            letter-spacing: 3px;
+            font-size: 20px
+        }
+    </style>
+
+
+    <style>
+        #vm{
+            position: relative;
+        }
+        #div-book{
+            position: relative;
+        }
+        .layer{
+            top: 0px;
+            margin: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            position: absolute;
+        }
+        .layer .thumbnail img{
+            border: 1px solid #666;
+            cursor: pointer;
+        }
+
+        .layer .thumbnail img.active{
+            border: none;
+            padding: 5px;
+            background:
+            linear-gradient(to right, orange 4px, transparent 4px) 0 0,
+            linear-gradient(to right, orange 4px, transparent 4px) 0 100%,
+            linear-gradient(to left, orange 4px, transparent 4px) 100% 0,
+            linear-gradient(to left, orange 4px, transparent 4px) 100% 100%,
+            linear-gradient(to bottom, orange 4px, transparent 4px) 0 0,
+            linear-gradient(to bottom, orange 4px, transparent 4px) 100% 0,
+            linear-gradient(to top, orange 4px, transparent 4px) 0 100%,
+            linear-gradient(to top, orange 4px, transparent 4px) 100% 100%;
+
+            background-repeat: no-repeat;
+            background-size: 20px 20px;
+
+            cursor: default;
+        }
+        .layer .thumbnail div{
+            color: Orange;
+            font-size: x-large;
+            width: 100%;
+            text-align: center;
+        }
+        .layer div.chapter-header{
+            background-color: #76C6DF;
+            width: 100%;
+            height: 15%;
+            min-height: 100px;
+            font-size: 30px;
+            text-align: center;
+        }
+        .layer div.chapter-header p{
+            padding-top: 5%;
+            margin: 0px;
+            color: #fff;
+        }
+        .layer img.close{
+            width: 10%;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+        }
+        .layer div.chapter{
+            overflow-y: auto;
+            margin: 0px;
+            width: 100%;
+            height: 85%;
+            max-height: calc(100% - 100px);
+            display: inline-block;
+            text-align: left;
+        }
+    </style>
+
+    <style>
+        #player{
+            overflow-y: hidden;
+            top: 0px;
+            margin: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 500;
+            position: absolute;
+            background: #fff;
+            background-position-y: center;
+            background-position-x: center;
+            background-size: cover;
+        }
+        #player div.first{
+            height: 75%;
+        }
+        #player div.second{
+            height: 25%;
+            padding-bottom: 0px;
+            /*padding-top: 3%;*/
+        }
+
+        #player .book-cover-container{
+            width: 12%;
+            position: absolute;
+            left: 10px;
+            top: -15px;
+        }
+
+        #player .book-cover{
+            width: 100%;
+            height: 0;
+            padding-bottom: 100%;
+            border: 0.5px solid #666;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+            text-align: center;
+            background-size: contain;
+
+            position: relative;
+
+            -webkit-animation-name: rotate;
+            -webkit-animation-duration:30s;
+            -webkit-animation-iteration-count:infinite;
+            -webkit-animation-timing-function:linear;
+            -moz-animation-name: rotate;
+            -moz-animation-duration:30s;
+            -moz-animation-iteration-count:infinite;
+            -moz-animation-timing-function:linear;
+        }
+        @-webkit-keyframes rotate {
+            from {-webkit-transform:rotate(0deg);}
+            to {  -webkit-transform:rotate(360deg);}
+        }
+
+        @-moz-keyframes rotate {
+            from {-moz-transform:rotate(0deg);}
+            to {  -moz-transform:rotate(360deg);}
+        }
+
+        #player .book-cover.paused{
+            animation-play-state:paused;
+        }
+        #player .book-cover.running{
+            animation-play-state:running;
+        }
+
+        #player .book-cover-icon{
+            cursor: pointer;
+            width: 100%;
+            height: 0;
+            padding-bottom: 100%;
+            text-align: center;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+        }
+
+        #player .book-cover-icon img{
+            width: 50%;
+            margin-top: 25%;
+        }
+
+        #player div.second .desc{
+            padding-top: 5px;
+            padding-left: 15%;
+            background-color: #fff;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            font-size: 25px;
+            line-height: 1.2;
+            font-weight: bold;
+        }
+
+        #player img.img-text-icon{
+            width: 40%;
+            position: absolute;
+            top: 0px;
+            right: -20%;
+            cursor: pointer;
+        }
+        #player div.second .desc.showing{
+
+        }
+        #player div.second .desc.hidden{
+            display: none;
+        }
+    </style>
+
+    <style>
+        div.fullscreen-wrapper {
+            position: relative;
+            height: 100%;
+        }
+        div.fullscreen-wrapper a.tx-icon {
+            position: absolute;
+            right: 3px;
+            top: 3px;
+            width: 20px;
+            height: 20px;
+            background-image: url('/static/res/fit-to-width-30.png');
+            background-size: cover;
+            cursor: pointer;
+            z-index: 2000;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+<div id="vm">
+
+    <fullscreen ref="fullscreen" class="fullscreen-wrapper">
+        <a @click="toggle" href="#" class="tx-icon" tabindex="5"></a>
+    <div class="ui equal width center aligned padded grid" id="div-book">
+        <div class="eight wide column">
+            <div class="navbar-left row" style="text-align: left">
+                <a href="#" onclick="javascript:window.history.back();" tabindex="10">
+                    <img class="navbar left" src="/static/res/button_back_nevbar.png">
+                </a>
+            </div>
+            <div class="row">
+                <div class="cover">
+                    <img class="cover" ref="cover" src="{{book.cover|format('600x600')}}">
+                    <img v-if="priceType" class="free" src="/static/res/label_recommend.png">
+                    <img class="play-icon" @click="handleShowPlayer" src="/static/res/button_play_picture_book.png" tabindex="12">
+                </div>
+                <div class="ui five column grid cover-desc" style="margin: 5px 0 0 0; ">
+                    <div class="one column"></div>
+                    <div class="one column" style="border-right: 1px solid;">
+                        <div>{{book.ageDesc}}</div>
+                        <div>适合年龄</div>
+                    </div>
+                    <div class="one column" style="border-right: 1px solid;">
+                        <div>{{book.estimatedChapter}}</div>
+                        <div>已录集数</div>
+                    </div><div class="one column">
+                        <div>{{book.totalChapter}}</div>
+                        <div>总集数</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="eight wide column">
+            <div class="navbar-right row" style="text-align: right">
+                <img class="navbar right" @click="handleShowLayer" src="/static/res/button_more_nevbar.png" tabindex="11">
+            </div>
+            <div class="content">
+                <div class="row" style="text-align: left; display: flex;">
+                    <img class="avatar" src="/static/res/img_anchor_avatar.png">
+                    <span>
+                        {{book.announcer}}
+                    </span>
+                    <span>
+                        演播
+                    </span>
+                </div>
+                <div class="row">
+                    <h1>{{book.name}}</h1>
+                </div>
+                <div class="row labels">
+                    {% for label in book.labelList %}
+                        <a href="#" class="ui label"> {{label.name}}</a>
+                    {% endfor %}
+                </div>
+                <div class="row description">
+                    {{ book.desc | safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div v-if="showLayer" class="ui sixteen grid layer" style="margin: 0px;">
+        <div class="eight wide column" style="opacity: 0.5; background: #666;">
+        </div>
+        <div class="eight wide column" style="background: #fff; padding: 0px; height:100%; overflow: hidden;">
+            <div class="chapter-header ">
+                <p>目录</p>
+                <img class="close" src="/static/res/button_close_popup.png" @click="handleCloseLayer" tabindex="30"/>
+            </div>
+            <div class="chapter ui stackable three column grid">
+                <div class="column thumbnail" v-for="(item, i) in items.book_list"  v-bind:key="item.id" style="padding-bottom:0px;">
+
+                    <img v-bind:src="item.cover" v-bind:class="[index==i? 'active': '']" @click="handleUpdateIndex(i)" v-bind:tabindex="i+30"/>
+                    <div>-- ${item.section} --</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <player v-if="showPlayer" @close="handleClosePlayer" @show="handleShowLayer" @play="handlePlayAudio" v-bind:item="chapter" v-bind:playing="playing" v-bind:cover="cover"></player>
+
+    </fullscreen>
+</div>
+
+
+<script>
+
+    $(function(){
+        price_type = {{book.priceType}}
+        book_cover = '{{book.cover|format('300x300')}}';
+        Vue.use(VueFullscreen.default);
+        var player = {
+            delimiters: ['$[', ']'],
+            props:{
+                item: {
+                    type: Object,
+                    default: function(){
+                        return {name: '第1集_咪子的家', cover_url: ''}
+                    }
+                },
+                playing: Boolean,
+                cover: String
+            },
+            data: function(){
+                return {
+                    textShowing: false
+                }
+            },
+            template: `
+             <div  class="ui sixteen grid" id="player" v-bind:style="computedStyle(item.cover_url)">
+                <div class="first row">
+                    <div class="two wide column">
+                        <img class="navbar left" @click="closePlayer" src="/static/res/button_back_nevbar.png" tabindex="100">
+                    </div>
+                    <div class="twelve wide column">
+                        <!--img v-bind:src="item.cover_url" /-->
+                    </div>
+                    <div class="two wide column" style="text-align: right;">
+                        <img class="navbar right" @click="showLayer" src="/static/res/button_more_nevbar.png" style="margin-right: 0px;" tabindex="101"/>
+                    </div>
+                </div>
+                <div class="second row">
+                    <div class="book-cover-container">
+                        <div class="book-cover" v-bind:style="'background-image:url('+cover+');'" v-bind:class="[playing? 'running':'paused']">
+
+                        </div>
+                        <div class="book-cover-icon" @click="playAudio">
+                            <img v-if="playing" ref="play_button" tabindex="102" src="/static/res/icon_pause_picture_book.png">
+                            <img v-else ref="play_button" tabindex="102" src="/static/res/icon_play_picture_book.png">
+                        </div>
+                        <img class="img-text-icon" @click="toggleText" src="/static/res/btn_text_picture_book.png">
+                    </div>
+                    <div class="desc" v-bind:class="[textShowing? 'showing': 'hidden']">
+                        $[item.content]
+                    </div>
+                </div>
+            </div>
+            `,
+            methods:{
+                closePlayer: function(){
+                    this.$emit('close');
+                },
+
+                showLayer: function(){
+                    this.$emit('show');
+                },
+
+                playAudio: function(){
+                    this.$emit('play');
+                    this.$refs.play_button.src= this.playing? '/static/res/button_play_picture_book.png': '/static/res/button_stop_picture_book.png';
+                },
+
+                toggleText: function(){
+                    this.textShowing = !this.textShowing;
+                },
+
+                computedStyle: function(cover){
+                    if($.isEmptyObject(cover)){
+                        return "";
+                    }
+                    return "margin: 0px; background-image: url(\"" + cover + "\");";
+                }
+            }
+        };
+        var vm = new Vue({
+            delimiters: ['${', '}'],
+            el: '#vm',
+            data: {
+                cover: book_cover,
+                priceType: price_type > 0,
+                showLayer: false,
+                showPlayer: false,
+                items: {book_list:[]},
+                index: 0,
+                chapter: {},
+                playing: false,
+                pausing: false,
+                audio: new Audio()
+            },
+            components: {
+                player: player
+            },
+            created: function(){
+                _this = this;
+                _this.audio.addEventListener("ended", function(){
+                     _this.audio.currentTime = 0;
+                     if(++_this.index < _this.items.book_list.length){
+                        _this.chapter = _this.items.book_list[_this.index];
+                        _this.audio.src = _this.chapter.audio_url;
+                        _this.audio.play();
+                     }
+                     else if(_this.index == _this.items.book_list.length){
+                        _this.audio.src = '/static/audio/huiben_read_finish_voice.mp3';
+                        _this.audio.play();
+                     }
+                     else {
+                        _this.playing = false;
+                        _this.handleClosePlayer();
+                        _this.handleCloseLayer();
+                        //exit fullscreen
+                        if(_this.$refs['fullscreen'].getState()){
+                            _this.$refs['fullscreen'].exit();
+                        }
+
+                        //restore index = 0
+                        _this.index = 0;
+                        _this.chapter = _this.items.book_list[_this.index];
+                     }
+                });
+            },
+            methods: {
+
+                toggle() {
+                  this.$refs['fullscreen'].toggle()
+                },
+                loadBookList: function(autoplay){
+                    if (this.items.book_list.length == 0) {
+                        _this = this;
+                        getJSON('/api/yaya-book/{{book.id}}', function (err, result) {
+                            $("#vm").removeClass('loading');
+                            if(err){
+                                return error(err);
+                            }
+                            _this.items = result;
+                            _this.chapter = _this.items.book_list[0];
+                            if(autoplay){
+                                _this.handlePlayAudio();
+                            }
+                        });
+                    }
+                },
+
+                handleCloseLayer: function(){
+                    this.showLayer = false;
+                },
+                handleShowLayer: function(){
+                    this.showLayer = true;
+                    this.loadBookList();
+                },
+
+                handleClosePlayer: function(){
+                    this.showPlayer = false;
+                },
+                handleShowPlayer: function(){
+                    this.showPlayer = true;
+                    this.loadBookList(true);
+
+                    //enter full screen
+                    if(!this.$refs['fullscreen'].getState()){
+                        this.$refs['fullscreen'].enter();
+                    }
+                },
+
+                handlePlayAudio: function(){
+                    if(this.playing){
+                        this.audioPause();
+                    }
+                    else if(this.pausing){
+                        this.audioPlay();
+                    }
+                    else{
+                        this.audio.src = this.chapter.audio_url;
+                        this.audioPlay();
+                    }
+                },
+
+                handleUpdateIndex: function(i){
+                    //pausing set false
+                    this.pausing = false;
+
+                    //stop audio
+                    if(this.playing){
+                        this.audio.pause();
+                        this.playing = false;
+                    }
+
+                    //show player
+                    if(!this.showPlayer){
+                        this.showPlayer = true;
+                    }
+
+                    this.index = i;
+                    this.chapter = this.items.book_list[i];
+                    this.handlePlayAudio();
+                },
+
+                audioPlay: function(){
+                    this.playing = true;
+                    this.pausing = false;
+                    this.audio.play();
+                },
+
+                audioPause: function(){
+                    this.playing = false;
+                    this.pausing = true;
+                    this.audio.pause();
+                }
+            }
+        });
+
+    })
+</script>
+
+{% endblock %}

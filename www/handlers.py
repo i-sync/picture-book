@@ -22,17 +22,20 @@ _RE_EMAIL = re.compile(r'^[a-z0-9\.\-\_]+\@[a-z0-9\-\_]+(\.[a-z0-9\-\_]+){1,4}$'
 _RE_SHA256 = re.compile(r'^[0-9a-f]{64}$')
 COOKIE_NAME = configs.cookie.name
 _COOKIE_KEY = configs.cookie.secret
-BOOK_BASE_PATH = configs.books.base_path
+YAYA_BASE_PATH = configs.books.yaya_base_path
+XMLY_BASE_PATH = configs.books.xmly_base_path
 
 '''
 ================== function ====================
 '''
+
 
 def find_user(hashname):
     for user in usernames:
         if hashname == user.hashname:
             return user
     return None
+
 
 def check_admin(request):
     if request.__user__ is None or not request.__user__.admin:
@@ -146,7 +149,7 @@ def signout(request):
 @get('/')
 def index(*, page='1', age=None, labelid=None):
     page_index = get_page_index(page)
-    books = DataObject.get_books(age = age, labelid = labelid)
+    books = DataObject.get_yaya_books(age=age, labelid=labelid)
     num = len(books)
     p = Page(num, page_index)
     return {
@@ -159,13 +162,27 @@ def index(*, page='1', age=None, labelid=None):
         '__template__': 'index.html'
     }
 
-@get('/book')
-def book(*, id=None):
-    book = DataObject.get_books(id=id)
+
+@get('/xmly')
+def xmly_index(*, page='1'):
+    page_index = get_page_index(page)
+    books = DataObject.get_xmly_books()
+    num = len(books)
+    p = Page(num, page_index)
+    return {
+        'page': p,
+        'books': () if num == 0 else books[p.offset: p.offset + p.limit],
+        '__template__': 'index_xmly.html'
+    }
+
+
+@get('/yaya-book')
+def yaya_book(*, id=None):
+    book = DataObject.get_yaya_books(id=id)
     book_data = None
     if book:
         book = book[0]
-        book_json_name = f"{BOOK_BASE_PATH}/{book['id']}.{book['name'].replace('|','')}/{book['id']}.resourceDetail.json"
+        book_json_name = f"{YAYA_BASE_PATH}/{book['id']}.{book['name'].replace('|', '')}/{book['id']}.resourceDetail.json"
         if os.path.exists(book_json_name):
             with open(book_json_name, 'r', encoding='utf-8') as f:
                 book_data = json.load(f)['data']
@@ -182,7 +199,6 @@ def book(*, id=None):
         'labelList': ['爱与情感', '生命', '温暖', '亲情', '友情', '动物']
     }
     if book_data:
-
         res_data['announcer'] = book_data['announcer']['nickName']
         res_data['id'] = book_data['resource']['id']
         res_data['name'] = book_data['resource']['name']
@@ -194,16 +210,41 @@ def book(*, id=None):
         res_data['labelList'] = book_data['resource']['labelList']
         res_data['priceType'] = book_data['resource']['priceType']
 
-
     return {
         'book': toDict(res_data),
-        '__template__': 'book.html'
+        '__template__': 'yaya_book.html'
     }
+
+
+@get('/xmly-book')
+def xmly_book(*, id=None):
+    book = DataObject.get_xmly_books(id=id)
+    book_data = None
+    albums = None
+    if book:
+        book = book[0]
+        book['audio'] = f"/xmly-books/{book['recordTitle'].replace('|', '')}/{book['recordTitle'].replace('|', '')}.m4a"
+        book_json_name = f"{XMLY_BASE_PATH}/{book['recordTitle'].replace('|', '')}/{book['recordId']}.{book['recordTitle']}.json"
+        if os.path.exists(book_json_name):
+            with open(book_json_name, 'r', encoding='utf-8') as f:
+                book_screen = json.load(f)
+                book['count'] = book_screen['screenCnt']
+
+        album_id = book['albumId']
+        album = DataObject.get_xmly_albums(album_id)
+        if album:
+            album = album[0]
+
+    return {
+        'book': toDict(book),
+        'album': toDict(album),
+        '__template__': 'xmly_book.html'
+    }
+
 
 '''
 ====================== end client page =====================
 '''
-
 
 '''
 ==================== backend api ====================
@@ -233,13 +274,13 @@ def authenticate(*, username, remember):
 '''-----------books------------'''
 
 
-@get('/api/book/{id}')
-async def api_get_book_list(*, id):
-    book = DataObject.get_books(id=id)
+@get('/api/yaya-book/{id}')
+async def api_yaya_book_detail(*, id):
+    book = DataObject.get_yaya_books(id=id)
     book_list = None
     if book:
         book = book[0]
-        book_json_name = f"{BOOK_BASE_PATH}/{book['id']}.{book['name'].replace('|','')}/{book['id']}.chapterList.json"
+        book_json_name = f"{YAYA_BASE_PATH}/{book['id']}.{book['name'].replace('|', '')}/{book['id']}.chapterList.json"
         if os.path.exists(book_json_name):
             with open(book_json_name, 'r', encoding='utf-8') as f:
                 book_list = json.load(f)
@@ -247,18 +288,19 @@ async def api_get_book_list(*, id):
     if book_list:
         for item in book_list:
             item['cover'] = item['cover'].replace('http://', '//')
-            item['audio_url'] = f"/books/{book['id']}.{book['name'].replace('|','')}/audio/{item['name']}.mp3"
-            item['cover_url'] = f"/books/{book['id']}.{book['name'].replace('|','')}/img/{item['name']}.webp"
-            text_json_name = f"{BOOK_BASE_PATH}/{book['id']}.{book['name'].replace('|','')}/json/{item['id']}.{item['name']}.json"
+            item['audio_url'] = f"/yaya-books/{book['id']}.{book['name'].replace('|', '')}/audio/{item['name']}.mp3"
+            item['cover_url'] = f"/yaya-books/{book['id']}.{book['name'].replace('|', '')}/img/{item['name']}.webp"
+            text_json_name = f"{YAYA_BASE_PATH}/{book['id']}.{book['name'].replace('|', '')}/json/{item['id']}.{item['name']}.json"
             if os.path.exists(text_json_name):
                 with open(text_json_name, 'r', encoding='utf-8') as f:
                     item['content'] = json.load(f)['data']['chapter']['content']
     return dict(book_list=book_list)
 
-@get('/api/books')
-async def api_get_books(*, page='1'):
+
+@get('/api/yaya-books')
+async def api_yaya_books(*, page='1'):
     page_index = get_page_index(page)
-    books = get_books()
+    books = DataObject.get_yaya_books()
     num = len(books)
     p = Page(num, page_index)
     if num == 0:
@@ -266,3 +308,32 @@ async def api_get_books(*, page='1'):
     books = books[p.offset: p.limit]
     return dict(page=p, books=books)
 
+
+@get('/api/xmly-book/{id}')
+async def api_xmly_book_detail(*, id):
+    book = DataObject.get_xmly_books(id=id)
+    book_screen = None
+    if book:
+        book = book[0]
+        book_json_name = f"{XMLY_BASE_PATH}/{book['recordTitle'].replace('|', '')}/{book['recordId']}.{book['recordTitle'].replace('|', '')}.json"
+        if os.path.exists(book_json_name):
+            with open(book_json_name, 'r', encoding='utf-8') as f:
+                book_screen = json.load(f)['screens']
+
+    if book_screen:
+        for item in book_screen:
+            item['cover_url'] = f"/xmly-books/{book['recordTitle'].replace('|', '')}/imgs/{item['index']}.jpg"
+
+    return dict(book_screen=book_screen)
+
+
+@get('/api/xmly-books')
+async def api_xmly_books(*, page='1'):
+    page_index = get_page_index(page)
+    books = DataObject.get_xmly_books()
+    num = len(books)
+    p = Page(num, page_index)
+    if num == 0:
+        return dict(page=p, books=())
+    books = books[p.offset: p.limit]
+    return dict(page=p, books=books)

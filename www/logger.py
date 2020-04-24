@@ -13,7 +13,7 @@ DEBUG	10
 NOTSET	0
 '''
 
-logfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'log/story.log')
+logfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'log/picture.log')
 
 #https://stackoverflow.com/questions/20240464/python-logging-file-is-not-working-when-using-logging-basicconfig
 #logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(threadName)-10s %(message)s')

@@ -22,6 +22,7 @@
     "port":25
   },
   "books": {
-    "base_path": "/c/tmp/picture-book"
+    "yaya_base_path": "c:\\tmp\\yaya-huiben",
+    "xmly_base_path": "c:\\tmp\\xmly-huiben"
   }
 }

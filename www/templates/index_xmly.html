@@ -1,0 +1,36 @@
+{% extends '__base__.html' %}
+
+{% block title %} Picture Book {% endblock %}
+
+{% block beforehead %}
+
+{% endblock %}
+
+{% block content %}
+
+    <h2 class="ui header" tabindex="0">
+        <a href="/">芽芽绘本</a> &nbsp;&nbsp;
+        <a href="/xmly">喜马拉雅绘本</a>
+    </h2>
+    <div class="ui divider"></div>
+
+    <br />
+    <div class="ui four stackable cards">
+        {% for book in books %}
+        <div class="card" tabindex="{{loop.index + 100}}">
+            <a class="image" href="/xmly-book?id={{book.recordId}}">
+                <img src="{{book.coverPath}}">
+            </a>
+            <div class="content">
+                <a href="/xmly-book?id={{book.recordId}}" class="header">{{book.recordTitle}}</a>
+                <div class="meta">
+                    {{book.ageDesc}}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <br />
+    {{ pagination('?page=', page) }}
+
+{% endblock %}

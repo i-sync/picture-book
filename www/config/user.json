@@ -21,6 +21,7 @@
     "port":25
   },
   "books": {
-    "base_path": "/mnt/sda1/yaya-huiben"
+    "yaya_base_path": "/mnt/sda1/yaya-huiben",
+    "xmly_base_path": "/mnt/sda1/xmly-huiben"
   }
 }
