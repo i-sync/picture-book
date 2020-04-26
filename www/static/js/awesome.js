@@ -413,20 +413,24 @@ if (typeof(Vue)!=='undefined') {
                 <a v-if="p.has_prev" class="item" @click.prevent="gotoPage(p.page_index - 1)" href="#"><i class="angle double left icon"></i></a>   \
                 <a v-else class="disabled item"><i class="angle double left icon"></i></a>  \
                 \
-                <a v-if="p.page_index == 1" class="disabled item">1</a> \
-                <a v-else class="item" @click.prevent="gotoPage(1)" href="#">1</a> \
+                <template v-for="pn in p.prefix">\
+                    <a v-if="p.page_index == pn" class="disabled item" v-text="pn"></a> \
+                    <a v-else class="item" @click.prevent="gotoPage(pn)" href="#" v-text="pn"></a> \
+                </template>\
                 \
-                <a v-if="pl[0] > 2" class="disabled item">...</a> \
+                <a v-if="p.page_list[0] > 4" class="disabled item">...</a> \
                 \
-                <template v-for="pn in pl">\
+                <template v-for="pn in p.page_list">\
                     <a v-if="pn == p.page_index" class="disabled item" v-text="p.page_index"></a> \
                     <a v-else class="item" @click.prevent="gotoPage(pn)" href="#" v-text="pn"></a> \
                 </template>\
                 \
-                <a v-if="pl[p.page_show-1] < (p.page_count-1)" class="disabled item">...</a> \
+                <a v-if="p.page_list[p.page_show-1] < (p.page_count-3)" class="disabled item">...</a> \
                 \
-                <a v-if="(p.page_index == p.page_count) && (p.page_count != 1)" class="disabled item" v-text="p.page_count"></a> \
-                <a v-if="(p.page_index != p.page_count) && (p.page_count != 1) && (p.item_count != 0)" class="item" @click.prevent="gotoPage(p.page_count)" href="#" v-text="p.page_count"></a> \
+                <template v-for="pn in p.suffix">\
+                    <a v-if="(p.page_index == pn) && (pn != 1)" class="disabled item" v-text="pn"></a> \
+                    <a v-if="(p.page_index != pn) && (pn != 1) && (p.item_count != 0)" class="item" @click.prevent="gotoPage(pn)" href="#" v-text="pn"></a> \
+                </template>\
                 \
                 <a v-if="p.has_next" class="item" @click.prevent="gotoPage(p.page_index+1)" href="#"><i class="angle double right icon"></i></a> \
                 <a v-else class="disabled item"><i class="angle double right icon"></i></a> \
