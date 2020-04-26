@@ -9,14 +9,16 @@
         {% endif %}
 
 
-        {% if page.page_index == 1 %}
-            <a class="disabled item">1</a>
-        {% else %}
-            <a class="item" onclick="gotoPage(1)" href="#">1</a>
-        {% endif %}
+        {% for i in page.prefix %}
+            {% if page.page_index == i %}
+                <a class="disabled item">{{i}}</a>
+            {% else %}
+                <a class="item" onclick="gotoPage({{i}})"  href="#">{{i}}</a>
+            {% endif %}
+        {% endfor %}
 
         {% if page.page_list %}
-            {% if page.page_list[0] > 2 %}
+            {% if page.page_list[0] > 4 %}
                 <a class="disabled item">...</a>
             {% endif %}
 
@@ -28,17 +30,19 @@
                 {% endif %}
             {% endfor %}
 
-            {% if page.page_list[-1] < (page.page_count-1) %}                
+            {% if page.page_list[-1] < (page.page_count-3) %}
                 <a class="disabled item">...</a>
             {% endif %}
         {% endif %}
 
         {% if page.page_count > 1 %}
-            {% if page.page_index == page.page_count %}
-                    <a class="disabled item">{{ page.page_index }}</a>
-            {% else %}
-                <a class="item" onclick="gotoPage({{page.page_count}})" href="#">{{ page.page_count }}</a>
-            {% endif %}
+            {% for i in page.suffix %}
+                {% if page.page_index == i %}
+                        <a class="disabled item">{{ page.page_index }}</a>
+                {% else %}
+                    <a class="item" onclick="gotoPage({{i}})" href="#">{{ i }}</a>
+                {% endif %}
+            {% endfor %}
         {% endif %}
 
         {% if page.has_next %}
