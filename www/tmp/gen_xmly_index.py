@@ -5,7 +5,7 @@ import os
 import re
 import json
 
-ROOT_PATH = '/mnt/sda1/xmly-huiben'
+ROOT_PATH = '/var/picture-book/www/data/xmly-json'
 INDEX_PATH = '/var/picture-book/www/data/xmly-books.json'
 ALBUM_PATH = '/var/picture-book/www/data/xmly-albums.json'
 
