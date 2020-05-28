@@ -223,8 +223,8 @@ def xmly_book(*, id=None):
     albums = None
     if book:
         book = book[0]
-        book['audio'] = f"/xmly-books/{book['recordTitle'].replace('|', '')}/{book['recordTitle'].replace('|', '')}.m4a"
-        book_json_name = f"{XMLY_BASE_PATH}/{book['recordTitle'].replace('|', '')}/{book['recordId']}.{book['recordTitle']}.json"
+        book['audio'] = f"/xmly-books/{book['recordId']}.{book['recordTitle'].replace('|', '')}/{book['recordTitle'].replace('|', '')}.m4a"
+        book_json_name = f"{XMLY_BASE_PATH}/{book['recordId']}.{book['recordTitle'].replace('|', '')}/{book['recordId']}.{book['recordTitle']}.json"
         if os.path.exists(book_json_name):
             with open(book_json_name, 'r', encoding='utf-8') as f:
                 book_screen = json.load(f)
@@ -315,7 +315,7 @@ async def api_xmly_book_detail(*, id):
     book_screen = None
     if book:
         book = book[0]
-        book_json_name = f"{XMLY_BASE_PATH}/{book['recordTitle'].replace('|', '')}/{book['recordId']}.{book['recordTitle'].replace('|', '')}.json"
+        book_json_name = f"{XMLY_BASE_PATH}/{book['recordId']}.{book['recordTitle'].replace('|', '')}/{book['recordId']}.{book['recordTitle'].replace('|', '')}.json"
         if os.path.exists(book_json_name):
             with open(book_json_name, 'r', encoding='utf-8') as f:
                 book_screen = json.load(f)['screens']
