@@ -322,7 +322,7 @@ async def api_xmly_book_detail(*, id):
 
     if book_screen:
         for item in book_screen:
-            item['cover_url'] = f"/xmly-books/{book['recordTitle'].replace('|', '')}/imgs/{item['index']}.jpg"
+            item['cover_url'] = f"/xmly-books/{book['recordId']}.{book['recordTitle'].replace('|', '')}/imgs/{item['index']}.jpg"
 
     return dict(book_screen=book_screen)
 
