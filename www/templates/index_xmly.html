@@ -40,6 +40,13 @@
                 <div class="meta">
                     {{book.ageDesc}}
                 </div>
+                <div class="description">
+                    {% for album in albums %}
+                        {% if book.albumId == album.albumId %}
+                            {{ album.title }}
+                        {% endif %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
         {% endfor %}
