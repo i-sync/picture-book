@@ -74,10 +74,12 @@ class DataObject:
         return cls.yaya_books
 
     @classmethod
-    def get_xmly_books(cls, id=None):
+    def get_xmly_books(cls, id=None, albumid=None):
         if cls.xmly_books:
             if id:
                 return [book for book in cls.xmly_books if int(id) == book['recordId']]
+            elif albumid:
+                return [book for book in cls.xmly_books if int(albumid) == book['albumId']]
             else:
                 return cls.xmly_books
         json_file = f'{os.path.dirname(os.path.abspath(__file__))}/data/xmly-books.json'

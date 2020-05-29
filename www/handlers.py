@@ -164,14 +164,17 @@ def index(*, page='1', age=None, labelid=None):
 
 
 @get('/xmly')
-def xmly_index(*, page='1'):
+def xmly_index(*, page='1', albumid=None):
     page_index = get_page_index(page)
-    books = DataObject.get_xmly_books()
+    books = DataObject.get_xmly_books(albumid=albumid)
+    albums = DataObject.get_xmly_albums()
     num = len(books)
     p = Page(num, page_index)
     return {
         'page': p,
+        'albums': albums,
         'books': () if num == 0 else books[p.offset: p.offset + p.limit],
+        'current_album': albumid,
         '__template__': 'index_xmly.html'
     }
 

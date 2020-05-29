@@ -140,6 +140,12 @@ function filter_label(id){
     r.page = 1;
     location.assign('?' + $.param(r));
 }
+function filter_album(id){
+    var r = parseQueryString();
+    r.albumid = id;
+    r.page = 1;
+    location.assign('?' + $.param(r));
+}
 
 function paramsToObject(entries) {
   let result = {}
