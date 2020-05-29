@@ -14,7 +14,7 @@
     </h2>
     <div class="ui divider"></div>
 
-    <div>
+    <div class="ui labels">
         {% for album in albums %}
             {% if current_album == album.albumId|string %}
                 <a onclick="filter_album('{{album.albumId}}')" href="#" class="ui green label" tabindex="{{loop.index + 50}}"> {{album.title}}</a>

@@ -14,7 +14,7 @@
     </h2>
     <div class="ui divider"></div>
 
-    <div>
+    <div class="ui labels">
         {% for age in ages %}
             {% if current_age == age %}
                 <a onclick="filter_age('{{age}}')" href="#" class="ui green label" tabindex="{{loop.index + 10}}"> {{age}}</a>
@@ -29,7 +29,7 @@
         {% endif %}
     </div>
     <div class="ui divider"></div>
-    <div>
+    <div class="ui labels">
         {% for label in labels %}
             {% if current_label == label.id|string %}
                 <a onclick="filter_label('{{label.id}}')" href="#" class="ui green label" tabindex="{{loop.index + 50}}"> {{label.name}}</a>
