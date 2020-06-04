@@ -394,7 +394,7 @@
             <div class="chapter ui stackable three column grid">
                 <div class="column thumbnail" v-for="(item, i) in items.book_list"  v-bind:key="item.id" style="padding-bottom:0px;">
 
-                    <img v-bind:src="item.cover" v-bind:class="[index==i? 'active': '']" @click="handleUpdateIndex(i)" v-bind:tabindex="i+30"/>
+                    <img v-lazy="item.cover" v-bind:class="[index==i? 'active': '']" @click="handleUpdateIndex(i)" v-bind:tabindex="i+30"/>
                     <div>-- ${item.section} --</div>
                 </div>
             </div>
@@ -414,6 +414,7 @@
         price_type = {{book.priceType}}
         book_cover = '{{book.cover|format('300x300')}}';
         Vue.use(VueFullscreen.default);
+        Vue.use(VueLazyload);
         var player = {
             delimiters: ['$[', ']'],
             props:{
