@@ -292,7 +292,7 @@ async def api_yaya_book_detail(*, id):
         for item in book_list:
             item['cover'] = item['cover'].replace('http://', '//')
             item['audio_url'] = f"/yaya-books/{book['id']}.{book['name'].replace('|', '')}/audio/{item['name']}.mp3"
-            item['cover_url'] = f"/yaya-books/{book['id']}.{book['name'].replace('|', '')}/img/{item['name']}.webp"
+            item['cover_url'] = f"/yaya-books/{book['id']}.{book['name'].replace('|', '')}/img/{item['name']}"
             text_json_name = f"{YAYA_BASE_PATH}/{book['id']}.{book['name'].replace('|', '')}/json/{item['id']}.{item['name']}.json"
             if os.path.exists(text_json_name):
                 with open(text_json_name, 'r', encoding='utf-8') as f:
