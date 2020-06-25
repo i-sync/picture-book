@@ -17,7 +17,7 @@ def gen_index_data():
     res = []
     for root, dirs, files in os.walk(ROOT_PATH):
         # print(root)
-        if len(dirs) + len(files) != 5:
+        if len(dirs) + len(files) != 6:
             continue
         for data in files:
             if data.endswith('resourceDetail.json'):
