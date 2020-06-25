@@ -226,7 +226,7 @@
           ##Device = Tablets, Ipads (portrait)
           ##Screen = B/w 768px to 1024px
         */
-        @media (min-width: 768px) and (max-width: 1024px) {
+        @media (min-width: 810px) and (max-width: 1080px) {
             #player{
                 background-size: contain;
             }
@@ -236,7 +236,7 @@
           ##Device = Tablets, Ipads (landscape)
           ##Screen = B/w 768px to 1024px
         */
-        @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+        @media (min-width: 810px) and (max-width: 1080px) and (orientation: landscape) {
             #player{
                 background-size: contain;
             }
@@ -381,7 +381,8 @@
     <div class="ui equal width center aligned padded grid" id="div-book">
         <div class="eight wide column">
             <div class="navbar-left row" style="text-align: left">
-                <a href="#" onclick="javascript:window.history.back();" tabindex="10">
+
+                <a href="#" onclick="javascript:window.history.go(-1); return false;" tabindex="10">
                     <img class="navbar left" src="/static/res/button_back_nevbar.png">
                 </a>
             </div>
