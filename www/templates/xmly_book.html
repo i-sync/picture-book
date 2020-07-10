@@ -483,19 +483,24 @@
             },
             data: function(){
                 return {
-                    textShowing: false
+                    textShowing: false,
+                    styleChecked: false
                 }
             },
             template: `
-             <div  class="ui sixteen grid" id="player" v-bind:style="computedStyle(item.cover_url)">
+             <div  class="ui sixteen grid" id="player" v-bind:style="computedStyle(item.cover_url, styleChecked)">
                 <div class="first row">
                     <div class="two wide column">
                         <img class="navbar left" @click="closePlayer" src="/static/res/button_back_nevbar.png" tabindex="100">
                     </div>
-                    <div class="twelve wide column">
+                    <div class="ten wide column">
                         <!--img v-bind:src="item.cover_url" /-->
                     </div>
-                    <div class="two wide column" style="text-align: right;">
+                    <div class="four wide column" style="text-align: right;">
+                        <div class="ui toggle checkbox" style="vertical-align:top; margin-top:22px;">
+                          <input type="checkbox" v-model="styleChecked" name="background-style">
+                          <label></label>
+                        </div>
                         <img class="navbar right" @click="showLayer" src="/static/res/button_more_nevbar.png" style="margin-right: 0px;" tabindex="101"/>
                     </div>
                 </div>
@@ -534,11 +539,13 @@
                     this.textShowing = !this.textShowing;
                 },
 
-                computedStyle: function(cover){
-                    if($.isEmptyObject(cover)){
-                        return "";
+                computedStyle: function(cover, status){
+                    var res = "margin: 0px;";
+                    if(!$.isEmptyObject(cover)){
+                        res += " background-image: url('" + cover + "');"
                     }
-                    return "margin: 0px; background-image: url(\"" + cover + "\");";
+                    res += " background-size: " + (status? "cover":"contain");
+                    return res;
                 }
             }
         };
