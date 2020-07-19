@@ -5,7 +5,8 @@
 Url Handlers
 '''
 import os
-
+from random import shuffle
+from copy import deepcopy
 from aiohttp.web_request import FileField
 from logger import logger
 import re, time, json, hashlib, base64, asyncio
@@ -147,9 +148,12 @@ def signout(request):
 
 
 @get('/')
-def index(*, page='1', age=None, labelid=None):
+def index(*, page='1', age=None, labelid=None, random=None):
     page_index = get_page_index(page)
     books = DataObject.get_yaya_books(age=age, labelid=labelid)
+    if random == 'true':
+        books = deepcopy(books)
+        shuffle(books)
     num = len(books)
     p = Page(num, page_index)
     return {
@@ -158,15 +162,19 @@ def index(*, page='1', age=None, labelid=None):
         'labels': DataObject.get_labels(),
         'current_age': age,
         'current_label': labelid,
+        'current_random': random,
         'books': () if num == 0 else books[p.offset: p.offset + p.limit],
         '__template__': 'index.html'
     }
 
 
 @get('/xmly')
-def xmly_index(*, page='1', albumid=None):
+def xmly_index(*, page='1', albumid=None, random=None):
     page_index = get_page_index(page)
     books = DataObject.get_xmly_books(albumid=albumid)
+    if random == 'true':
+        books = deepcopy(books)
+        shuffle(books)
     albums = DataObject.get_xmly_albums()
     num = len(books)
     p = Page(num, page_index)
@@ -175,6 +183,7 @@ def xmly_index(*, page='1', albumid=None):
         'albums': albums,
         'books': () if num == 0 else books[p.offset: p.offset + p.limit],
         'current_album': albumid,
+        'current_random': random,
         '__template__': 'index_xmly.html'
     }
 

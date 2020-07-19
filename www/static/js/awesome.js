@@ -147,6 +147,12 @@ function filter_album(id){
     location.assign('?' + $.param(r));
 }
 
+function random_params(event){
+    var r = parseQueryString();
+    r.random = event.target.checked;
+    location.assign('?' + $.param(r));
+}
+
 function paramsToObject(entries) {
   let result = {}
   for(let entry of entries) { // each 'entry' is a [key, value] tupple

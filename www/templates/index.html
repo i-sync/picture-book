@@ -11,6 +11,10 @@
     <h2 class="ui header" tabindex="0">
         <a href="/">芽芽绘本</a> &nbsp;&nbsp;
         <a href="/xmly">喜马拉雅绘本</a>
+        <div class="ui toggle checkbox" style="float:right">
+            <input type="checkbox" onchange="random_params(event)"  {{'checked=checked' if current_random =='true' else ''}} name="random-showing">
+            <label>随机显示</label>
+        </div>
     </h2>
     <div class="ui divider"></div>
 
