@@ -28,6 +28,9 @@
             <a onclick="filter_album('')" href="#" class="ui label"> 重置 </a>
         {% endif %}
     </div>
+    <div class="ui divider"></div>
+    {{ pagination('?page=', page) }}
+    <br />
     <br />
     <div class="ui four stackable cards">
         {% for book in books %}
