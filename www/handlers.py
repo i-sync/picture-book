@@ -194,7 +194,7 @@ def yaya_book(*, id=None):
     book_data = None
     if book:
         book = book[0]
-        book_json_name = f"{YAYA_BASE_PATH}/{book['id']}.{book['name'].replace('|', '')}/{book['id']}.resourceDetail.json"
+        book_json_name = f"{YAYA_BASE_PATH}/{book['id']}.{book['name']}/{book['id']}.resourceDetail.json"
         if os.path.exists(book_json_name):
             with open(book_json_name, 'r', encoding='utf-8') as f:
                 book_data = json.load(f)['data']

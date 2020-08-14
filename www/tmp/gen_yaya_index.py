@@ -4,6 +4,7 @@
 import os
 import re
 import json
+from common import fixed_file_name
 
 ROOT_PATH = '/mnt/sda1/yaya-huiben'
 INDEX_PATH = '/var/picture-book/www/data/yaya-books.json'
@@ -27,7 +28,7 @@ def gen_index_data():
                 ds['ageDesc'] = jd['ageDesc']
                 ds['cover'] = jd['cover'].replace('http://', '//').replace('.png', '_%s.png')
                 ds['id'] = jd['id']
-                ds['name'] = jd['name']
+                ds['name'] = fixed_file_name(jd['name'])
                 ds['labelList'] = [la['id'] for la in jd['labelList']]
                 ds['totalChapter'] = jd['totalChapter']
                 res.append(ds)

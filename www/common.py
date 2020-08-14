@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # _*_ coding: utf-8 _*_
 
+import re
 import os
 import json
 
@@ -45,6 +46,13 @@ def merge(defaults, override):
             r[k] = v
 
     return r
+
+
+def fixed_file_name(file_name: str):
+    file_name = re.sub(r'\s', '-', file_name)
+    file_name = re.sub(r'[^\w\-_\. ]', '-', file_name)
+    file_name = re.sub(r'-{2,}', '-', file_name)
+    return file_name.strip('-')
 
 
 class DataObject:
