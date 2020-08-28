@@ -542,7 +542,8 @@
                 computedStyle: function(cover, status){
                     var res = "margin: 0px;";
                     if(!$.isEmptyObject(cover)){
-                        res += " background-image: url('" + cover + ".webp'), url('" + cover + ".png');"
+                        //res += " background-image: url('" + cover + ".webp'), url('" + cover + ".png');"
+                        res += " background-image: url('" + cover + "');"
                     }
                     res += " background-size: " + (status? "cover":"contain");
                     return res;
