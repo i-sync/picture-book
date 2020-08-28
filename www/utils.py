@@ -27,5 +27,9 @@ def get_cdn_url(path):
     timestamp = round(time.time())
     rand = ''.join(random.sample(string.ascii_letters + string.digits, random.randint(20, 30)))
     uid = 0
-    md5hash = hashlib.md5(f"/{urllib.parse.quote(path)}-{timestamp}-{rand}-{uid}-{configs.cdn.secret}".encode('utf-8')).hexdigest()
-    return f"https://cdn.picture.viagle.com/{urllib.parse.quote(path)}?sign={timestamp}-{rand}-{uid}-{md5hash}"
+    md5hash = hashlib.md5(f"{urllib.parse.quote(path)}-{timestamp}-{rand}-{uid}-{configs.cdn.secret}".encode('utf-8')).hexdigest()
+    return f"https://cdn.picture.viagle.com{urllib.parse.quote(path)}?sign={timestamp}-{rand}-{uid}-{md5hash}"
+
+if __name__ == "__main__":
+    key = "/xmly-books/3340428000.%E5%92%8C%E8%B0%81%E9%85%8D%E5%AF%B9%E5%91%A2/%E5%92%8C%E8%B0%81%E9%85%8D%E5%AF%B9%E5%91%A2.m4a"
+    print(get_cdn_url(key))
