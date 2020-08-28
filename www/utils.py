@@ -30,6 +30,14 @@ def get_cdn_url(path):
     md5hash = hashlib.md5(f"{urllib.parse.quote(path)}-{timestamp}-{rand}-{uid}-{configs.cdn.secret}".encode('utf-8')).hexdigest()
     return f"https://cdn.picture.viagle.com{urllib.parse.quote(path)}?sign={timestamp}-{rand}-{uid}-{md5hash}"
 
+
+def verify_sign(path, sign):
+    #print(f"===================> {path}, {sign}")
+    if not path or not sign or sign.count('-') != 3:
+        return False
+    timestamp, rand, uid, md5hash = sign.split('-')
+    return md5hash == hashlib.md5(f"{urllib.parse.quote(path)}-{timestamp}-{rand}-{uid}-{configs.cdn.secret}".encode('utf-8')).hexdigest()
+
 if __name__ == "__main__":
     key = "/xmly-books/3340428000.%E5%92%8C%E8%B0%81%E9%85%8D%E5%AF%B9%E5%91%A2/%E5%92%8C%E8%B0%81%E9%85%8D%E5%AF%B9%E5%91%A2.m4a"
     print(get_cdn_url(key))

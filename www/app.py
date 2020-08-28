@@ -15,6 +15,7 @@ from jinja2 import Environment, FileSystemLoader
 from coreweb import add_routes, add_static
 from handlers import cookie2user, COOKIE_NAME
 from config import configs
+from utils import verify_sign
 
 
 def init_jinja2(app, **kwargs):
@@ -72,6 +73,11 @@ async def auth_factory(app, handler):
             if user:
                 # logger.info('set current user: {}'.format(user['username']))
                 request.__user__ = user
+        # handle cdn static request
+        if request.path.startswith(('/yaya-books/', '/xmly-books/')) \
+                and 'sign' in request.query \
+                and verify_sign(request.path, request.query['sign']):
+            return await handler(request)
         if not request.path.startswith('/static') \
                 and not request.path.startswith('/signin') \
                 and not request.path.startswith('/api/authenticate') \
