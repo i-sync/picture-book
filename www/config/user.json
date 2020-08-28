@@ -23,5 +23,8 @@
   "books": {
     "yaya_base_path": "/mnt/sda1/yaya-huiben",
     "xmly_base_path": "/mnt/sda1/xmly-huiben"
+  },
+  "cdn": {
+    "secret": "xxx"
   }
 }

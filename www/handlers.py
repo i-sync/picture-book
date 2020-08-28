@@ -16,7 +16,7 @@ from apis import APIValueError, APIError, APIResourceNotFoundError, APIPermissio
 from coreweb import get, post
 
 from aiohttp import web
-from config import configs, usernames
+from config import configs, usernames, get_cdn_url
 from common import toDict, DataObject
 
 _RE_EMAIL = re.compile(r'^[a-z0-9\.\-\_]+\@[a-z0-9\-\_]+(\.[a-z0-9\-\_]+){1,4}$')
@@ -235,7 +235,7 @@ def xmly_book(*, id=None):
     albums = None
     if book:
         book = book[0]
-        book['audio'] = f"/xmly-books/{book['recordId']}.{book['recordTitle'].replace('|', '')}/{book['recordTitle'].replace('|', '')}.m4a"
+        book['audio'] = get_cdn_url(f"/xmly-books/{book['recordId']}.{book['recordTitle'].replace('|', '')}/{book['recordTitle'].replace('|', '')}.m4a")
         book_json_name = f"{XMLY_BASE_PATH}/{book['recordId']}.{book['recordTitle'].replace('|', '')}/{book['recordId']}.{book['recordTitle']}.json"
         if os.path.exists(book_json_name):
             with open(book_json_name, 'r', encoding='utf-8') as f:
@@ -300,8 +300,8 @@ async def api_yaya_book_detail(*, id):
     if book_list:
         for item in book_list:
             item['cover'] = item['cover'].replace('http://', '//')
-            item['audio_url'] = f"/yaya-books/{book['id']}.{book['name'].replace('|', '')}/audio/{item['name']}.mp3"
-            item['cover_url'] = f"/yaya-books/{book['id']}.{book['name'].replace('|', '')}/img/{item['name']}"
+            item['audio_url'] = get_cdn_url(f"/yaya-books/{book['id']}.{book['name'].replace('|', '')}/audio/{item['name']}.mp3")
+            item['cover_url'] = get_cdn_url(f"/yaya-books/{book['id']}.{book['name'].replace('|', '')}/img/{item['name']}")
             text_json_name = f"{YAYA_BASE_PATH}/{book['id']}.{book['name'].replace('|', '')}/json/{item['id']}.{item['name']}.json"
             if os.path.exists(text_json_name):
                 with open(text_json_name, 'r', encoding='utf-8') as f:
@@ -334,7 +334,7 @@ async def api_xmly_book_detail(*, id):
 
     if book_screen:
         for item in book_screen:
-            item['cover_url'] = f"/xmly-books/{book['recordId']}.{book['recordTitle'].replace('|', '')}/imgs/{item['index']}.jpg"
+            item['cover_url'] = get_cdn_url(f"/xmly-books/{book['recordId']}.{book['recordTitle'].replace('|', '')}/imgs/{item['index']}.jpg")
 
     return dict(book_screen=book_screen)
 
