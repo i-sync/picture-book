@@ -16,8 +16,9 @@ from apis import APIValueError, APIError, APIResourceNotFoundError, APIPermissio
 from coreweb import get, post
 
 from aiohttp import web
-from config import configs, usernames, get_cdn_url
+from config import configs, usernames
 from common import toDict, DataObject
+from utils import get_cdn_url
 
 _RE_EMAIL = re.compile(r'^[a-z0-9\.\-\_]+\@[a-z0-9\-\_]+(\.[a-z0-9\-\_]+){1,4}$')
 _RE_SHA256 = re.compile(r'^[0-9a-f]{64}$')
