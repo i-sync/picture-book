@@ -2,10 +2,12 @@
 # _*_ coding: utf-8 _*_
 
 import re
+import time
 import string
 import hashlib
 import random
 import urllib.parse
+from config import configs
 
 
 def fixed_file_name(file_name: str):
