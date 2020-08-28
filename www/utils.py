@@ -15,7 +15,7 @@ def fixed_file_name(file_name: str):
     return file_name.strip('-')
 
 
-def get_cdn_url(cls, path):
+def get_cdn_url(path):
     '''
     Get cdn url
     :param cls:
