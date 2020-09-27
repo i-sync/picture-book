@@ -14,6 +14,8 @@ NOTSET	0
 '''
 
 logfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'log/picture.log')
+loginfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'log/login.log')
+
 
 #https://stackoverflow.com/questions/20240464/python-logging-file-is-not-working-when-using-logging-basicconfig
 #logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(threadName)-10s %(message)s')
@@ -24,6 +26,12 @@ handler = TimedRotatingFileHandler(logfile, when="midnight", interval=1, encodin
 handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s %(threadName)-10s %(message)s'))
 handler.suffix = "%Y%m%d"
 logger.addHandler(handler)
+
+login_logger = logging.getLogger(loginfile)
+login_logger.setLevel(logging.INFO)
+file_hander = logging.FileHandler(loginfile, encoding='utf-8')
+file_hander.setFormatter(logging.Formatter('%(asctime)s %(levelname)s %(threadName)-10s %(message)s'))
+login_logger.addHandler(file_hander)
 
 PAGE = 4096
 def tail(filepath, n=10):

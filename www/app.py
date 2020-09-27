@@ -2,7 +2,7 @@
 # _*_ coding: utf-8 _*_
 
 import logging
-from logger import logger
+from logger import logger, login_logger
 import os.path
 
 import asyncio
@@ -71,7 +71,7 @@ async def auth_factory(app, handler):
         if cookie_str:
             user = await cookie2user(cookie_str)
             if user:
-                # logger.info('set current user: {}'.format(user['username']))
+                login_logger.info(f"set current user: [{user['username']}] {request.path_qs}")
                 request.__user__ = user
         # handle cdn static request
         if request.path.startswith(('/yaya-books/', '/xmly-books/')) \

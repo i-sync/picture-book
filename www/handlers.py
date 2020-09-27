@@ -8,7 +8,7 @@ import os
 from random import shuffle
 from copy import deepcopy
 from aiohttp.web_request import FileField
-from logger import logger
+from logger import logger, login_logger
 import re, time, json, hashlib, base64, asyncio
 import markdown2
 
@@ -271,6 +271,10 @@ def authenticate(*, username, remember):
     user = find_user(username)
     if not user:
         raise APIValueError('username', '无效姓名！')
+
+    #record login
+    login_logger.info(user.username)
+
     # authenticate ok, set cookie
     r = web.Response()
     if remember:
@@ -278,7 +282,7 @@ def authenticate(*, username, remember):
     else:
         max_age = configs.cookie.max_age
     r.set_cookie(COOKIE_NAME, user2cookie(user, max_age), max_age=max_age, httponly=True)
-    user.name = ''
+    user.username = ''
     r.content_type = 'application/json'
     r.body = json.dumps(user, ensure_ascii=False).encode('utf-8')
     return r
