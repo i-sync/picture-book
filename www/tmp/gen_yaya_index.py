@@ -4,7 +4,7 @@
 import os
 import re
 import json
-from www.utils import fixed_file_name
+from ..utils import fixed_file_name
 
 ROOT_PATH = '/mnt/sda1/yaya-huiben'
 INDEX_PATH = '/var/picture-book/www/data/yaya-books.json'
