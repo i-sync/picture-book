@@ -71,7 +71,7 @@ async def auth_factory(app, handler):
         if cookie_str:
             user = await cookie2user(cookie_str)
             if user:
-                login_logger.info(f"set current user: [{user['username']}] {request.path_qs}")
+                login_logger.info(f"set current user: [{user.username}] {request.path_qs}")
                 request.__user__ = user
         # handle cdn static request
         if request.path.startswith(('/yaya-books/', '/xmly-books/')) \
