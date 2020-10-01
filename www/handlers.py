@@ -282,7 +282,7 @@ def authenticate(*, username, remember):
     else:
         max_age = configs.cookie.max_age
     r.set_cookie(COOKIE_NAME, user2cookie(user, max_age), max_age=max_age, httponly=True)
-    user.username = ''
+    #user.username = ''
     r.content_type = 'application/json'
     r.body = json.dumps(user, ensure_ascii=False).encode('utf-8')
     return r
