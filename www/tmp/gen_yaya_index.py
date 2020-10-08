@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8-*-
 
+import sys
+sys.path.append('..')
 import os
 import re
 import json
-from ..utils import fixed_file_name
+from utils import fixed_file_name
 
 ROOT_PATH = '/mnt/sda1/yaya-huiben'
 INDEX_PATH = '/var/picture-book/www/data/yaya-books.json'
@@ -20,6 +22,10 @@ exclude_ids = [
     2605,
     2606,
     2607,
+    2969,
+    2970,
+    2971,
+    2972,
     3062,
     3063,
     3064,
