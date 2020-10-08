@@ -9,6 +9,29 @@ from ..utils import fixed_file_name
 ROOT_PATH = '/mnt/sda1/yaya-huiben'
 INDEX_PATH = '/var/picture-book/www/data/yaya-books.json'
 
+exclude_ids = [
+    2598,
+    2599,
+    2600,
+    2601,
+    2602,
+    2603,
+    2604,
+    2605,
+    2606,
+    2607,
+    3062,
+    3063,
+    3064,
+    3065,
+    3066,
+    3164,
+    3165,
+    3278,
+    3279,
+    3280,
+    3281
+]
 
 def gen_index_data():
     # check file path
@@ -24,6 +47,9 @@ def gen_index_data():
             if data.endswith('resourceDetail.json'):
                 with open(f'{root}/{data}', 'r', encoding='utf-8') as f:
                     jd = json.load(f)['data']['resource']
+
+                if jd['id'] in exclude_ids:
+                    break
                 ds = {}
                 ds['ageDesc'] = jd['ageDesc']
                 ds['cover'] = jd['cover'].replace('http://', '//').replace('.png', '_%s.png')
