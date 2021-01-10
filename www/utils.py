@@ -42,7 +42,7 @@ def verify_sign(path, sign):
     return md5hash == hashlib.md5(f"{urllib.parse.quote(path)}-{timestamp}-{rand}-{uid}-{configs.cdn.secret}".encode('utf-8')).hexdigest()
 
 
-def read_json_file(cls, file_path):
+def read_json_file(file_path):
     json_file = f'{os.path.dirname(os.path.abspath(__file__))}/files{file_path}'
     if not os.path.exists(json_file):
         #download json file form cdn
