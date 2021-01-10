@@ -4,7 +4,9 @@
 import re
 import os
 import json
+import requests
 
+from utils import get_cdn_url
 
 class Dict(dict):
     '''
@@ -111,3 +113,19 @@ class DataObject:
             cls.labels = json.load(f)['data']['labelList']
 
         return cls.labels
+
+    @classmethod
+    def read_json_file(cls, file_path):
+        json_file = f'{os.path.dirname(os.path.abspath(__file__))}/files{file_path}'
+        if not os.path.exists(json_file):
+            #download json file form cdn
+            if not os.path.exists(os.path.dirname(json_file)):
+                os.makedirs(os.path.dirname(json_file))
+            file_url = get_cdn_url(file_path)
+            res = requests.get(file_url)
+            if res.status_code == requests.codes.ok:
+                with open(json_file, 'w+', encoding='utf-8') as f:
+                    f.write(res.content)
+
+        with open(json_file, 'r', encoding='utf-8') as f:
+            return json.load(f)
