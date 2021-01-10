@@ -5,8 +5,6 @@ import re
 import os
 import json
 
-from utils import get_cdn_url
-
 class Dict(dict):
     '''
     Simple dict but support access as x.y style.
