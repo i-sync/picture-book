@@ -165,8 +165,8 @@ async def init(loop):
     add_routes(app, 'handlers')
     add_static(app)
     # app.router.add_route('GET', '/', index)
-    srv = await loop.create_server(app.make_handler(), '0.0.0.0', 8000)
-    logger.info('Server started at http://127.0.0.1:8000...')
+    srv = await loop.create_server(app.make_handler(), '0.0.0.0', 8030)
+    logger.info('Server started at http://127.0.0.1:8030...')
     return srv
 
 
