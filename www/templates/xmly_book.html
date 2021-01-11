@@ -7,7 +7,7 @@
     <style>
         #div-book {
             height: 100%;
-            background-image:url('/static/res/book_background.png'); */
+            background-image:url('/static/res/book_background.png');
             background-position-y: center;
             background-position-x: center;
             background-size: cover;
@@ -383,14 +383,14 @@
             <div class="navbar-left row" style="text-align: left">
 
                 <a href="#" onclick="javascript:window.history.go(-1); return false;" tabindex="10">
-                    <img class="navbar left" src="/static/res/button_back_nevbar.png">
+                    <img class="navbar left" src="https://minio.cdn.viagle.com/static/res/button_back_nevbar.png">
                 </a>
             </div>
             <div class="row">
                 <div class="cover">
                     <img class="cover" ref="cover" src="{{book.coverPath}}">
-                    <img v-if="priceType" class="free" src="/static/res/label_recommend.png">
-                    <img class="play-icon" @click="handleShowPlayer" src="/static/res/button_play_picture_book.png" tabindex="12">
+                    <img v-if="priceType" class="free" src="https://minio.cdn.viagle.com/static/res/label_recommend.png">
+                    <img class="play-icon" @click="handleShowPlayer" src="https://minio.cdn.viagle.com/static/res/button_play_picture_book.png" tabindex="12">
                 </div>
                 <div class="ui five column grid cover-desc" style="margin: 5px 0 0 0; ">
                     <div class="one column"></div>
@@ -410,14 +410,14 @@
         </div>
         <div class="eight wide column">
             <div class="navbar-right row" style="text-align: right">
-                <img class="navbar right" @click="handleShowLayer" src="/static/res/button_more_nevbar.png" tabindex="11">
+                <img class="navbar right" @click="handleShowLayer" src="https://minio.cdn.viagle.com/static/res/button_more_nevbar.png" tabindex="11">
             </div>
             <div class="content">
             {{ album.richIntro | safe }}
             </div>
             <!--div class="content">
                 <div class="row" style="text-align: left; display: flex;">
-                    <img class="avatar" src="/static/res/img_anchor_avatar.png">
+                    <img class="avatar" src="https://minio.cdn.viagle.com/static/res/img_anchor_avatar.png">
                     <span>
                         未知
                     </span>
@@ -443,7 +443,7 @@
         <div class="eight wide column" style="background: #fff; padding: 0px; height:100%; overflow: hidden;">
             <div class="chapter-header ">
                 <p>目录</p>
-                <img class="close" src="/static/res/button_close_popup.png" @click="handleCloseLayer" tabindex="30"/>
+                <img class="close" src="https://minio.cdn.viagle.com/static/res/button_close_popup.png" @click="handleCloseLayer" tabindex="30"/>
             </div>
             <div class="chapter ui stackable three column grid">
                 <div class="column thumbnail" v-for="(item, i) in items"  v-bind:key="item.index" style="padding-bottom:0px;">
@@ -491,7 +491,7 @@
              <div  class="ui sixteen grid" id="player" v-bind:style="computedStyle(item.cover_url, styleChecked)">
                 <div class="first row">
                     <div class="two wide column">
-                        <img class="navbar left" @click="closePlayer" src="/static/res/button_back_nevbar.png" tabindex="100">
+                        <img class="navbar left" @click="closePlayer" src="https://minio.cdn.viagle.com/static/res/button_back_nevbar.png" tabindex="100">
                     </div>
                     <div class="ten wide column">
                         <!--img v-bind:src="item.cover_url" /-->
@@ -501,7 +501,7 @@
                           <input type="checkbox" v-model="styleChecked" name="background-style">
                           <label></label>
                         </div>
-                        <img class="navbar right" @click="showLayer" src="/static/res/button_more_nevbar.png" style="margin-right: 0px;" tabindex="101"/>
+                        <img class="navbar right" @click="showLayer" src="https://minio.cdn.viagle.com/static/res/button_more_nevbar.png" style="margin-right: 0px;" tabindex="101"/>
                     </div>
                 </div>
                 <div class="second row">
@@ -510,10 +510,10 @@
 
                         </div>
                         <div class="book-cover-icon" @click="playAudio">
-                            <img v-if="playing" ref="play_button" tabindex="102" src="/static/res/icon_pause_picture_book.png">
-                            <img v-else ref="play_button" tabindex="102" src="/static/res/icon_play_picture_book.png">
+                            <img v-if="playing" ref="play_button" tabindex="102" src="https://minio.cdn.viagle.com/static/res/icon_pause_picture_book.png">
+                            <img v-else ref="play_button" tabindex="102" src="https://minio.cdn.viagle.com/static/res/icon_play_picture_book.png">
                         </div>
-                        <img class="img-text-icon" @click="toggleText" src="/static/res/btn_text_picture_book.png">
+                        <img class="img-text-icon" @click="toggleText" src="https://minio.cdn.viagle.com/static/res/btn_text_picture_book.png">
                     </div>
                     <div class="desc" v-bind:class="[textShowing? 'showing': 'hidden']">
                         $[item.content]
