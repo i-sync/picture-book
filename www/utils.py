@@ -52,7 +52,7 @@ def read_json_file(file_path):
         res = requests.get(file_url)
         if res.status_code == requests.codes.ok:
             with open(json_file, 'w+', encoding='utf-8') as f:
-                f.write(res.content)
+                f.write(res.text)
 
     with open(json_file, 'r', encoding='utf-8') as f:
         return json.load(f)
