@@ -5,9 +5,9 @@ import os
 import re
 import json
 
-ROOT_PATH = '/var/picture-book/www/data/xmly-json'
-INDEX_PATH = '/var/picture-book/www/data/xmly-books.json'
-ALBUM_PATH = '/var/picture-book/www/data/xmly-albums.json'
+ROOT_PATH = '/var/www/picture-book/www/data/xmly-json'
+INDEX_PATH = '/var/www/picture-book/www/data/xmly-books.json'
+ALBUM_PATH = '/var/www/picture-book/www/data/xmly-albums.json'
 
 #ROOT_PATH = 'c:/source/python/picture-book/www/data/xmly-json'
 #INDEX_PATH = 'c:/source/python/picture-book/www/data/xmly-books.json'

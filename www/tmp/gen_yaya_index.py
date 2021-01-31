@@ -2,14 +2,12 @@
 # -*- coding: utf-8-*-
 
 import sys
-sys.path.append('..')
 import os
 import re
 import json
-from utils import fixed_file_name
 
-ROOT_PATH = '/mnt/sda1/yaya-huiben'
-INDEX_PATH = '/var/picture-book/www/data/yaya-books.json'
+ROOT_PATH = '/var/www/picture-book/www/files/yaya-huiben'
+INDEX_PATH = '/var/www/picture-book/www/data/yaya-books.json'
 
 exclude_ids = [
     2598,
@@ -39,6 +37,12 @@ exclude_ids = [
     3281
 ]
 
+def fixed_file_name(file_name: str):
+    file_name = re.sub(r'\s', '-', file_name)
+    file_name = re.sub(r'[^\w\-_\. ]', '-', file_name)
+    file_name = re.sub(r'-{2,}', '-', file_name)
+    return file_name.strip('-')
+
 def gen_index_data():
     # check file path
     if os.path.exists(INDEX_PATH):
@@ -47,7 +51,7 @@ def gen_index_data():
     res = []
     for root, dirs, files in os.walk(ROOT_PATH):
         # print(root)
-        if len(dirs) + len(files) != 6:
+        if len(dirs) + len(files) != 3:
             continue
         for data in files:
             if data.endswith('resourceDetail.json'):
