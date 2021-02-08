@@ -210,7 +210,7 @@ def yaya_book(*, id=None):
         'labelList': ['爱与情感', '生命', '温暖', '亲情', '友情', '动物']
     }
     if book_data:
-        res_data['announcer'] = book_data['announcer']['nickName']
+        res_data['announcer'] = book_data['announcer']['nickName'] if 'announcer' in book_data and 'nickName' in book_data['announcer'] else '未知'
         res_data['id'] = book_data['resource']['id']
         res_data['name'] = book_data['resource']['name']
         res_data['ageDesc'] = book_data['resource']['ageDesc']
