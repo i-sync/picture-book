@@ -74,7 +74,7 @@ async def auth_factory(app, handler):
                 login_logger.info(f"set current user: [{user.username}] {request.path_qs}")
                 request.__user__ = user
         # handle cdn static request
-        if request.path.startswith(('/yaya-books/', '/xmly-books/')) \
+        if request.path.startswith(('/yaya-huiben/', '/xmly-huiben/')) \
                 and 'sign' in request.query \
                 and verify_sign(request.path, request.query['sign']):
             return await handler(request)
