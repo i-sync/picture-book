@@ -55,7 +55,7 @@
         {% for book in books %}
         <div class="card" tabindex="{{loop.index + 100}}">
             <a class="image" href="/yaya-book?id={{book.id}}">
-                <img class="lazy" data-original="{{book.cover|format('600x600')}}">
+                <img class="lazy" data-original="{{book.cover|format('600x600')}}" referrerpolicy="no-referrer">
             </a>
             <div class="content">
                 <a href="/yaya-book?id={{book.id}}" class="header">{{book.id}}.{{book.name}}</a>

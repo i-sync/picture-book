@@ -388,7 +388,7 @@
             </div>
             <div class="row">
                 <div class="cover">
-                    <img class="cover" ref="cover" src="{{book.cover|format('600x600')}}">
+                    <img class="cover" ref="cover" src="{{book.cover|format('600x600')}}" referrerpolicy="no-referrer">
                     <img v-if="priceType" class="free" src="/static/res/label_recommend.png">
                     <img class="play-icon" @click.stop="handleShowPlayer" src="/static/res/button_play_picture_book.png" tabindex="12">
                 </div>

@@ -40,7 +40,7 @@
         {% for book in books %}
         <div class="card" tabindex="{{loop.index + 100}}">
             <a class="image" href="/xmly-book?id={{book.recordId}}">
-                <img class="lazy" data-original="{{book.coverPath}}">
+                <img class="lazy" data-original="{{book.coverPath}}" referrerpolicy="no-referrer">
             </a>
             <div class="content">
                 <a href="/xmly-book?id={{book.recordId}}" class="header">{{book.recordTitle}}</a>
