@@ -153,6 +153,12 @@ function random_params(event){
     location.assign('?' + $.param(r));
 }
 
+function goto_book(id){
+    var r = parseQueryString();
+    r.id = id
+    location.assign('?' + $.param(r));
+}
+
 function paramsToObject(entries) {
   let result = {}
   for(let entry of entries) { // each 'entry' is a [key, value] tupple
@@ -470,7 +476,7 @@ if (typeof(Vue)!=='undefined') {
                 }
                 return l;
             }
-        }, 
+        },
         methods:{
             gotoPage: function(i) {
                 var r = parseQueryString();

@@ -4,6 +4,13 @@
 
 {% block beforehead %}
 
+<script>
+    function addReferer(id)
+    {
+        location.href ="/yaya-book?id=" +id + "&refer=" + encodeURIComponent(document.referrer);
+    }
+</script>
+
 {% endblock %}
 
 {% block content %}
@@ -54,11 +61,11 @@
     <div class="ui four stackable cards">
         {% for book in books %}
         <div class="card" tabindex="{{loop.index + 100}}">
-            <a class="image" href="/yaya-book?id={{book.id}}">
+            <a class="image" onclick="addReferer({{book.id}});return false;" href="#">
                 <img class="lazy" data-original="{{book.cover|format('600x600')}}" referrerpolicy="no-referrer">
             </a>
             <div class="content">
-                <a href="/yaya-book?id={{book.id}}" class="header">{{book.id}}.{{book.name}}</a>
+                <a onclick="addReferer({{book.id}});return false;" href="#" class="header">{{book.id}}.{{book.name}}</a>
                 <div class="meta">
                     {{book.ageDesc}}
                 </div>

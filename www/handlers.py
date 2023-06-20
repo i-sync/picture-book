@@ -11,6 +11,7 @@ from aiohttp.web_request import FileField
 from logger import logger, login_logger
 import re, time, json, hashlib, base64, asyncio
 import markdown2
+from urllib.parse import urlparse, parse_qs
 
 from apis import APIValueError, APIError, APIResourceNotFoundError, APIPermissionError, Page
 from coreweb import get, post
@@ -189,8 +190,48 @@ def xmly_index(*, page='1', albumid=None, random=None):
     }
 
 
+
+def yaya_book_next(id=None, page='1', age=None, labelid=None, random=None):
+    page_index = get_page_index(page)
+    books = DataObject.get_yaya_books(age=age, labelid=labelid)
+    if random == 'true':
+        books = deepcopy(books)
+        shuffle(books)
+        return books[0]["id"]
+    num = len(books)
+    p = Page(num, page_index)
+    res = books[p.offset: p.offset + p.limit]
+
+    if len(res) == 0:
+        return None
+    # if id is none, return first
+    if not id:
+        return res[0]["id"]
+    # if id is the last one, check next page.
+    if int(id) == res[-1]["id"]:
+        return yaya_book_next(id, page_index + 1, age, labelid, random)
+
+    for idx, b in enumerate(res):
+        if int(id) == b["id"]:
+            return res[idx+1]["id"]
+    return res[0]["id"]
+
 @get('/yaya-book')
-def yaya_book(*, id=None):
+def yaya_book(request, *, id=None, refer=None):
+    #refer = request.headers["Referer"]
+    #logger.info("asdf"+ refer)
+    #print("asdf"+ refer)
+    if refer:
+        parse_result = urlparse(refer)
+        dict_result = parse_qs(parse_result.query)
+        page = dict_result["page"][0] if "page" in dict_result else '1'
+        age = dict_result["age"][0] if "age" in dict_result else None
+        labelid = dict_result["labelid"][0] if "labelid" in dict_result else None
+        random = dict_result["random"][0] if "random" in dict_result else False
+        next_id = yaya_book_next(id, page, age, labelid, random)
+        logger.info(next_id)
+        print(next_id)
+
     book = DataObject.get_yaya_books(id=id)
     book_data = None
     if book:
@@ -220,6 +261,7 @@ def yaya_book(*, id=None):
         res_data['totalChapter'] = book_data['resource']['totalChapter']
         res_data['labelList'] = book_data['resource']['labelList']
         res_data['priceType'] = book_data['resource']['priceType']
+        res_data['next_id'] = next_id
 
     return {
         'book': toDict(res_data),
