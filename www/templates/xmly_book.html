@@ -379,11 +379,11 @@
 
     <fullscreen ref="fullscreen" class="fullscreen-wrapper">
         <a @click="toggle" href="#" class="tx-icon" tabindex="5"></a>
-    <div class="ui equal width center aligned padded grid" id="div-book">
+    <div @click="toggle" class="ui equal width center aligned padded grid" id="div-book">
         <div class="eight wide column">
             <div class="navbar-left row" style="text-align: left">
 
-                <a href="#" onclick="javascript:window.history.go(-1); return false;" tabindex="10">
+                <a href="#" @click.stop onclick="javascript:window.history.go(-1); return false;" tabindex="10">
                     <img class="navbar left" src="/static/res/button_back_nevbar.png">
                 </a>
             </div>
@@ -391,7 +391,7 @@
                 <div class="cover">
                     <img class="cover" ref="cover" src="{{book.coverPath}}">
                     <img v-if="priceType" class="free" src="/static/res/label_recommend.png">
-                    <img class="play-icon" @click="handleShowPlayer" src="/static/res/button_play_picture_book.png" tabindex="12">
+                    <img class="play-icon" @click.stop="handleShowPlayer" src="/static/res/button_play_picture_book.png" tabindex="12">
                 </div>
                 <div class="ui five column grid cover-desc" style="margin: 5px 0 0 0; ">
                     <div class="one column"></div>
@@ -411,7 +411,7 @@
         </div>
         <div class="eight wide column">
             <div class="navbar-right row" style="text-align: right">
-                <img class="navbar right" @click="handleShowLayer" src="/static/res/button_more_nevbar.png" tabindex="11">
+                <img class="navbar right" @click.stop="handleShowLayer" src="/static/res/button_more_nevbar.png" tabindex="11">
             </div>
             <div class="content">
             {{ album.richIntro | safe }}
@@ -457,7 +457,7 @@
     </div>
 
 
-    <player v-if="showPlayer" @close="handleClosePlayer" @show="handleShowLayer" @play="handlePlayAudio" v-bind:item="chapter" v-bind:playing="playing" v-bind:cover="cover"></player>
+    <player v-if="showPlayer" @toggle="toggle" @close="handleClosePlayer" @show="handleShowLayer" @play="handlePlayAudio" v-bind:item="chapter" v-bind:playing="playing" v-bind:cover="cover"></player>
 
     </fullscreen>
 </div>
@@ -489,20 +489,20 @@
                 }
             },
             template: `
-             <div  class="ui sixteen grid" id="player" v-bind:style="computedStyle(item.cover_url, styleChecked)">
+             <div @click="toggle" class="ui sixteen grid" id="player" v-bind:style="computedStyle(item.cover_url, styleChecked)">
                 <div class="first row">
                     <div class="two wide column">
-                        <img class="navbar left" @click="closePlayer" src="/static/res/button_back_nevbar.png" tabindex="100">
+                        <img class="navbar left" @click.stop="closePlayer" src="/static/res/button_back_nevbar.png" tabindex="100">
                     </div>
                     <div class="ten wide column">
                         <!--img v-bind:src="item.cover_url" /-->
                     </div>
                     <div class="four wide column" style="text-align: right;">
                         <div class="ui toggle checkbox" style="vertical-align:top; margin-top:22px;">
-                          <input type="checkbox" v-model="styleChecked" name="background-style">
+                          <input type="checkbox" v-model="styleChecked" @click.stop name="background-style">
                           <label></label>
                         </div>
-                        <img class="navbar right" @click="showLayer" src="/static/res/button_more_nevbar.png" style="margin-right: 0px;" tabindex="101"/>
+                        <img class="navbar right" @click.stop="showLayer" src="/static/res/button_more_nevbar.png" style="margin-right: 0px;" tabindex="101"/>
                     </div>
                 </div>
                 <div class="second row">
@@ -510,11 +510,11 @@
                         <div class="book-cover" v-bind:style="'background-image:url('+cover+');'" v-bind:class="[playing? 'running':'paused']">
 
                         </div>
-                        <div class="book-cover-icon" @click="playAudio">
+                        <div class="book-cover-icon" @click.stop="playAudio">
                             <img v-if="playing" ref="play_button" tabindex="102" src="/static/res/icon_pause_picture_book.png">
                             <img v-else ref="play_button" tabindex="102" src="/static/res/icon_play_picture_book.png">
                         </div>
-                        <img class="img-text-icon" @click="toggleText" src="/static/res/btn_text_picture_book.png">
+                        <img class="img-text-icon" @click.stop="toggleText" src="/static/res/btn_text_picture_book.png">
                     </div>
                     <div class="desc" v-bind:class="[textShowing? 'showing': 'hidden']">
                         $[item.content]
@@ -523,6 +523,10 @@
             </div>
             `,
             methods:{
+                toggle: function(){
+                    this.$emit('toggle')
+                },
+
                 closePlayer: function(){
                     this.$emit('close');
                 },
@@ -626,6 +630,9 @@
                             }
                         });
                     }
+                    else if(autoplay){
+                        _this.handlePlayAudio(autoplay);
+                    }
                 },
 
                 handleCloseLayer: function(){
@@ -644,14 +651,16 @@
                     this.loadBookDetail(true);
 
                     //enter full screen
-                    if(!this.$refs['fullscreen'].getState()){
+                    //if(!this.$refs['fullscreen'].getState()){
                         this.$refs['fullscreen'].enter();
-                    }
+                    //}
                 },
 
-                handlePlayAudio: function(){
+                handlePlayAudio: function(forcePlay){
                     if(this.playing){
-                        this.audioPause();
+                        if(!forcePlay){
+                            this.audioPause();
+                        }
                     }
                     else if(this.pausing){
                         this.audioPlay();
@@ -693,6 +702,9 @@
                     this.pausing = true;
                     this.audio.pause();
                 }
+            },
+            mounted(){
+                this.handleShowPlayer();
             }
         });
 
