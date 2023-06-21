@@ -42,21 +42,6 @@ def verify_sign(path, sign):
     return md5hash == hashlib.md5(f"{urllib.parse.quote(path)}-{timestamp}-{rand}-{uid}-{configs.cdn.secret}".encode('utf-8')).hexdigest()
 
 
-def read_json_file(file_path):
-    json_file = f'{os.path.dirname(os.path.abspath(__file__))}/files{file_path}'
-    if not os.path.exists(json_file):
-        #download json file form cdn
-        if not os.path.exists(os.path.dirname(json_file)):
-            os.makedirs(os.path.dirname(json_file))
-        file_url = get_cdn_url(file_path)
-        res = requests.get(file_url)
-        if res.status_code == requests.codes.ok:
-            with open(json_file, 'w+', encoding='utf-8') as f:
-                f.write(res.text)
-
-    with open(json_file, 'r', encoding='utf-8') as f:
-        return json.load(f)
-
 if __name__ == "__main__":
     key = "/xmly-books/3340428000.%E5%92%8C%E8%B0%81%E9%85%8D%E5%AF%B9%E5%91%A2/%E5%92%8C%E8%B0%81%E9%85%8D%E5%AF%B9%E5%91%A2.m4a"
     print(get_cdn_url(key))
