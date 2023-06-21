@@ -587,20 +587,21 @@
                         _this.audio.src = '/static/audio/huiben_read_finish_voice.mp3';
                         _this.audio.play();
                      }
-                     else {
+                     else if (next_id != 'None') {
                         goto_book(next_id);
-                        // return;
-                        // _this.playing = false;
-                        // _this.handleClosePlayer();
-                        // _this.handleCloseLayer();
-                        // //exit fullscreen
-                        // if(_this.$refs['fullscreen'].getState()){
-                        //     _this.$refs['fullscreen'].exit();
-                        // }
+                     }
+                     else {
+                        _this.playing = false;
+                        _this.handleClosePlayer();
+                        _this.handleCloseLayer();
+                        //exit fullscreen
+                        if(_this.$refs['fullscreen'].getState()){
+                            _this.$refs['fullscreen'].exit();
+                        }
 
-                        // //restore index = 0
-                        // _this.index = 0;
-                        // _this.chapter = _this.items.book_list[_this.index];
+                        //restore index = 0
+                        _this.index = 0;
+                        _this.chapter = _this.items.book_list[_this.index];
                      }
                 });
             },
