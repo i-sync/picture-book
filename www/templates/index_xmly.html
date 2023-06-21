@@ -4,6 +4,12 @@
 
 {% block beforehead %}
 
+<script>
+    function addReferer(id)
+    {
+        location.href ="/xmly-book?id=" +id + "&refer=" + encodeURIComponent(document.URL);
+    }
+</script>
 {% endblock %}
 
 {% block content %}
@@ -39,11 +45,11 @@
     <div class="ui four stackable cards">
         {% for book in books %}
         <div class="card" tabindex="{{loop.index + 100}}">
-            <a class="image" href="/xmly-book?id={{book.recordId}}">
+            <a class="image" href="#" onclick="addReferer({{book.recordId}})">
                 <img class="lazy" data-original="{{book.coverPath}}" referrerpolicy="no-referrer">
             </a>
             <div class="content">
-                <a href="/xmly-book?id={{book.recordId}}" class="header">{{book.recordTitle}}</a>
+                <a href="#" onclick="addReferer({{book.recordId}})" class="header">{{book.recordTitle}}</a>
                 <div class="meta">
                     {{book.ageDesc}}
                 </div>

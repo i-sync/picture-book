@@ -231,7 +231,6 @@ def yaya_book(request, *, id=None, refer=None):
         random = dict_result["random"][0] if "random" in dict_result else False
         next_id = yaya_book_next(id, page, age, labelid, random)
         logger.info(next_id)
-        print(next_id)
 
     book = DataObject.get_yaya_books(id=id)
     book_data = None
@@ -274,13 +273,49 @@ def yaya_book(request, *, id=None, refer=None):
     }
 
 
+def xmly_book_next(id=None, page='1', albumid=None, random=None):
+    page_index = get_page_index(page)
+    books = DataObject.get_xmly_books(albumid=albumid)
+    if random == 'true':
+        books = deepcopy(books)
+        shuffle(books)
+        return books[0]["recordId"]
+    num = len(books)
+    p = Page(num, page_index)
+    res = books[p.offset: p.offset + p.limit]
+
+    if len(res) == 0:
+        return None
+    # if id is none, return first
+    if not id:
+        return res[0]["recordId"]
+    # if id is the last one, check next page.
+    if int(id) == res[-1]["recordId"]:
+        return xmly_book_next(id, page_index + 1, albumid, random)
+
+    for idx, b in enumerate(res):
+        if int(id) == b["recordId"]:
+            return res[idx+1]["recordId"]
+    return res[0]["recordId"]
+
 @get('/xmly-book')
-def xmly_book(*, id=None):
+def xmly_book(request, *, id=None, refer=None):
+
+    next_id = None
+    if refer:
+        parse_result = urlparse(refer)
+        dict_result = parse_qs(parse_result.query)
+        page = dict_result["page"][0] if "page" in dict_result else '1'
+        albumid = dict_result["albumid"][0] if "albumid" in dict_result else None
+        random = dict_result["random"][0] if "random" in dict_result else False
+        next_id = xmly_book_next(id, page, albumid, random)
+
     book = DataObject.get_xmly_books(id=id)
     book_data = None
     albums = None
     if book:
         book = book[0]
+        book['next_id'] = next_id
         # book['audio'] = get_cdn_url(f"/{XMLY_BASE_PATH}/{book['recordId']}.{book['recordTitle'].replace('|', '')}/{book['recordTitle'].replace('|', '')}.m4a")
         # book_json_name = f"/{XMLY_BASE_PATH}/{book['recordId']}.{book['recordTitle'].replace('|', '')}/{book['recordId']}.{book['recordTitle']}.json"
         # book_screen = read_json_file(book_json_name)

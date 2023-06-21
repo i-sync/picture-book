@@ -466,6 +466,7 @@
 <script>
 
     $(function(){
+        next_id = '{{book.next_id}}';
         book_audio = '{{book.audio}}';
         book_cover = '{{book.coverPath}}';
         Vue.use(VueFullscreen.default);
@@ -579,6 +580,9 @@
                      if(++_this.index == _this.items.length){
                         _this.audio.src = '/static/audio/huiben_read_finish_voice.mp3';
                         _this.audio.play();
+                     }
+                     else if (next_id != 'None') {
+                        goto_book(next_id);
                      }
                      else {
                         _this.playing = false;
