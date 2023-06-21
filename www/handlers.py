@@ -221,6 +221,7 @@ def yaya_book(request, *, id=None, refer=None):
     #refer = request.headers["Referer"]
     #logger.info("asdf"+ refer)
     #print("asdf"+ refer)
+    next_id = None
     if refer:
         parse_result = urlparse(refer)
         dict_result = parse_qs(parse_result.query)
