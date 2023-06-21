@@ -230,7 +230,6 @@ def yaya_book(request, *, id=None, refer=None):
         labelid = dict_result["labelid"][0] if "labelid" in dict_result else None
         random = dict_result["random"][0] if "random" in dict_result else False
         next_id = yaya_book_next(id, page, age, labelid, random)
-        logger.info(next_id)
 
     book = DataObject.get_yaya_books(id=id)
     book_data = None

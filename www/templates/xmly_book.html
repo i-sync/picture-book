@@ -607,7 +607,7 @@
                     var cur = _this.audio.currentTime * 1000;
                     for(var i = 0; i<_this.items.length; i++){
                         var item = _this.items[i];
-                        if(item.displayTime.begin <= cur && cur <= item.displayTime.end && _this.index != i){
+                        if(item.displayTime.begin <= cur && (item.displayTime.end == 0 || item.displayTime.end != 0 && cur <= item.displayTime.end) && _this.index != i){
                             _this.index = i;
                             _this.chapter = _this.items[i];
                             break;
@@ -698,7 +698,10 @@
                 audioPlay: function(){
                     this.playing = true;
                     this.pausing = false;
-                    this.audio.play();
+                    try {
+                        this.audio.play();
+                    } catch{
+                    }
                 },
 
                 audioPause: function(){
