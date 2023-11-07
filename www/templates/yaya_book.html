@@ -703,6 +703,20 @@
             }
         });
 
+        $(".next-picture-book").click(function(){
+            //console.log("next one...");
+            if (next_id != 'None') {
+                goto_book(next_id);
+            }
+        });
+
+        $(".fullscreen-navigation").click(function(){
+            document.querySelector(".tx-icon").click();
+        });
+        // setTimeout(function(){
+        //     console.log("auto load...")
+        //     document.querySelector(".tx-icon").click();
+        // }, 1000);
     });
 </script>
 

@@ -715,6 +715,16 @@
             }
         });
 
+        $(".next-picture-book").click(function(){
+            //console.log("next one...");
+            if (next_id != 'None') {
+                goto_book(next_id);
+            }
+        });
+
+        $(".fullscreen-navigation").click(function(){
+            document.querySelector(".tx-icon").click();
+        });
     })
 </script>
 

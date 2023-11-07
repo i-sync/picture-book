@@ -109,8 +109,10 @@
 </head>
 <body>
     <div id="sidebar-menu" class="ui sidebar inverted vertical menu">
-        <a href="/" class="item"> Picture Book </a>
-        <a href="/about" class="item">关于</a>
+        <a tabindex="1" href="#" class="item fullscreen-navigation">全屏</a>
+        <a tabindex="2" href="/" class="item">芽芽绘本</a>
+        <a tabindex="3" href="/xmly" class="item">喜马拉雅绘本</a>
+        <a tabindex="4" href="#" class="item next-picture-book">下一个</a>
         {% if __user__ %}
             <a class="item" href="#">{{ __user__.username }}</a>
             {% if __user__.admin %}
@@ -122,8 +124,11 @@
     <div class="pusher">
         <div id="main-menu" class="ui inverted stackable massive menu">
             <div class="ui container">
-                <a href="/" class="item"> Picture Book </a>
-                <a href="/about" class="item">关于</a>
+                <a tabindex="1" href="#" class="item fullscreen-navigation">全屏</a>
+                <a tabindex="2" href="/" class="item">芽芽绘本</a>
+                <a tabindex="3" href="/xmly" class="item">喜马拉雅绘本</a>
+                <a tabindex="4" href="#" class="item next-picture-book">下一个</a>
+
 
                 <div class="right menu">
                     {% if __user__ %}
@@ -149,7 +154,7 @@
             <div class="push"></div>
         </div>
 
-        <div class="ui inverted vertical footer segment">
+        <!-- <div class="ui inverted vertical footer segment">
             <div class="ui center aligned container">
                 <div class="ui container">
                     <p>
@@ -162,7 +167,7 @@
                     <p><a href="https://www.xpath.org" target="_blank">www.xpath.org</a>. All rights reserved. </p>
                 </div>
             </div>
-        </div>
+        </div> -->
 
     </div>
 
