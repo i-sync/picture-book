@@ -11,7 +11,7 @@
     "name": "picture-book",
     "secret": "picture-book-u33oxrl1e6",
     "max_age": 3600,
-    "max_age_long": 2592000
+    "max_age_long": 31104000
   },
   "page_size": 100,
   "page_show": 10,
