@@ -25,19 +25,19 @@
     <h2 class="ui header">
         <!-- <a href="/">芽芽绘本</a> &nbsp;&nbsp;
         <a href="/xmly">喜马拉雅绘本</a> -->
-        <div class="ui checkbox" tabindex="5">
-            <input id="random-showing" type="checkbox" tabindex="7" onchange="random_params(event)"  {{'checked=checked' if current_random =='true' else ''}} name="random-showing">
-            <label for="random-showing" class="label pointer">随机显示</label>
+        <div class="ui checkbox">
+            <input id="random-showing" type="checkbox" tabindex="5" onchange="random_params(event)"  {{'checked=checked' if current_random =='true' else ''}} name="random-showing">
+            <label for="random-showing" class="label pointer" tabindex="6"><a href="#">随机显示</a></label>
         </div>
-        <div class="ui checkbox" tabindex="5">
+        <div class="ui checkbox">
             <input id="desc-order" type="checkbox" tabindex="7" onchange="desc_order(event)"  {{'checked=checked' if current_desc =='true' else ''}} name="desc-order">
-            <label for="desc-order" class="label pointer">倒序</label>
+            <label for="desc-order" class="label pointer" tabindex="8"><a href="#">倒序</a></label>
         </div>
 
         <div class="ui search">
             <div class="ui icon input">
-                <input id="keywords" class="prompt" type="text" tabindex="8" value="{{current_keyword if current_keyword else ''}}" placeholder="please input keywords...">
-                <i class="search icon pointer" style="pointer-events: auto;" tabindex="9"></i>
+                <input id="keywords" class="prompt" type="text" tabindex="10" value="{{current_keyword if current_keyword else ''}}" placeholder="please input keywords...">
+                <i class="search icon pointer" style="pointer-events: auto;" tabindex="11"></i>
             </div>
         </div>
     </h2>
@@ -46,15 +46,15 @@
     <div class="ui labels">
         {% for age in ages %}
             {% if current_age == age %}
-                <a onclick="filter_age('{{age}}')" href="#" class="ui green label" tabindex="{{loop.index + 10}}"> {{age}}</a>
+                <a onclick="filter_age('{{age}}')" href="#" class="ui green label" tabindex="{{loop.index + 20}}"> {{age}}</a>
             {% else %}
-                <a onclick="filter_age('{{age}}')" href="#" class="ui label" tabindex="{{loop.index + 10}}"> {{age}}</a>
+                <a onclick="filter_age('{{age}}')" href="#" class="ui label" tabindex="{{loop.index + 20}}"> {{age}}</a>
             {% endif %}
         {% endfor %}
         {% if current_age %}
-            <a onclick="filter_age('')" href="#" class="ui olive label"> 重置 </a>
+            <a onclick="filter_age('')" href="#" class="ui olive label" tabindex="40"> 重置 </a>
         {% else %}
-            <a onclick="filter_age('')" href="#" class="ui label"> 重置 </a>
+            <a onclick="filter_age('')" href="#" class="ui label" tabindex="40"> 重置 </a>
         {% endif %}
     </div>
     <div class="ui divider"></div>
@@ -67,9 +67,9 @@
             {% endif %}
         {% endfor %}
         {% if current_label %}
-            <a onclick="filter_label('')" href="#" class="ui olive label"> 重置 </a>
+            <a onclick="filter_label('')" href="#" class="ui olive label" tabindex="80"> 重置 </a>
         {% else %}
-            <a onclick="filter_label('')" href="#" class="ui label"> 重置 </a>
+            <a onclick="filter_label('')" href="#" class="ui label" tabindex="80"> 重置 </a>
         {% endif %}
     </div>
     <div class="ui divider"></div>
