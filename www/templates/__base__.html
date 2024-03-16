@@ -98,6 +98,11 @@
         .checkbox input:focus+label {
             border: #ccc 1px solid;
         }
+
+        .ui.search {
+            font-size: 1rem;
+            float: right;
+        }
     </style>
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -112,12 +117,14 @@
     </script>
     -->
     {% block beforehead %} {% endblock %}
+
+
 </head>
 <body>
     <div id="sidebar-menu" class="ui sidebar inverted vertical menu">
         <a tabindex="1" href="#" class="item fullscreen-navigation">全屏</a>
-        <a tabindex="2" href="/" class="item">芽芽绘本</a>
-        <a tabindex="3" href="/xmly" class="item">喜马拉雅绘本</a>
+        <a tabindex="2" href="/" class="item link_yaya">芽芽绘本</a>
+        <a tabindex="3" href="/xmly" class="item link_xmly">喜马拉雅绘本</a>
         <a tabindex="4" href="#" class="item next-picture-book">下一个</a>
         {% if __user__ %}
             <a class="item" href="#">{{ __user__.username }}</a>
@@ -131,8 +138,8 @@
         <div id="main-menu" class="ui inverted stackable massive menu">
             <div class="ui container">
                 <a tabindex="1" href="#" class="item fullscreen-navigation">全屏</a>
-                <a tabindex="2" href="/" class="item">芽芽绘本</a>
-                <a tabindex="3" href="/xmly" class="item">喜马拉雅绘本</a>
+                <a tabindex="2" href="/" class="item link_yaya">芽芽绘本</a>
+                <a tabindex="3" href="/xmly" class="item link_xmly">喜马拉雅绘本</a>
                 <a tabindex="4" href="#" class="item next-picture-book">下一个</a>
 
 
@@ -178,5 +185,20 @@
     </div>
 
     {% block endofbody %} {% endblock %}
+
+
+    <script>
+        $(function(){
+            var r = parseQueryString()
+            if (!!r.refer){
+                console.log("-----------", r.refer);
+                if (window.location.pathname == "/yaya-book") {
+                    $(".link_yaya").attr('href', r.refer);
+                } else if(window.location.pathname == "/xmly-book"){
+                    $(".link_xmly").attr('href', r.refer);
+                }
+            }
+        })
+    </script>
 </body>
 </html>

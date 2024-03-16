@@ -9,6 +9,13 @@
     {
         location.href ="/xmly-book?id=" +id + "&refer=" + encodeURIComponent(document.URL);
     }
+
+    $(function(){
+        $("i.search").click(function(){
+            var keywords = $("#keywords").val()
+            filter_keyword(keywords)
+        });
+    });
 </script>
 {% endblock %}
 
@@ -20,6 +27,13 @@
         <div class="ui checkbox" tabindex="5">
             <input type="checkbox" tabindex="7" onchange="random_params(event)"  {{'checked=checked' if current_random =='true' else ''}} name="random-showing">
             <label class="label pointer" >随机显示</label>
+        </div>
+
+        <div class="ui search">
+            <div class="ui icon input">
+                <input id="keywords" class="prompt" type="text" tabindex="8" value="{{current_keyword if current_keyword else ''}}" placeholder="please input keywords...">
+                <i class="search icon pointer" style="pointer-events: auto;" tabindex="9"></i>
+            </div>
         </div>
     </h2>
     <div class="ui divider"></div>

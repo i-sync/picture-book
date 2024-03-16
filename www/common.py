@@ -55,18 +55,18 @@ class DataObject:
     ages = ['0-2岁', '2-4岁', '4-6岁', '6-8岁', '>=8岁']
 
     @classmethod
-    def get_yaya_books(cls, id=None, age=None, labelid=None):
+    def get_yaya_books(cls, id=None, age=None, labelid=None, keyword=None):
         if cls.yaya_books:
             if id:
                 return [book for book in cls.yaya_books if int(id) == book['id']]
-            if labelid and age:
-                return [book for book in cls.yaya_books if int(labelid) in book['labelList'] and age == book['ageDesc']]
-            elif labelid:
-                return [book for book in cls.yaya_books if int(labelid) in book['labelList']]
-            elif age:
-                return [book for book in cls.yaya_books if age == book['ageDesc']]
-            else:
-                return cls.yaya_books
+            res = cls.yaya_books
+            if labelid:
+                res = [book for book in res if int(labelid) in book['labelList']]
+            if age:
+                res = [book for book in res if age == book['ageDesc']]
+            if keyword:
+                res = [book for book in res if book['name'].find(keyword) > -1 or str(book['id']).find(keyword) > -1 ]
+            return res
         json_file = f'{os.path.dirname(os.path.abspath(__file__))}/data/yaya-books.json'
         with open(json_file, 'r', encoding='utf-8') as f:
             cls.yaya_books = json.load(f)
@@ -74,12 +74,14 @@ class DataObject:
         return cls.yaya_books
 
     @classmethod
-    def get_xmly_books(cls, id=None, albumid=None):
+    def get_xmly_books(cls, id=None, albumid=None, keyword=None):
         if cls.xmly_books:
             if id:
                 return [book for book in cls.xmly_books if int(id) == book['recordId']]
             elif albumid:
                 return [book for book in cls.xmly_books if int(albumid) == book['albumId']]
+            elif keyword:
+                return [book for book in cls.xmly_books if book['recordTitle'].find(keyword) > -1]
             else:
                 return cls.xmly_books
         json_file = f'{os.path.dirname(os.path.abspath(__file__))}/data/xmly-books.json'

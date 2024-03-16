@@ -150,12 +150,15 @@ def signout(request):
 
 
 @get('/')
-def index(*, page='1', age=None, labelid=None, random=None):
+def index(*, page='1', age=None, labelid=None, keyword=None, random=None, desc_order=None):
     page_index = get_page_index(page)
-    books = DataObject.get_yaya_books(age=age, labelid=labelid)
+    books = DataObject.get_yaya_books(age=age, labelid=labelid, keyword=keyword)
     if random == 'true':
         books = deepcopy(books)
         shuffle(books)
+    elif desc_order == 'true':
+        books = deepcopy(books)
+        books = books[::-1]
     num = len(books)
     p = Page(num, page_index)
     return {
@@ -164,16 +167,18 @@ def index(*, page='1', age=None, labelid=None, random=None):
         'labels': DataObject.get_labels(),
         'current_age': age,
         'current_label': labelid,
+        'current_keyword': keyword,
         'current_random': random,
+        'current_desc': desc_order,
         'books': () if num == 0 else books[p.offset: p.offset + p.limit],
         '__template__': 'index.html'
     }
 
 
 @get('/xmly')
-def xmly_index(*, page='1', albumid=None, random=None):
+def xmly_index(*, page='1', albumid=None, keyword=None, random=None):
     page_index = get_page_index(page)
-    books = DataObject.get_xmly_books(albumid=albumid)
+    books = DataObject.get_xmly_books(albumid=albumid, keyword=keyword)
     if random == 'true':
         books = deepcopy(books)
         shuffle(books)
@@ -185,19 +190,23 @@ def xmly_index(*, page='1', albumid=None, random=None):
         'albums': albums,
         'books': () if num == 0 else books[p.offset: p.offset + p.limit],
         'current_album': albumid,
+        'current_keyword': keyword,
         'current_random': random,
         '__template__': 'index_xmly.html'
     }
 
 
 
-def yaya_book_next(id=None, page='1', age=None, labelid=None, random=None):
+def yaya_book_next(id=None, page='1', age=None, labelid=None, keyword=None, random=None, desc_order=None):
     page_index = get_page_index(page)
-    books = DataObject.get_yaya_books(age=age, labelid=labelid)
+    books = DataObject.get_yaya_books(age=age, labelid=labelid, keyword=keyword)
     if random == 'true':
         books = deepcopy(books)
         shuffle(books)
         return books[0]["id"]
+    elif desc_order == 'true':
+        books = deepcopy(books)
+        books = books[::-1]
     num = len(books)
     p = Page(num, page_index)
     res = books[p.offset: p.offset + p.limit]
@@ -209,7 +218,7 @@ def yaya_book_next(id=None, page='1', age=None, labelid=None, random=None):
         return res[0]["id"]
     # if id is the last one, check next page.
     if int(id) == res[-1]["id"]:
-        return yaya_book_next(id, page_index + 1, age, labelid, random)
+        return yaya_book_next(id, page_index + 1, age, labelid, keyword, random, desc_order)
 
     for idx, b in enumerate(res):
         if int(id) == b["id"]:
@@ -228,8 +237,11 @@ def yaya_book(request, *, id=None, refer=None):
         page = dict_result["page"][0] if "page" in dict_result else '1'
         age = dict_result["age"][0] if "age" in dict_result else None
         labelid = dict_result["labelid"][0] if "labelid" in dict_result else None
+        keyword = dict_result["keyword"][0] if "keyword" in dict_result else None
         random = dict_result["random"][0] if "random" in dict_result else False
-        next_id = yaya_book_next(id, page, age, labelid, random)
+        desc_order = dict_result["desc_order"][0] if "desc_order" in dict_result else False
+        next_id = yaya_book_next(id, page, age, labelid, keyword, random, desc_order)
+        # print(next_id, id, page, age, labelid, keyword, random, desc_order)
 
     book = DataObject.get_yaya_books(id=id)
     book_data = None
@@ -272,9 +284,9 @@ def yaya_book(request, *, id=None, refer=None):
     }
 
 
-def xmly_book_next(id=None, page='1', albumid=None, random=None):
+def xmly_book_next(id=None, page='1', albumid=None, keyword=None, random=None):
     page_index = get_page_index(page)
-    books = DataObject.get_xmly_books(albumid=albumid)
+    books = DataObject.get_xmly_books(albumid=albumid, keyword=keyword)
     if random == 'true':
         books = deepcopy(books)
         shuffle(books)
@@ -290,7 +302,7 @@ def xmly_book_next(id=None, page='1', albumid=None, random=None):
         return res[0]["recordId"]
     # if id is the last one, check next page.
     if int(id) == res[-1]["recordId"]:
-        return xmly_book_next(id, page_index + 1, albumid, random)
+        return xmly_book_next(id, page_index + 1, albumid, keyword, random)
 
     for idx, b in enumerate(res):
         if int(id) == b["recordId"]:
@@ -306,8 +318,9 @@ def xmly_book(request, *, id=None, refer=None):
         dict_result = parse_qs(parse_result.query)
         page = dict_result["page"][0] if "page" in dict_result else '1'
         albumid = dict_result["albumid"][0] if "albumid" in dict_result else None
+        keyword = dict_result["keyword"][0] if "keyword" in dict_result else None
         random = dict_result["random"][0] if "random" in dict_result else False
-        next_id = xmly_book_next(id, page, albumid, random)
+        next_id = xmly_book_next(id, page, albumid, keyword, random)
 
     book = DataObject.get_xmly_books(id=id)
     book_data = None

@@ -140,6 +140,14 @@ function filter_label(id){
     r.page = 1;
     location.assign('?' + $.param(r));
 }
+
+function filter_keyword(keyword){
+    var r = parseQueryString();
+    r.keyword = keyword;
+    r.page = 1;
+    location.assign('?' + $.param(r));
+}
+
 function filter_album(id){
     var r = parseQueryString();
     r.albumid = id;
@@ -150,6 +158,11 @@ function filter_album(id){
 function random_params(event){
     var r = parseQueryString();
     r.random = event.target.checked;
+    location.assign('?' + $.param(r));
+}
+function desc_order(event){
+    var r = parseQueryString();
+    r.desc_order = event.target.checked;
     location.assign('?' + $.param(r));
 }
 
