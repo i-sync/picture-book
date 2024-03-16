@@ -22,6 +22,10 @@
     .column {
       max-width: 450px;
     }
+    .pointer:hover { cursor: pointer !important; }
+    .checkbox input:focus+label {
+        border: #ccc 1px solid;
+    }
     </style>
 
     <script>
@@ -40,7 +44,7 @@
                 el: '#vm',
                 data: {
                     username: '',
-                    remember:''
+                    remember:'true'
                 },
                 methods: {
                     submit: function (event) {
@@ -88,8 +92,8 @@
                     <div class="inline field">
                         <button type="submit" class="ui large teal submit button">登录</button>
                         <div class="ui checkbox right">
-                            <input v-model="remember" type="checkbox" checked="checked" name="remember">
-                            <label>记住我</label>
+                            <input v-model="remember" type="checkbox" id="remember" name="remember">
+                            <label class="label pointer" for="remember">记住我</label>
                         </div>
                     </div>
 
