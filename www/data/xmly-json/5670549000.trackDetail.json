@@ -1,0 +1,301 @@
+{
+    "msg": "0",
+    "ret": 0,
+    "data": {
+        "albumId": 315272,
+        "albumType": 2,
+        "albumUid": 111421579,
+        "coverPath": "https://imagev2.xmcdn.com/group86/M08/67/22/wKg5IF7-4PGyseZ5AAOptzqkgAA151.png",
+        "hasFreeTrack": true,
+        "hbType": 1,
+        "isAuthorized": true,
+        "isFinished": 0,
+        "isSubscribe": false,
+        "isTryout": false,
+        "labelType": 1,
+        "playCount": 87631,
+        "recordCount": 26,
+        "recordList": [
+            {
+                "albumId": 315272,
+                "coverPath": "https://imagev2.xmcdn.com/group83/M0A/65/F6/wKg5I17-4-zBzKy6AAunZ3MMzlQ481.jpg",
+                "freePages": 0,
+                "freeType": 1,
+                "isAuthorized": true,
+                "isTryOut": true,
+                "recordId": 3092684000,
+                "recordTitle": "1细菌王国的优等生，斗笠",
+                "vipType": 1
+            },
+            {
+                "albumId": 315272,
+                "coverPath": "https://imagev2.xmcdn.com/group84/M01/67/4C/wKg5Hl7-4NbS2EG6AA68LPIYo2Y359.jpg",
+                "freePages": 0,
+                "freeType": 1,
+                "isAuthorized": true,
+                "isTryOut": true,
+                "recordId": 3092685000,
+                "recordTitle": "2谁的请柬？",
+                "vipType": 1
+            },
+            {
+                "albumId": 315272,
+                "coverPath": "https://imagev2.xmcdn.com/group84/M01/67/4A/wKg5Hl7-4NDykF3hABCoplmvw7I974.jpg",
+                "freePages": 0,
+                "freeType": 1,
+                "isAuthorized": true,
+                "isTryOut": true,
+                "recordId": 3092686000,
+                "recordTitle": "3爱放屁的厨师",
+                "vipType": 1
+            },
+            {
+                "albumId": 315272,
+                "coverPath": "https://imagev2.xmcdn.com/group84/M01/67/4A/wKg5Hl7-4M-BHhOsAAxTb83I5YM223.jpg",
+                "freeType": 0,
+                "isAuthorized": true,
+                "isTryOut": false,
+                "recordId": 3092687000,
+                "recordTitle": "4弟弟出生了",
+                "vipType": 1
+            },
+            {
+                "albumId": 315272,
+                "coverPath": "https://imagev2.xmcdn.com/group84/M01/67/4A/wKg5Hl7-4NHSW8xGAA1tlVtbc2Q028.jpg",
+                "freeType": 0,
+                "isAuthorized": true,
+                "isTryOut": false,
+                "recordId": 3092688000,
+                "recordTitle": "5国王和裁缝",
+                "vipType": 1
+            },
+            {
+                "albumId": 315272,
+                "coverPath": "https://imagev2.xmcdn.com/group86/M08/67/0C/wKg5Jl7-4Nrg_5J9AAuBUKGQELI251.jpg",
+                "freeType": 0,
+                "isAuthorized": true,
+                "isTryOut": false,
+                "recordId": 3092689000,
+                "recordTitle": "6想成为人类的章鱼公主",
+                "vipType": 1
+            },
+            {
+                "albumId": 315272,
+                "coverPath": "https://imagev2.xmcdn.com/group84/M01/67/4B/wKg5Hl7-4NPDirjPABJsahd8-Hk050.jpg",
+                "freeType": 0,
+                "isAuthorized": true,
+                "isTryOut": false,
+                "recordId": 3092690000,
+                "recordTitle": "7海美和魔法糖果",
+                "vipType": 1
+            },
+            {
+                "albumId": 315272,
+                "coverPath": "https://imagev2.xmcdn.com/group86/M08/67/0C/wKg5Jl7-4Nvjm8d5AAsnXqM9aDU781.jpg",
+                "freeType": 0,
+                "isAuthorized": true,
+                "isTryOut": false,
+                "recordId": 3092691000,
+                "recordTitle": "8长得和我一模一样的儿子",
+                "vipType": 1
+            },
+            {
+                "albumId": 315272,
+                "coverPath": "https://imagev2.xmcdn.com/group84/M01/67/4C/wKg5Hl7-4NnAU3mXAAnVSrV55fo901.jpg",
+                "freeType": 0,
+                "isAuthorized": true,
+                "isTryOut": false,
+                "recordId": 3092692000,
+                "recordTitle": "9小鸟找妈妈",
+                "vipType": 1
+            },
+            {
+                "albumId": 315272,
+                "coverPath": "https://imagev2.xmcdn.com/group84/M01/67/26/wKg5JF7-4NCSM4a2AA__ObI39bc112.jpg",
+                "freeType": 0,
+                "isAuthorized": true,
+                "isTryOut": false,
+                "recordId": 3092693000,
+                "recordTitle": "10不笑的公主",
+                "vipType": 1
+            },
+            {
+                "albumId": 315272,
+                "coverPath": "https://imagev2.xmcdn.com/group84/M01/67/27/wKg5JF7-4Nig3RrEABC0fi0Pb3U969.jpg",
+                "freeType": 0,
+                "isAuthorized": true,
+                "isTryOut": false,
+                "recordId": 3092694000,
+                "recordTitle": "11我长得像谁呢？",
+                "vipType": 1
+            },
+            {
+                "albumId": 315272,
+                "coverPath": "https://imagev2.xmcdn.com/group84/M01/67/27/wKg5JF7-4NTA5uXrABQmiibDo0Q550.jpg",
+                "freeType": 0,
+                "isAuthorized": true,
+                "isTryOut": false,
+                "recordId": 3092695000,
+                "recordTitle": "12马大哈博士引起的大骚动！",
+                "vipType": 1
+            },
+            {
+                "albumId": 315272,
+                "coverPath": "https://imagev2.xmcdn.com/group84/M01/67/26/wKg5JF7-4NLiWPrsAAzMj1I4wew107.jpg",
+                "freeType": 0,
+                "isAuthorized": true,
+                "isTryOut": false,
+                "recordId": 3092696000,
+                "recordTitle": "13不一样的宝宝？",
+                "vipType": 1
+            },
+            {
+                "albumId": 315272,
+                "coverPath": "https://imagev2.xmcdn.com/group84/M01/67/27/wKg5JF7-4NaScGEWABHx2wUcth8568.jpg",
+                "freeType": 0,
+                "isAuthorized": true,
+                "isTryOut": false,
+                "recordId": 3092697000,
+                "recordTitle": "14青蛙公主的新郎",
+                "vipType": 1
+            },
+            {
+                "albumId": 315272,
+                "coverPath": "https://imagev2.xmcdn.com/group84/M01/67/28/wKg5JF7-4NuAxA7RABQUzq57aE0538.jpg",
+                "freeType": 0,
+                "isAuthorized": true,
+                "isTryOut": false,
+                "recordId": 3092698000,
+                "recordTitle": "15蚱蜢设计师",
+                "vipType": 1
+            },
+            {
+                "albumId": 315272,
+                "coverPath": "https://imagev2.xmcdn.com/group84/M01/67/4C/wKg5Hl7-4NbT4JVNAA1RrnxxiYg844.jpg",
+                "freeType": 0,
+                "isAuthorized": true,
+                "isTryOut": false,
+                "recordId": 3092699000,
+                "recordTitle": "16谁吃了蒸糕？",
+                "vipType": 1
+            },
+            {
+                "albumId": 315272,
+                "coverPath": "https://imagev2.xmcdn.com/group84/M01/67/25/wKg5JF7-4M7R0d2GABDURdjsQPA566.jpg",
+                "freeType": 0,
+                "isAuthorized": true,
+                "isTryOut": false,
+                "recordId": 3092700000,
+                "recordTitle": "17胆小鬼臭鼬去猴子家",
+                "vipType": 1
+            },
+            {
+                "albumId": 315272,
+                "coverPath": "https://imagev2.xmcdn.com/group84/M01/67/27/wKg5JF7-4NaAbCq4AA3RPSdytoA044.jpg",
+                "freeType": 0,
+                "isAuthorized": true,
+                "isTryOut": false,
+                "recordId": 3092701000,
+                "recordTitle": "18蔬菜们生气了！",
+                "vipType": 1
+            },
+            {
+                "albumId": 315272,
+                "coverPath": "https://imagev2.xmcdn.com/group84/M01/67/26/wKg5JF7-4NOCqw4bABLveR5QS-4065.jpg",
+                "freeType": 0,
+                "isAuthorized": true,
+                "isTryOut": false,
+                "recordId": 3092702000,
+                "recordTitle": "19加油，狗尾巴草！",
+                "vipType": 1
+            },
+            {
+                "albumId": 315272,
+                "coverPath": "https://imagev2.xmcdn.com/group84/M01/67/27/wKg5JF7-4NXC5R_sAA_6rHdRB2M394.jpg",
+                "freeType": 0,
+                "isAuthorized": true,
+                "isTryOut": false,
+                "recordId": 3092703000,
+                "recordTitle": "20奶奶的礼物",
+                "vipType": 1
+            },
+            {
+                "albumId": 315272,
+                "coverPath": "https://imagev2.xmcdn.com/group84/M01/67/26/wKg5JF7-4NLzej0pABNFPcBJZRg285.jpg",
+                "freeType": 0,
+                "isAuthorized": true,
+                "isTryOut": false,
+                "recordId": 3092704000,
+                "recordTitle": "21黄金树的世界旅程",
+                "vipType": 1
+            },
+            {
+                "albumId": 315272,
+                "coverPath": "https://imagev2.xmcdn.com/group86/M08/67/1F/wKg5IF7-4NnQQDcmAA2hfqSJE6Y188.jpg",
+                "freeType": 0,
+                "isAuthorized": true,
+                "isTryOut": false,
+                "recordId": 3092705000,
+                "recordTitle": "22西国女王和农夫汉斯",
+                "vipType": 1
+            },
+            {
+                "albumId": 315272,
+                "coverPath": "https://imagev2.xmcdn.com/group84/M01/67/4C/wKg5Hl7-4NriKmTHAAmfvYbyDwU405.jpg",
+                "freeType": 0,
+                "isAuthorized": true,
+                "isTryOut": false,
+                "recordId": 3092706000,
+                "recordTitle": "23小小魔法师小麦的魔法药",
+                "vipType": 1
+            },
+            {
+                "albumId": 315272,
+                "coverPath": "https://imagev2.xmcdn.com/group84/M01/67/4B/wKg5Hl7-4NSSrRNVAA32ccoFeNI122.jpg",
+                "freeType": 0,
+                "isAuthorized": true,
+                "isTryOut": false,
+                "recordId": 3092707000,
+                "recordTitle": "24魔法植物的茎",
+                "vipType": 1
+            },
+            {
+                "albumId": 315272,
+                "coverPath": "https://imagev2.xmcdn.com/group84/M01/67/26/wKg5JF7-4NHz446MAAvIDdjJb5Q135.jpg",
+                "freeType": 0,
+                "isAuthorized": true,
+                "isTryOut": false,
+                "recordId": 3092708000,
+                "recordTitle": "25掉落在丛林的圣诞老爷爷",
+                "vipType": 1
+            },
+            {
+                "albumId": 315272,
+                "coverPath": "https://imagev2.xmcdn.com/group84/M01/67/4C/wKg5Hl7-4NrT2VCiAArTX_mGLOo850.jpg",
+                "freeType": 0,
+                "isAuthorized": true,
+                "isTryOut": false,
+                "recordId": 3092709000,
+                "recordTitle": "26寻找松蘑",
+                "vipType": 1
+            }
+        ],
+        "richIntro": "<p></p>\n<img src=\"https://imagev2.xmcdn.com/group83/M09/65/A4/wKg5HV7-4WGjjnh6AABVnC3vS6s217.png!op_type=2&columns=750&rows=0&magick=webp\" alt=\"undefined\" style=\"float:none;height: auto;width: auto\"/>\n<p></p>\n<img src=\"https://imagev2.xmcdn.com/group85/M08/67/19/wKg5H17-4WXCmWn2AAAYmWcDVgM708.png!op_type=2&columns=750&rows=0&magick=webp\" alt=\"undefined\" style=\"float:none;height: auto;width: auto\"/>\n<p><span style=\"color: rgb(101,101,101);background-color: rgb(255,255,255);font-size: 14px;font-family: \\\\9ED1体;\">韩国黄牛科普图书编辑委员会编著的这套《有梦想的科学家》</span> ，<span style=\"color: rgb(101,101,101);background-color: rgb(255,255,255);font-size: 14px;font-family: Hiragino Sans GB;\">通过阅读，可以让孩子轻松了解晦涩难懂的人体科学原理。通过书后知识点巩固环节，可以提高孩子综合性思考能力和创造力。</span></p>\n<img src=\"https://imagev2.xmcdn.com/group85/M04/66/F9/wKg5JV7-4yTAC8C2AAAgLN-slyk411.png!op_type=2&columns=750&rows=0&magick=webp\" alt=\"undefined\" style=\"float:none;height: auto;width: auto\"/>\n<p style=\"text-align:start;\"><span style=\"color: rgba(0,0,0,0.65);background-color: rgb(255,255,255);font-size: 14px;font-family: \\\\9ED1体;\">1. 3-6岁喜欢绘本的小朋友</span></p>\n<p style=\"text-align:start;\"><span style=\"color: rgba(0,0,0,0.65);background-color: rgb(255,255,255);font-size: 14px;font-family: \\\\9ED1体;\">2. 有求知欲的小朋友</span></p>\n<img src=\"https://imagev2.xmcdn.com/group86/M00/67/37/wKg5IF7-40rx-ZyEAAAdBcDbUIE476.png!op_type=2&columns=750&rows=0&magick=webp\" alt=\"undefined\" style=\"float:none;height: auto;width: auto\"/>\n<p><span style=\"color: rgba(0,0,0,0.65);background-color: rgb(255,255,255);font-size: 14px;font-family: \\\\9ED1体;\">1. </span><span style=\"color: rgb(101,101,101);background-color: rgb(255,255,255);font-size: 14px;font-family: \\\\9ED1体;\">提高孩子综合性思考能力和创造力</span>&nbsp;</p>\n<p style=\"text-align:start;\"><span style=\"color: rgba(0,0,0,0.65);background-color: rgb(255,255,255);font-size: 14px;font-family: \\\\9ED1体;\">2. 小朋友更加了解自己的身体</span>&nbsp;</p>",
+        "shortIntro": "本系列绘本共26本",
+        "signType": 0,
+        "status": 1,
+        "subscriptionCount": 397,
+        "tagList": [
+            {
+                "name": "科普百科",
+                "tagId": 12451
+            },
+            {
+                "name": "通识教育",
+                "tagId": 12473
+            }
+        ],
+        "title": "有梦想的科学家 自然之美",
+        "vipType": 1
+    }
+}
