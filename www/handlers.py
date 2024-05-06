@@ -25,8 +25,8 @@ _RE_EMAIL = re.compile(r'^[a-z0-9\.\-\_]+\@[a-z0-9\-\_]+(\.[a-z0-9\-\_]+){1,4}$'
 _RE_SHA256 = re.compile(r'^[0-9a-f]{64}$')
 COOKIE_NAME = configs.cookie.name
 _COOKIE_KEY = configs.cookie.secret
-YAYA_BASE_PATH = configs.books.yaya_base_path
-XMLY_BASE_PATH = configs.books.xmly_base_path
+YAYA_BASE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'yaya-huiben')
+XMLY_BASE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'xmly-huiben')
 
 '''
 ================== function ====================

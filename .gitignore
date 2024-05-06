@@ -20,6 +20,8 @@ __pycache__
 .idea/
 .DS_Store
 .vscode
-www/log/
+www/logs/*
+!www/logs/.gitkeep
+www/files/*
+!www/files/.gitignore
 venv/
-www/cover/

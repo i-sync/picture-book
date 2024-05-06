@@ -27,7 +27,7 @@
         <a href="/xmly">喜马拉雅绘本</a> -->
         <div class="ui checkbox">
             <input id="random-showing" type="checkbox" tabindex="5" onchange="random_params(event)"  {{'checked=checked' if current_random =='true' else ''}} name="random-showing">
-            <label for="random-showing" class="label pointer" tabindex="6"><a href="#">随机显示</a></label>
+            <label for="random-showing" class="label pointer" tabindex="6"><a href="javascript:void(0);"  style="pointer-events: none;" >随机显示</a></label>
         </div>
         <div class="ui checkbox">
             <input id="desc-order" type="checkbox" tabindex="7" onchange="desc_order(event)"  {{'checked=checked' if current_desc =='true' else ''}} name="desc-order">

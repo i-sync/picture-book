@@ -13,8 +13,8 @@ DEBUG	10
 NOTSET	0
 '''
 
-logfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'log/picture.log')
-loginfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'log/login.log')
+logfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logs/picture.log')
+loginfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logs/login.log')
 
 
 #https://stackoverflow.com/questions/20240464/python-logging-file-is-not-working-when-using-logging-basicconfig

@@ -20,10 +20,6 @@
     "password": "password",
     "port":25
   },
-  "books": {
-    "yaya_base_path": "/mnt/sda2/picture/yaya-huiben",
-    "xmly_base_path": "/mnt/sda2/picture/xmly-huiben"
-  },
   "cdn": {
     "secret": "xxx"
   }

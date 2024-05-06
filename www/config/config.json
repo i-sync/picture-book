@@ -21,10 +21,6 @@
     "password": "password",
     "port":25
   },
-  "books": {
-    "yaya_base_path": "c:\\tmp\\yaya-huiben",
-    "xmly_base_path": "c:\\tmp\\xmly-huiben"
-  },
   "cdn": {
     "secret": "xxx"
   }

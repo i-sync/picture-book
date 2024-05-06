@@ -1,0 +1,12 @@
+services:
+  web:
+    build: .
+    # command: gunicorn -b 0.0.0.0:8000 todosapp.wsgi:application
+    container_name: picture
+    volumes:
+      - .:/var/www/picture
+      - /mnt/sda2/picture/yaya-huiben:/var/www/picture/www/yaya-huiben
+      - /mnt/sda2/picture/xmly-huiben:/var/www/picture/www/xmly-huiben
+    ports:
+      - "8030:8080"
+    restart: always
