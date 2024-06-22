@@ -568,7 +568,7 @@
                 chapter: {},
                 playing: false,
                 pausing: false,
-                audio: new Audio(book_audio)
+                audio: new Audio()
             },
             components: {
                 player: player
@@ -582,7 +582,12 @@
                         _this.audio.play();
                      }
                      else if (next_id != 'None') {
-                        goto_book(next_id);
+                        // goto_book(next_id);
+                        _this.playing = false;
+                        _this.items = [];
+                        _this.loadBookDetail(true, next_id);
+                        // process next id
+                        _this.processNextPage(next_id);
                      }
                      else {
                         _this.playing = false;
@@ -619,15 +624,17 @@
                 toggle() {
                   this.$refs['fullscreen'].toggle()
                 },
-                loadBookDetail: function(autoplay){
+                loadBookDetail: function(autoplay, book_id='{{book.recordId}}'){
                     if (this.items.length == 0) {
                         _this = this;
-                        getJSON('/api/xmly-book/{{book.recordId}}', function (err, result) {
+                        getJSON('/api/xmly-book/' + book_id, function (err, result) {
                             $("#vm").removeClass('loading');
                             if(err){
                                 return error(err);
                             }
+                            _this.index = 0;
                             _this.items = result.book_screen;
+                            _this.audio.src = result.audio_url;
                             _this.chapter = _this.items[0];
                             if(autoplay){
                                 _this.handlePlayAudio();
@@ -708,6 +715,33 @@
                     this.playing = false;
                     this.pausing = true;
                     this.audio.pause();
+                },                
+
+                processNextPage: function(book_id) {
+                    // get url parameters
+                    var r = parseQueryString();
+                    r.id = book_id;
+                    //update browser url
+                    window.history.replaceState(null, null, '?' + $.param(r));
+                    // Step 1: Send a GET request to the URL
+                    fetch(window.location.href)
+                        .then(response => response.text())  // convert to plain text
+                        .then(data => {
+                            // console.log(data);  // print data to console
+
+                            // Step 2: Use a regular expression to find 'book_id' in the content
+                            const regex = /next_id = '(\d+)';/i;  // adjust this to match your actual 'book_id' format
+                            const match = data.match(regex);
+
+                            if (match) {
+                                console.log('Book ID:', match[1]);  // print the book ID to console
+                                next_id = match[1];
+                            } else {
+                                console.log('No book ID found');
+                                next_id = 'None';
+                            }
+                        })
+                        .catch(error => console.error(error));
                 }
             },
             mounted(){
@@ -718,7 +752,12 @@
         $(".next-picture-book").click(function(){
             //console.log("next one...");
             if (next_id != 'None') {
-                goto_book(next_id);
+                // goto_book(next_id);
+                vm.playing = false;
+                vm.items = [];
+                vm.loadBookDetail(true, next_id);
+                // process next id
+                vm.processNextPage(next_id);
             }
         });
 

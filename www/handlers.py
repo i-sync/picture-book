@@ -432,8 +432,11 @@ async def api_yaya_books(*, page='1'):
 async def api_xmly_book_detail(*, id):
     book = DataObject.get_xmly_books(id=id)
     book_screen = None
+    audio_url = None
     if book:
         book = book[0]
+        
+        audio_url = get_cdn_url(f"/xmly-huiben/{book['recordId']}.{book['recordTitle'].replace('|', '')}/{book['recordTitle'].replace('|', '')}.m4a")
         # book_json_name = f"/{XMLY_BASE_PATH}/{book['recordId']}.{book['recordTitle'].replace('|', '')}/{book['recordId']}.{book['recordTitle'].replace('|', '')}.json"
         # book_screen = read_json_file(book_json_name)['screens']
         book_json_name = f"{XMLY_BASE_PATH}/{book['recordId']}.{book['recordTitle'].replace('|', '')}/{book['recordId']}.{book['recordTitle'].replace('|', '')}.json"
@@ -445,7 +448,7 @@ async def api_xmly_book_detail(*, id):
         for item in book_screen:
             item['cover_url'] = get_cdn_url(f"/xmly-huiben/{book['recordId']}.{book['recordTitle'].replace('|', '')}/imgs/{item['index']}.jpg")
 
-    return dict(book_screen=book_screen)
+    return dict(book_screen=book_screen, audio_url=audio_url)
 
 
 @get('/api/xmly-books')

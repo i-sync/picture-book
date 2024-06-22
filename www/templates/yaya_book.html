@@ -588,7 +588,12 @@
                         _this.audio.play();
                      }
                      else if (next_id != 'None') {
-                        goto_book(next_id);
+                        // goto_book(next_id);
+                        _this.playing = false;
+                        _this.items.book_list = [];
+                        _this.loadBookList(true, next_id);
+                        // process next id
+                        _this.processNextPage(next_id);
                      }
                      else {
                         _this.playing = false;
@@ -610,10 +615,10 @@
                 toggle() {
                   this.$refs['fullscreen'].toggle()
                 },
-                loadBookList: function(autoplay){
+                loadBookList: function(autoplay, book_id = '{{book.id}}'){
                     if (this.items.book_list.length == 0) {
                         _this = this;
-                        getJSON('/api/yaya-book/{{book.id}}', function (err, result) {
+                        getJSON('/api/yaya-book/' + book_id, function (err, result) {
                             $("#vm").removeClass('loading');
                             if(err){
                                 return error(err);
@@ -696,6 +701,33 @@
                     this.playing = false;
                     this.pausing = true;
                     this.audio.pause();
+                },
+
+                processNextPage: function(book_id) {
+                    // get url parameters
+                    var r = parseQueryString();
+                    r.id = book_id;
+                    //update browser url
+                    window.history.replaceState(null, null, '?' + $.param(r));
+                    // Step 1: Send a GET request to the URL
+                    fetch(window.location.href)
+                        .then(response => response.text())  // convert to plain text
+                        .then(data => {
+                            // console.log(data);  // print data to console
+
+                            // Step 2: Use a regular expression to find 'book_id' in the content
+                            const regex = /next_id = '(\d+)';/i;  // adjust this to match your actual 'book_id' format
+                            const match = data.match(regex);
+
+                            if (match) {
+                                console.log('Book ID:', match[1]);  // print the book ID to console
+                                next_id = match[1];
+                            } else {
+                                console.log('No book ID found');
+                                next_id = 'None';
+                            }
+                        })
+                        .catch(error => console.error(error));
                 }
             },
             mounted(){
@@ -706,7 +738,12 @@
         $(".next-picture-book").click(function(){
             //console.log("next one...");
             if (next_id != 'None') {
-                goto_book(next_id);
+                //goto_book(next_id);
+                vm.playing = false;
+                vm.items.book_list = [];
+                vm.loadBookList(true, next_id);
+                // process next id
+                vm.processNextPage(next_id);
             }
         });
 
