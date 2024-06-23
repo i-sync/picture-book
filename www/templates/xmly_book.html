@@ -466,6 +466,16 @@
 <script>
 
     $(function(){
+        current_page = '{{book.current_page}}';
+        var r = parseQueryString();
+        if (r.refer) {
+            // update refer parameter's page value.
+            var url = new URL(r.refer);
+            url.searchParams.set('page', current_page); // 将'page'参数设置为'2'
+            r.refer = url.toString();
+            //update browser url
+            window.history.replaceState(null, null, '?' + $.param(r));
+        }
         next_id = '{{book.next_id}}';
         book_audio = '{{book.audio}}';
         book_cover = '{{book.coverPath}}';
@@ -730,8 +740,8 @@
                             // console.log(data);  // print data to console
 
                             // Step 2: Use a regular expression to find 'book_id' in the content
-                            const regex = /next_id = '(\d+)';/i;  // adjust this to match your actual 'book_id' format
-                            const match = data.match(regex);
+                            var regex = /next_id = '(\d+)';/i;  // adjust this to match your actual 'book_id' format
+                            var match = data.match(regex);
 
                             if (match) {
                                 console.log('Book ID:', match[1]);  // print the book ID to console
@@ -739,6 +749,20 @@
                             } else {
                                 console.log('No book ID found');
                                 next_id = 'None';
+                            }
+
+                            regex = /current_page = '(\d+)';/i;
+                            match = data.match(regex);
+                            if (match) {
+                                console.log("Current Page", match[1]);
+                                if (r.refer) {
+                                    // update refer parameter's page value.
+                                    var url = new URL(r.refer);
+                                    url.searchParams.set('page', match[1]); // 将'page'参数设置为'2'
+                                    r.refer = url.toString();
+                                    //update browser url
+                                    window.history.replaceState(null, null, '?' + $.param(r));
+                                }
                             }
                         })
                         .catch(error => console.error(error));
