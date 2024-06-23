@@ -623,6 +623,7 @@
                             if(err){
                                 return error(err);
                             }
+                            _this.index = 0;
                             _this.items = result;
                             _this.chapter = _this.items.book_list[0];
                             if(autoplay){
